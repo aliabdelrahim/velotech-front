@@ -1,0 +1,126 @@
+:host {
+  display: block;
+}
+
+.site-header {
+  height: var(--header-h);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-grey-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  gap: var(--space-5);
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-green);
+  font-weight: 700;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+.logo:hover {
+  color: var(--color-green-dark);
+}
+
+.logo-mark {
+  width: 32px;
+  height: 32px;
+}
+
+.logo-text {
+  color: var(--color-dark);
+}
+
+/* Navigation */
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-dark);
+  padding: var(--space-2) 0;
+  position: relative;
+  transition: color 0.15s ease;
+}
+
+.nav a:hover {
+  color: var(--color-green);
+}
+
+.nav a.active {
+  color: var(--color-green);
+  font-weight: 600;
+}
+
+.nav a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-green);
+  border-radius: 1px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  color: var(--color-dark);
+  transition: background-color 0.15s ease;
+}
+
+.icon-btn:hover {
+  background-color: var(--color-grey-bg);
+  color: var(--color-dark);
+}
+
+.cart-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .nav { display: none; }
+}

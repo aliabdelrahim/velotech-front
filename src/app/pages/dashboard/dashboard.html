@@ -1,0 +1,124 @@
+<app-header></app-header>
+
+<main class="dashboard">
+  <div class="container">
+
+    <header class="page-head">
+      <div>
+        <p class="welcome">Bonjour 👋</p>
+        <h1>Mon espace</h1>
+        <p class="role">
+          Connecté en tant que <strong>{{ role }}</strong>
+          <span *ngIf="storeId">· Magasin #{{ storeId }}</span>
+        </p>
+      </div>
+      <button class="btn btn-ghost btn-sm" (click)="logout()">Déconnexion</button>
+    </header>
+
+    <!-- Stats -->
+    <section class="metrics">
+      <article class="metric card">
+        <div class="metric-icon icon-green">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18l-2 13H5L3 7z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
+        </div>
+        <div>
+          <p class="metric-label">Mes commandes</p>
+          <p class="metric-value">{{ loadingOrders() ? '…' : totalOrders() }}</p>
+        </div>
+      </article>
+
+      <article class="metric card">
+        <div class="metric-icon icon-orange">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div>
+          <p class="metric-label">Total dépensé</p>
+          <p class="metric-value">{{ totalSpent() | number:'1.2-2' }} €</p>
+        </div>
+      </article>
+
+      <article class="metric card">
+        <div class="metric-icon icon-dark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h3l3 14h14l3-10H7"/><circle cx="10" cy="22" r="1.5"/><circle cx="20" cy="22" r="1.5"/></svg>
+        </div>
+        <div>
+          <p class="metric-label">Panier en cours</p>
+          <p class="metric-value">{{ cartItemsCount() }} article(s)</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- Derniere commande -->
+    <section class="recent" *ngIf="lastOrder() as last">
+      <h2>Dernière commande</h2>
+      <article class="card recent-card">
+        <div class="recent-info">
+          <p class="ref">CMD-{{ last.orderId }}</p>
+          <p class="date">{{ last.orderDate | date:'dd MMMM yyyy' }} · {{ last.storeName }}</p>
+          <p class="items-count">{{ last.items.length }} article(s)</p>
+        </div>
+        <div class="recent-total">
+          <p>{{ last.totalAmount | number:'1.2-2' }} €</p>
+          <a routerLink="/my-orders" class="btn btn-outline btn-sm">Voir le détail</a>
+        </div>
+      </article>
+    </section>
+
+    <!-- Raccourcis -->
+    <section class="shortcuts">
+      <h2>Mon compte</h2>
+      <div class="cards-grid">
+
+        <a routerLink="/my-orders" class="shortcut card">
+          <div class="shortcut-icon icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3>Mes commandes</h3>
+          <p>Historique, factures, statut de livraison.</p>
+        </a>
+
+        <a routerLink="/cart" class="shortcut card">
+          <div class="shortcut-icon icon-orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h3l3 14h14l3-10H7"/></svg>
+          </div>
+          <h3>Mon panier</h3>
+          <p>{{ cartItemsCount() }} article(s) en attente.</p>
+        </a>
+
+        <a routerLink="/catalog/1" class="shortcut card">
+          <div class="shortcut-icon icon-dark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3>Catalogue</h3>
+          <p>Découvrir les nouveautés de la semaine.</p>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Acces back-office -->
+    <section class="shortcuts" *ngIf="hasBackOfficeAccess">
+      <h2>Back-office</h2>
+      <div class="cards-grid">
+
+        <a routerLink="/products" class="shortcut card">
+          <h3>Produits</h3>
+          <p>Catalogue et fiches produits.</p>
+        </a>
+
+        <a routerLink="/store-products" class="shortcut card">
+          <h3>Stocks</h3>
+          <p>Gérer les stocks par magasin.</p>
+        </a>
+
+        <a routerLink="/orders" class="shortcut card">
+          <h3>Commandes</h3>
+          <p>Suivi des ventes en magasin.</p>
+        </a>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

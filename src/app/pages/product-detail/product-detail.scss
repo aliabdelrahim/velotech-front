@@ -1,0 +1,245 @@
+:host { display: block; }
+
+.product-detail {
+  background-color: var(--color-white);
+  padding: var(--space-5) 0 var(--space-7);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--color-grey);
+  margin-bottom: var(--space-5);
+}
+
+.breadcrumb a { color: var(--color-grey); }
+.breadcrumb a:hover { color: var(--color-green); }
+.breadcrumb strong { color: var(--color-dark); }
+
+/* Layout */
+.layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-7);
+  margin-bottom: var(--space-7);
+}
+
+/* Gallery */
+.gallery .main-image {
+  background-color: var(--color-green-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  aspect-ratio: 4/3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-3);
+}
+
+.gallery .main-image svg {
+  width: 100%;
+  height: 100%;
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-2);
+}
+
+.thumb {
+  background-color: var(--color-white);
+  border: 2px solid var(--color-grey-light);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  cursor: pointer;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb.active {
+  border-color: var(--color-green);
+}
+
+.thumb svg { width: 100%; height: 100%; }
+
+/* Info */
+.product-type {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--color-green);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.info h1 {
+  font-size: 2rem;
+  margin-bottom: var(--space-1);
+}
+
+.ref {
+  font-size: 13px;
+  color: var(--color-grey);
+  margin-bottom: var(--space-4);
+}
+
+.stock-line {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.price {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-2);
+}
+
+.rental {
+  font-size: 14px;
+  color: var(--color-grey);
+  margin-bottom: var(--space-5);
+}
+
+.sizes-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.size-options {
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.size-btn {
+  width: 48px;
+  height: 48px;
+  background-color: var(--color-white);
+  border: 2px solid var(--color-grey-light);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.size-btn:hover {
+  border-color: var(--color-green);
+}
+
+.size-btn.active {
+  background-color: var(--color-green);
+  color: var(--color-white);
+  border-color: var(--color-green);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.added-toast {
+  background-color: var(--color-green-light);
+  color: var(--color-green-dark);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: var(--space-4);
+}
+
+.perks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.perks li {
+  font-size: 13px;
+  color: var(--color-dark);
+}
+
+/* Tabs */
+.tabs {
+  margin-top: var(--space-5);
+}
+
+.tab-list {
+  display: flex;
+  gap: var(--space-5);
+  border-bottom: 1px solid var(--color-grey-light);
+  margin-bottom: var(--space-5);
+}
+
+.tab-list button {
+  background: none;
+  border: none;
+  padding: var(--space-3) 0;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-grey);
+  position: relative;
+  cursor: pointer;
+}
+
+.tab-list button.active {
+  color: var(--color-dark);
+  font-weight: 600;
+}
+
+.tab-list button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-green);
+}
+
+.tab-panel p {
+  margin-bottom: var(--space-3);
+  font-size: 14px;
+  color: var(--color-dark);
+  line-height: 1.7;
+}
+
+.specs {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--space-2) var(--space-5);
+  font-size: 14px;
+}
+
+.specs dt {
+  color: var(--color-grey);
+  font-weight: 500;
+}
+
+.specs dd { margin: 0; font-weight: 500; }
+
+.state-msg {
+  text-align: center;
+  color: var(--color-grey);
+  padding: var(--space-6);
+}
+
+.state-msg--error { color: var(--color-error); }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .perks { grid-template-columns: 1fr; }
+  .specs { grid-template-columns: 1fr; }
+  .tab-list { overflow-x: auto; }
+}

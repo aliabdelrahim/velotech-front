@@ -1,0 +1,181 @@
+<app-header></app-header>
+
+<main class="product-detail" *ngIf="!loading(); else loadingTpl">
+  <div class="container" *ngIf="product() as p; else notFoundTpl">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/catalog/1">Catalogue</a>
+      <span>›</span>
+      <strong>{{ p.name }}</strong>
+    </nav>
+
+    <div class="layout">
+      <!-- Image principale + miniatures -->
+      <div class="gallery">
+        <div class="main-image">
+          <svg viewBox="0 0 400 280" aria-hidden="true">
+            <g stroke="#2E7D32" stroke-width="6" fill="none" stroke-linecap="round">
+              <circle cx="100" cy="180" r="60" />
+              <circle cx="300" cy="180" r="60" />
+              <line x1="100" y1="180" x2="200" y2="80" />
+              <line x1="200" y1="80" x2="300" y2="180" />
+              <line x1="100" y1="180" x2="300" y2="180" />
+              <line x1="200" y1="80" x2="225" y2="55" />
+              <line x1="215" y1="55" x2="245" y2="55" />
+            </g>
+          </svg>
+        </div>
+        <div class="thumbs">
+          <button *ngFor="let i of [0,1,2,3,4]" class="thumb" type="button" [class.active]="i === 0">
+            <svg viewBox="0 0 200 130" aria-hidden="true">
+              <g stroke="#2E7D32" stroke-width="3" fill="none">
+                <circle cx="50" cy="85" r="25" />
+                <circle cx="150" cy="85" r="25" />
+                <line x1="50" y1="85" x2="100" y2="40" />
+                <line x1="100" y1="40" x2="150" y2="85" />
+                <line x1="50" y1="85" x2="150" y2="85" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Infos produit -->
+      <div class="info">
+        <p class="product-type">{{ p.type | uppercase }}</p>
+        <h1>{{ p.name }}</h1>
+        <p class="ref">Référence VEL-{{ p.id }} · Magasin Velotech Ixelles</p>
+
+        <div class="stock-line">
+          <span class="badge badge-success">EN STOCK</span>
+          <span *ngIf="p.isRentable" class="badge badge-warning">LOCATION</span>
+        </div>
+
+        <p class="price">{{ p.priceSale }} €</p>
+        <p class="rental" *ngIf="p.isRentable && p.priceRental">
+          Location à partir de <strong>{{ p.priceRental }} €/jour</strong>
+        </p>
+
+        <div class="sizes">
+          <label class="sizes-label">Taille</label>
+          <div class="size-options">
+            <button
+              *ngFor="let s of sizes"
+              type="button"
+              class="size-btn"
+              [class.active]="selectedSize() === s"
+              (click)="selectSize(s)"
+            >
+              {{ s }}
+            </button>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-secondary btn-lg" (click)="addToCart()">
+            + Ajouter au panier
+          </button>
+          <button
+            *ngIf="p.isRentable"
+            class="btn btn-primary btn-lg"
+            (click)="goToCart()"
+          >
+            Louer ce vélo
+          </button>
+        </div>
+
+        <p class="added-toast" *ngIf="addedToCart()">
+          ✓ Ajouté au panier — <a routerLink="/cart">Voir le panier</a>
+        </p>
+
+        <ul class="perks">
+          <li>✓ Livraison gratuite dès 50 €</li>
+          <li>✓ Atelier en magasin</li>
+          <li>✓ Retour gratuit 30 jours</li>
+          <li>✓ Garantie 2 ans</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Onglets -->
+    <div class="tabs">
+      <div class="tab-list" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          [class.active]="selectedTab() === 'description'"
+          (click)="selectTab('description')"
+        >Description</button>
+        <button
+          type="button"
+          role="tab"
+          [class.active]="selectedTab() === 'specs'"
+          (click)="selectTab('specs')"
+        >Caractéristiques</button>
+        <button
+          type="button"
+          role="tab"
+          [class.active]="selectedTab() === 'reviews'"
+          (click)="selectTab('reviews')"
+        >Avis (12)</button>
+        <button
+          type="button"
+          role="tab"
+          [class.active]="selectedTab() === 'shipping'"
+          (click)="selectTab('shipping')"
+        >Livraison & retour</button>
+      </div>
+
+      <div class="tab-panel" *ngIf="selectedTab() === 'description'">
+        <p>
+          Le {{ p.name }} est un vélo {{ p.type }} pensé pour les cyclistes débutants
+          qui souhaitent découvrir le plaisir de rouler sur route. Cadre en aluminium léger,
+          transmission Shimano 14 vitesses et selle confort en font un compagnon idéal
+          pour vos premières sorties et balades en ville.
+        </p>
+        <p>
+          Disponible immédiatement au magasin Velotech Ixelles. Possibilité d'essayer sur place
+          avant achat. Service après-vente assuré par nos techniciens certifiés.
+        </p>
+      </div>
+
+      <div class="tab-panel" *ngIf="selectedTab() === 'specs'">
+        <dl class="specs">
+          <dt>Type</dt><dd>{{ p.type }}</dd>
+          <dt>Cadre</dt><dd>Aluminium 6061</dd>
+          <dt>Transmission</dt><dd>Shimano 14 vitesses</dd>
+          <dt>Freins</dt><dd>Disque hydraulique</dd>
+          <dt>Poids</dt><dd>10,2 kg</dd>
+          <dt>Roues</dt><dd>28"</dd>
+        </dl>
+      </div>
+
+      <div class="tab-panel" *ngIf="selectedTab() === 'reviews'">
+        <p class="state-msg">Avis clients à venir.</p>
+      </div>
+
+      <div class="tab-panel" *ngIf="selectedTab() === 'shipping'">
+        <p>Livraison standard sous 3-5 jours ouvrés (9,90 €).</p>
+        <p>Retrait gratuit en magasin sous 24-48h.</p>
+        <p>Retour gratuit sous 30 jours, garantie 2 ans.</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<ng-template #loadingTpl>
+  <main class="container"><p class="state-msg">Chargement…</p></main>
+</ng-template>
+
+<ng-template #notFoundTpl>
+  <main class="container">
+    <p class="state-msg state-msg--error">{{ errorMsg() || 'Produit introuvable.' }}</p>
+    <p style="text-align:center"><a routerLink="/catalog/1" class="btn btn-outline">Retour au catalogue</a></p>
+  </main>
+</ng-template>
+
+<app-footer></app-footer>
