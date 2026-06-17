@@ -1,0 +1,42 @@
+<app-header></app-header>
+
+<main class="confirm-page">
+  <div class="container">
+
+    <!-- Stepper -->
+    <ol class="stepper">
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Panier</span></li>
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Livraison</span></li>
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Paiement</span></li>
+      <li class="step current">
+        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+      </li>
+    </ol>
+
+    <section class="hero card-hero">
+      <div class="check-circle">
+        <svg viewBox="0 0 64 64" aria-hidden="true">
+          <circle cx="32" cy="32" r="30" fill="#43A047"/>
+          <path d="M 18 32 L 28 42 L 46 22" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1>Commande confirmée !</h1>
+      <p class="lead">Merci pour votre achat. Votre commande a bien été enregistrée.</p>
+      <p class="order-ref">
+        Référence de commande : <strong>{{ orderRef() }}</strong>
+      </p>
+    </section>
+
+    <section class="email-row">
+      Un email de confirmation a été envoyé à <strong>{{ email }}</strong>
+    </section>
+
+    <div class="actions">
+      <a routerLink="/my-orders" class="btn btn-outline btn-lg">Voir mes commandes</a>
+      <a routerLink="/catalog/1" class="btn btn-primary btn-lg">Continuer mes achats</a>
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

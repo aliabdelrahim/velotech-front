@@ -1,0 +1,166 @@
+<app-header></app-header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <h1>
+          Le vélo,<br />
+          partout près de<br />
+          chez vous.
+        </h1>
+        <p class="hero-subtitle">
+          Achetez, louez, faites entretenir.<br />
+          Une plateforme, des dizaines de magasins partenaires.
+        </p>
+        <div class="hero-cta">
+          <a routerLink="/catalog/1" class="btn btn-primary btn-lg">
+            Voir le catalogue
+          </a>
+          <a routerLink="/rentals/new" class="btn btn-outline btn-lg hero-outline">
+            Louer un vélo
+          </a>
+        </div>
+      </div>
+      <div class="hero-illustration" aria-hidden="true">
+        <svg viewBox="0 0 400 320">
+          <!-- Cercle decoratif vert fonce -->
+          <circle cx="220" cy="160" r="160" fill="#1B5E20" opacity="0.4" />
+          <!-- Cercle orange decalque -->
+          <circle cx="330" cy="240" r="60" fill="#FF7043" />
+          <!-- Velo blanc stylise -->
+          <g stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="120" cy="200" r="50" />
+            <circle cx="280" cy="200" r="50" />
+            <line x1="120" y1="200" x2="200" y2="130" />
+            <line x1="200" y1="130" x2="280" y2="200" />
+            <line x1="120" y1="200" x2="280" y2="200" />
+            <line x1="200" y1="130" x2="220" y2="100" />
+            <line x1="210" y1="100" x2="240" y2="100" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- POURQUOI VELOTECH -->
+  <section class="features">
+    <div class="container">
+      <h6 class="section-eyebrow">Pourquoi Velotech</h6>
+      <div class="features-grid">
+        <article class="feature card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="8" cy="22" r="6" />
+              <circle cx="24" cy="22" r="6" />
+              <line x1="8" y1="22" x2="18" y2="10" />
+              <line x1="18" y1="10" x2="24" y2="22" />
+              <line x1="8" y1="22" x2="24" y2="22" />
+            </svg>
+          </div>
+          <h3>Catalogue 100+ modèles</h3>
+          <p>VTT, route, ville, électriques. Du débutant à l'expert.</p>
+        </article>
+
+        <article class="feature card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <rect x="4" y="6" width="24" height="22" rx="2" />
+              <line x1="4" y1="12" x2="28" y2="12" />
+              <line x1="10" y1="4" x2="10" y2="8" />
+              <line x1="22" y1="4" x2="22" y2="8" />
+              <circle cx="11" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="16" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="21" cy="18" r="1.5" fill="currentColor" />
+            </svg>
+          </div>
+          <h3>Réservation en ligne</h3>
+          <p>Location ou entretien, vous choisissez votre créneau.</p>
+        </article>
+
+        <article class="feature card">
+          <div class="feature-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <path d="M4 28 L18 14 L22 18 L26 14" />
+              <path d="M4 28 L8 24" />
+              <path d="M22 14 L26 10 L30 14 L26 18 Z" />
+              <circle cx="10" cy="10" r="3" />
+            </svg>
+          </div>
+          <h3>Atelier technicien</h3>
+          <p>Réparation, diagnostic, pièces d'origine.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- VELOS PHARES -->
+  <section class="featured-products">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Nos vélos phares</h2>
+          <p class="section-subtitle">Une sélection de modèles disponibles dans les magasins Velotech.</p>
+        </div>
+        <a routerLink="/catalog/1" class="btn btn-ghost btn-sm">Tout le catalogue →</a>
+      </div>
+
+      <div class="products-grid" *ngIf="!loading(); else loadingTpl">
+        <ng-container *ngIf="!errorMsg(); else errorTpl">
+          <article
+            *ngFor="let p of featured()"
+            class="product-card card"
+            [routerLink]="['/products', p.id]"
+          >
+            <div class="product-thumb">
+              <span class="badge badge-success">EN STOCK</span>
+              <svg viewBox="0 0 200 130" aria-hidden="true">
+                <g stroke="#2E7D32" stroke-width="4" fill="none" stroke-linecap="round">
+                  <circle cx="50" cy="85" r="30" />
+                  <circle cx="150" cy="85" r="30" />
+                  <line x1="50" y1="85" x2="100" y2="40" />
+                  <line x1="100" y1="40" x2="150" y2="85" />
+                  <line x1="50" y1="85" x2="150" y2="85" />
+                  <line x1="100" y1="40" x2="115" y2="25" />
+                </g>
+              </svg>
+            </div>
+            <div class="product-info">
+              <h4>{{ p.name }}</h4>
+              <p class="product-type">{{ p.type }}</p>
+              <p class="product-price">{{ p.priceSale }} €</p>
+            </div>
+          </article>
+        </ng-container>
+      </div>
+
+      <ng-template #loadingTpl>
+        <p class="state-msg">Chargement des produits…</p>
+      </ng-template>
+
+      <ng-template #errorTpl>
+        <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+      </ng-template>
+    </div>
+  </section>
+
+  <!-- DOUBLE CTA -->
+  <section class="dual-cta">
+    <div class="container dual-cta-grid">
+      <article class="cta-card cta-card--orange">
+        <h3>Louer un vélo</h3>
+        <p>À la journée, à la semaine, au mois.<br />Réservez en ligne et passez prendre votre vélo.</p>
+        <a routerLink="/rentals/new" class="btn btn-light">Réserver →</a>
+      </article>
+
+      <article class="cta-card cta-card--dark">
+        <h3>Atelier entretien</h3>
+        <p>Diagnostic gratuit, réparation rapide.<br />Prenez rendez-vous en quelques clics.</p>
+        <a routerLink="/appointments/new" class="btn btn-light">Prendre RDV →</a>
+      </article>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>

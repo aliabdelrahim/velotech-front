@@ -1,1 +1,238 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================================
+   Velotech - Styles globaux
+   Charte graphique "Eco-Sport Moderne"
+   ========================================================================= */
+
+/* ---------- Variables CSS (palette + tokens) ---------- */
+:root {
+  /* Couleurs primaires */
+  --color-green: #2e7d32;
+  --color-green-dark: #1b5e20;
+  --color-green-light: #e8f5e9;
+  --color-green-pale: #f1f8f3;
+
+  /* Couleurs secondaires */
+  --color-dark: #1a2332;
+  --color-grey: #5b6770;
+  --color-grey-light: #e0e4e8;
+  --color-grey-bg: #f5f5f5;
+  --color-cream: #faf7f2;
+  --color-white: #ffffff;
+
+  /* Couleur d'accent */
+  --color-orange: #ff7043;
+  --color-orange-dark: #e64a19;
+
+  /* Etats */
+  --color-success: #43a047;
+  --color-warning: #fb8c00;
+  --color-error: #e53935;
+  --color-error-bg: #ffebee;
+
+  /* Typographie */
+  --font-sans: 'Poppins', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Consolas', 'Monaco', monospace;
+
+  /* Espaces */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Rayons */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 999px;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Layout */
+  --container-max: 1280px;
+  --header-h: 70px;
+}
+
+/* ---------- Reset minimal ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--color-dark);
+  background-color: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-dark);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+p { margin: 0; }
+
+a {
+  color: var(--color-green);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--color-green-dark);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* ---------- Container ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+/* ---------- Boutons reutilisables ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 12px 24px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: var(--color-orange);
+  color: var(--color-white);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--color-orange-dark);
+  color: var(--color-white);
+}
+
+.btn-secondary {
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--color-green-dark);
+  color: var(--color-white);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-green);
+  border-color: var(--color-green);
+}
+
+.btn-outline:hover:not(:disabled) {
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-dark);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--color-grey-bg);
+}
+
+.btn-lg {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+.btn-sm {
+  padding: 8px 16px;
+  font-size: 13px;
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-success {
+  background-color: var(--color-green-light);
+  color: var(--color-green-dark);
+}
+
+.badge-warning {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.badge-info {
+  background-color: var(--color-grey-bg);
+  color: var(--color-grey);
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-grey-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: box-shadow 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}

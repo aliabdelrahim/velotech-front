@@ -1,0 +1,116 @@
+<app-header></app-header>
+
+<main class="cart-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <strong>Mon panier</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Mon panier</h1>
+      <p class="page-subtitle">{{ cart.count() }} article(s) dans votre panier</p>
+    </header>
+
+    <!-- Stepper 4 etapes -->
+    <ol class="stepper" aria-label="Étapes de commande">
+      <li class="step current">
+        <span class="step-circle">1</span><span class="step-label">Panier</span>
+      </li>
+      <li class="step">
+        <span class="step-circle">2</span><span class="step-label">Livraison</span>
+      </li>
+      <li class="step">
+        <span class="step-circle">3</span><span class="step-label">Paiement</span>
+      </li>
+      <li class="step">
+        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+      </li>
+    </ol>
+
+    <div class="layout" *ngIf="cart.count() > 0; else emptyTpl">
+
+      <!-- Liste articles -->
+      <section class="items card">
+        <header><h2>Articles</h2></header>
+
+        <article class="cart-item" *ngFor="let item of cart.items()">
+          <div class="thumb">
+            <svg viewBox="0 0 80 60" aria-hidden="true">
+              <g stroke="#2E7D32" stroke-width="2.5" fill="none">
+                <circle cx="20" cy="40" r="14" />
+                <circle cx="60" cy="40" r="14" />
+                <line x1="20" y1="40" x2="40" y2="20" />
+                <line x1="40" y1="20" x2="60" y2="40" />
+                <line x1="20" y1="40" x2="60" y2="40" />
+              </g>
+            </svg>
+          </div>
+
+          <div class="info">
+            <h3>{{ item.name }}</h3>
+            <p class="ref">Référence VEL-{{ item.productId }}</p>
+            <p class="opts" *ngIf="item.size">Taille {{ item.size }}</p>
+
+            <div class="qty">
+              <button type="button" (click)="dec(item)" aria-label="Diminuer">−</button>
+              <span>{{ item.quantity }}</span>
+              <button type="button" (click)="inc(item)" aria-label="Augmenter">+</button>
+            </div>
+          </div>
+
+          <div class="price">
+            <p class="unit" *ngIf="item.quantity > 1">
+              {{ item.quantity }} × {{ item.priceSale }} €
+            </p>
+            <p class="total">{{ item.quantity * item.priceSale }} €</p>
+            <button class="link-danger" type="button" (click)="remove(item)">
+              Supprimer
+            </button>
+          </div>
+        </article>
+      </section>
+
+      <!-- Recap -->
+      <aside class="recap">
+        <h3>Récapitulatif</h3>
+        <dl>
+          <dt>Sous-total ({{ cart.count() }} articles)</dt>
+          <dd>{{ cart.subtotal() | number:'1.2-2' }} €</dd>
+          <dt>Livraison</dt>
+          <dd>
+            <ng-container *ngIf="cart.shipping() > 0; else free">
+              {{ cart.shipping() | number:'1.2-2' }} €
+            </ng-container>
+            <ng-template #free><span class="free">Gratuit</span></ng-template>
+          </dd>
+          <dt>TVA incluse (21 %)</dt>
+          <dd>{{ cart.vatIncluded() | number:'1.2-2' }} €</dd>
+        </dl>
+
+        <div class="total-row">
+          <span>Total TTC</span>
+          <span class="total-amount">{{ cart.total() | number:'1.2-2' }} €</span>
+        </div>
+
+        <button class="btn btn-primary btn-lg full" (click)="proceedToCheckout()">
+          Passer la commande →
+        </button>
+
+        <a routerLink="/catalog/1" class="continue-link">‹ Continuer mes achats</a>
+      </aside>
+    </div>
+
+    <ng-template #emptyTpl>
+      <div class="empty">
+        <p>Votre panier est vide.</p>
+        <a routerLink="/catalog/1" class="btn btn-primary">Voir le catalogue</a>
+      </div>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

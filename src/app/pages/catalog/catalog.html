@@ -1,0 +1,156 @@
+<app-header></app-header>
+
+<main class="catalog-page">
+  <div class="container">
+
+    <!-- Fil d'Ariane -->
+    <nav class="breadcrumb" aria-label="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/catalog/1">Catalogue</a>
+      <span>›</span>
+      <strong>{{ storeName() }}</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Catalogue</h1>
+      <p class="page-subtitle">
+        {{ filtered().length }} produit(s) disponible(s) dans le magasin
+        <strong>{{ storeName() }}</strong>
+      </p>
+    </header>
+
+    <div class="layout">
+      <!-- Sidebar Filtres -->
+      <aside class="filters">
+        <header class="filters-head">
+          <h3>Filtres</h3>
+          <button class="btn-link" type="button" (click)="resetFilters()">Réinitialiser</button>
+        </header>
+
+        <div class="filter-group">
+          <label for="search">Rechercher</label>
+          <input
+            id="search"
+            type="search"
+            placeholder="Nom du produit…"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+          />
+        </div>
+
+        <div class="filter-group">
+          <h4>Type</h4>
+          <ul class="checkbox-list">
+            <li *ngFor="let t of availableTypes()">
+              <label>
+                <input
+                  type="checkbox"
+                  [checked]="selectedType() === t"
+                  (change)="toggleType(t)"
+                />
+                {{ t }}
+              </label>
+            </li>
+          </ul>
+        </div>
+
+        <div class="filter-group">
+          <h4>Disponibilité</h4>
+          <label class="check-row">
+            <input
+              type="checkbox"
+              [checked]="onlyRentable()"
+              (change)="onlyRentable.set(!onlyRentable())"
+            />
+            Disponible en location
+          </label>
+        </div>
+
+        <div class="filter-group">
+          <h4>Prix (€)</h4>
+          <div class="price-range">
+            <input
+              type="number"
+              min="0"
+              [ngModel]="priceMin()"
+              (ngModelChange)="priceMin.set(+$event)"
+              aria-label="Prix minimum"
+            />
+            <span>—</span>
+            <input
+              type="number"
+              min="0"
+              [ngModel]="priceMax()"
+              (ngModelChange)="priceMax.set(+$event)"
+              aria-label="Prix maximum"
+            />
+          </div>
+        </div>
+      </aside>
+
+      <!-- Contenu -->
+      <section class="content">
+        <div class="toolbar">
+          <span class="result-count">{{ filtered().length }} résultats</span>
+          <label class="sort">
+            Trier par :
+            <select [ngModel]="sortKey()" (ngModelChange)="sortKey.set($event)">
+              <option value="relevance">Pertinence</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+              <option value="name">Nom (A-Z)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="products-grid" *ngIf="!loading(); else loadingTpl">
+          <ng-container *ngIf="!errorMsg(); else errorTpl">
+            <article
+              *ngFor="let p of filtered()"
+              class="product-card card"
+              [routerLink]="['/products', p.id]"
+            >
+              <div class="product-thumb">
+                <span class="badge badge-success">EN STOCK</span>
+                <svg viewBox="0 0 200 130" aria-hidden="true">
+                  <g stroke="#2E7D32" stroke-width="4" fill="none" stroke-linecap="round">
+                    <circle cx="50" cy="85" r="30" />
+                    <circle cx="150" cy="85" r="30" />
+                    <line x1="50" y1="85" x2="100" y2="40" />
+                    <line x1="100" y1="40" x2="150" y2="85" />
+                    <line x1="50" y1="85" x2="150" y2="85" />
+                    <line x1="100" y1="40" x2="115" y2="25" />
+                  </g>
+                </svg>
+              </div>
+              <div class="product-info">
+                <p class="product-type">{{ p.type }}</p>
+                <h3>{{ p.name }}</h3>
+                <p class="product-price">{{ p.priceSale }} €</p>
+                <p class="product-rental" *ngIf="p.isRentable && p.priceRental">
+                  ou loc. {{ p.priceRental }} €/j
+                </p>
+              </div>
+            </article>
+
+            <p class="state-msg" *ngIf="filtered().length === 0">
+              Aucun produit ne correspond aux filtres sélectionnés.
+            </p>
+          </ng-container>
+        </div>
+
+        <ng-template #loadingTpl>
+          <p class="state-msg">Chargement…</p>
+        </ng-template>
+
+        <ng-template #errorTpl>
+          <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+        </ng-template>
+      </section>
+    </div>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

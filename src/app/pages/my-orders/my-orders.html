@@ -1,0 +1,88 @@
+<app-header></app-header>
+
+<main class="my-orders">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/dashboard">Mon espace</a>
+      <span>›</span>
+      <strong>Mes commandes</strong>
+    </nav>
+
+    <header class="page-head">
+      <div>
+        <h1>Mes commandes</h1>
+        <p class="page-subtitle">
+          {{ orders().length }} commande(s)
+          <span *ngIf="orders().length > 0">
+            · Total dépensé {{ totalSpent() | number:'1.2-2' }} €
+          </span>
+        </p>
+      </div>
+      <a routerLink="/catalog/1" class="btn btn-outline btn-sm">+ Nouvel achat</a>
+    </header>
+
+    <ng-container *ngIf="!loading(); else loadingTpl">
+      <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+        <div class="empty" *ngIf="orders().length === 0">
+          <p>Vous n'avez pas encore passé de commande.</p>
+          <a routerLink="/catalog/1" class="btn btn-primary">Voir le catalogue</a>
+        </div>
+
+        <div class="orders-list" *ngIf="orders().length > 0">
+          <article class="order-card card" *ngFor="let o of orders()">
+
+            <header class="order-head" (click)="toggle(o.orderId)">
+              <div class="order-id">
+                <span class="ref">CMD-{{ o.orderId }}</span>
+                <span class="date">{{ o.orderDate | date:'dd/MM/yyyy' }}</span>
+              </div>
+              <div class="order-meta">
+                <span class="store">{{ o.storeName }}</span>
+                <span class="items-count">{{ o.items.length }} article(s)</span>
+                <span class="total">{{ o.totalAmount | number:'1.2-2' }} €</span>
+                <button type="button" class="chevron" [class.open]="isExpanded(o.orderId)" aria-label="Voir le detail">▾</button>
+              </div>
+            </header>
+
+            <div class="order-details" *ngIf="isExpanded(o.orderId)">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Article</th>
+                    <th>Quantité</th>
+                    <th>P.U.</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let it of o.items">
+                    <td>{{ it.productName }}</td>
+                    <td>{{ it.quantity }}</td>
+                    <td>{{ it.unitPrice | number:'1.2-2' }} €</td>
+                    <td>{{ (it.quantity * it.unitPrice) | number:'1.2-2' }} €</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <p class="state-msg">Chargement de vos commandes…</p>
+    </ng-template>
+
+    <ng-template #errorTpl>
+      <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

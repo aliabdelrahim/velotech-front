@@ -1,0 +1,33 @@
+<div class="login-container">
+  <h1>Connexion</h1>
+
+  <form (ngSubmit)="onSubmit()">
+    <div>
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        [(ngModel)]="model.email"
+        required
+      />
+    </div>
+
+    <div>
+      <label for="password">Mot de passe</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        [(ngModel)]="model.password"
+        required
+      />
+    </div>
+
+    <button type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+    </button>
+
+    <p *ngIf="errorMessage">{{ errorMessage }}</p>
+  </form>
+</div>

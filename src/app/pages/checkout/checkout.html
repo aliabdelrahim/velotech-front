@@ -1,0 +1,266 @@
+<app-header></app-header>
+
+<main class="checkout-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/cart">Mon panier</a>
+      <span>›</span>
+      <strong>Paiement</strong>
+    </nav>
+
+    <h1>Finaliser ma commande</h1>
+
+    <!-- Stepper -->
+    <ol class="stepper">
+      <li class="step done">
+        <span class="step-circle">✓</span><span class="step-label">Panier</span>
+      </li>
+      <li class="step done">
+        <span class="step-circle">✓</span><span class="step-label">Livraison</span>
+      </li>
+      <li class="step current">
+        <span class="step-circle">3</span><span class="step-label">Paiement</span>
+      </li>
+      <li class="step">
+        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+      </li>
+    </ol>
+
+    <!-- Bandeau erreur -->
+    <div class="error-banner" *ngIf="showErrorBanner() && errorCount() > 0">
+      <span class="icon">!</span>
+      <div>
+        <strong>Veuillez corriger les erreurs ci-dessous</strong>
+        <p>{{ errorCount() }} champ(s) obligatoire(s) manquant(s) ou incorrect(s)</p>
+      </div>
+    </div>
+
+    <div class="error-banner" *ngIf="serverError()">
+      <span class="icon">!</span>
+      <div>
+        <strong>Erreur serveur</strong>
+        <p>{{ serverError() }}</p>
+      </div>
+    </div>
+
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+      <div class="layout">
+
+        <!-- Colonne gauche : formulaire -->
+        <div class="form-area">
+
+          <!-- 1. Adresse -->
+          <section class="form-section">
+            <h2>1. Adresse de livraison</h2>
+            <div class="form-row two">
+              <div class="field" [class.error]="errors().firstName">
+                <label for="firstName">Prénom *</label>
+                <input
+                  id="firstName"
+                  name="firstName"
+                  type="text"
+                  [ngModel]="model().firstName"
+                  (ngModelChange)="set('firstName', $event)"
+                />
+                <p class="hint" *ngIf="errors().firstName">! {{ errors().firstName }}</p>
+              </div>
+              <div class="field" [class.error]="errors().lastName">
+                <label for="lastName">Nom *</label>
+                <input
+                  id="lastName"
+                  name="lastName"
+                  type="text"
+                  [ngModel]="model().lastName"
+                  (ngModelChange)="set('lastName', $event)"
+                />
+                <p class="hint" *ngIf="errors().lastName">! {{ errors().lastName }}</p>
+              </div>
+            </div>
+
+            <div class="field" [class.error]="errors().address">
+              <label for="address">Adresse *</label>
+              <input
+                id="address"
+                name="address"
+                type="text"
+                placeholder="Rue et numéro"
+                [ngModel]="model().address"
+                (ngModelChange)="set('address', $event)"
+              />
+              <p class="hint" *ngIf="errors().address">! {{ errors().address }}</p>
+            </div>
+
+            <div class="form-row zip-city">
+              <div class="field" [class.error]="errors().zip">
+                <label for="zip">Code postal *</label>
+                <input
+                  id="zip"
+                  name="zip"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="4"
+                  [ngModel]="model().zip"
+                  (ngModelChange)="set('zip', $event)"
+                />
+                <p class="hint" *ngIf="errors().zip">! {{ errors().zip }}</p>
+              </div>
+              <div class="field" [class.error]="errors().city">
+                <label for="city">Ville *</label>
+                <input
+                  id="city"
+                  name="city"
+                  type="text"
+                  [ngModel]="model().city"
+                  (ngModelChange)="set('city', $event)"
+                />
+                <p class="hint" *ngIf="errors().city">! {{ errors().city }}</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- 2. Livraison -->
+          <section class="form-section">
+            <h2>2. Mode de livraison</h2>
+
+            <label class="ship-option" [class.selected]="model().shippingMode === 'standard'">
+              <input
+                type="radio"
+                name="ship"
+                value="standard"
+                [checked]="model().shippingMode === 'standard'"
+                (change)="set('shippingMode', 'standard')"
+              />
+              <div>
+                <strong>Livraison standard (3-5 jours)</strong>
+                <p>Livré par Bpost à l'adresse indiquée</p>
+              </div>
+              <span class="ship-price">9,90 €</span>
+            </label>
+
+            <label class="ship-option" [class.selected]="model().shippingMode === 'pickup'">
+              <input
+                type="radio"
+                name="ship"
+                value="pickup"
+                [checked]="model().shippingMode === 'pickup'"
+                (change)="set('shippingMode', 'pickup')"
+              />
+              <div>
+                <strong>Retrait magasin Velotech Ixelles</strong>
+                <p>Disponible sous 24-48h</p>
+              </div>
+              <span class="ship-price free">Gratuit</span>
+            </label>
+          </section>
+
+          <!-- 3. Paiement -->
+          <section class="form-section">
+            <h2>3. Méthode de paiement</h2>
+
+            <div class="field" [class.error]="errors().cardNumber">
+              <label for="cardNumber">Numéro de carte *</label>
+              <input
+                id="cardNumber"
+                name="cardNumber"
+                type="text"
+                inputmode="numeric"
+                maxlength="19"
+                placeholder="4532 1234 5678 9012"
+                [ngModel]="model().cardNumber"
+                (ngModelChange)="set('cardNumber', $event)"
+              />
+              <p class="hint" *ngIf="errors().cardNumber">! {{ errors().cardNumber }}</p>
+            </div>
+
+            <div class="form-row two">
+              <div class="field" [class.error]="errors().cardExpiry">
+                <label for="cardExpiry">Expiration (MM/AA) *</label>
+                <input
+                  id="cardExpiry"
+                  name="cardExpiry"
+                  type="text"
+                  placeholder="12/27"
+                  maxlength="5"
+                  [ngModel]="model().cardExpiry"
+                  (ngModelChange)="set('cardExpiry', $event)"
+                />
+                <p class="hint" *ngIf="errors().cardExpiry">! {{ errors().cardExpiry }}</p>
+              </div>
+              <div class="field" [class.error]="errors().cardCvv">
+                <label for="cardCvv">CVV *</label>
+                <input
+                  id="cardCvv"
+                  name="cardCvv"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="4"
+                  placeholder="***"
+                  [ngModel]="model().cardCvv"
+                  (ngModelChange)="set('cardCvv', $event)"
+                />
+                <p class="hint" *ngIf="errors().cardCvv">! {{ errors().cardCvv }}</p>
+              </div>
+            </div>
+
+            <label class="terms" [class.error]="errors().terms">
+              <input
+                type="checkbox"
+                name="terms"
+                [checked]="model().acceptedTerms"
+                (change)="set('acceptedTerms', !model().acceptedTerms)"
+              />
+              J'accepte les conditions générales de vente et la politique de confidentialité
+            </label>
+            <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
+          </section>
+        </div>
+
+        <!-- Colonne droite : recap -->
+        <aside class="recap">
+          <h3>Récapitulatif</h3>
+          <dl>
+            <dt>{{ cart.count() }} articles</dt>
+            <dd>{{ cart.subtotal() | number:'1.2-2' }} €</dd>
+            <dt>Livraison</dt>
+            <dd>
+              <ng-container *ngIf="finalShipping() > 0; else freeShip">
+                {{ finalShipping() | number:'1.2-2' }} €
+              </ng-container>
+              <ng-template #freeShip><span class="free">Gratuit</span></ng-template>
+            </dd>
+            <dt>TVA incluse (21 %)</dt>
+            <dd>{{ cart.vatIncluded() | number:'1.2-2' }} €</dd>
+          </dl>
+
+          <div class="total-row">
+            <span>Total</span>
+            <span class="total-amount">{{ finalTotal() | number:'1.2-2' }} €</span>
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary btn-lg full"
+            [disabled]="submitting() || cart.count() === 0"
+          >
+            <ng-container *ngIf="!submitting()">
+              Payer {{ finalTotal() | number:'1.2-2' }} €
+            </ng-container>
+            <ng-container *ngIf="submitting()">Paiement en cours…</ng-container>
+          </button>
+
+          <p class="ssl">
+            🔒 Paiement sécurisé SSL
+            <span class="card-brand">VISA</span>
+            <span class="card-brand">MC</span>
+          </p>
+        </aside>
+      </div>
+    </form>
+
+  </div>
+</main>
+
+<app-footer></app-footer>
