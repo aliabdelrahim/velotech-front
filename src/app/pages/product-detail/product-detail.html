@@ -59,11 +59,11 @@
           Location à partir de <strong>{{ p.priceRental }} €/jour</strong>
         </p>
 
-        <div class="sizes">
-          <label class="sizes-label">Taille</label>
+        <div class="sizes" *ngIf="hasSizes()">
+          <label class="sizes-label">{{ sizeLabel() }}</label>
           <div class="size-options">
             <button
-              *ngFor="let s of sizes"
+              *ngFor="let s of sizes()"
               type="button"
               class="size-btn"
               [class.active]="selectedSize() === s"

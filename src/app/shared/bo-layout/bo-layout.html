@@ -1,0 +1,84 @@
+<div class="bo-shell">
+
+  <!-- Sidebar -->
+  <aside class="bo-sidebar">
+    <div class="brand">
+      <a routerLink="/back-office" class="logo">
+        <svg viewBox="0 0 32 32" class="logo-mark" aria-hidden="true">
+          <circle cx="16" cy="16" r="14" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <line x1="16" y1="16" x2="28" y2="16" stroke="currentColor" stroke-width="2"/>
+          <line x1="16" y1="16" x2="16" y2="2" stroke="currentColor" stroke-width="2"/>
+          <line x1="16" y1="16" x2="4" y2="16" stroke="currentColor" stroke-width="2"/>
+          <circle cx="16" cy="16" r="3" fill="currentColor"/>
+        </svg>
+        <span>velotech</span>
+      </a>
+      <span class="bo-tag">Back-office</span>
+    </div>
+
+    <nav>
+      <div class="nav-section">
+        <p class="section-title">Pilotage</p>
+        <a routerLink="/back-office" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <span class="icon">📊</span> Tableau de bord
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <p class="section-title">Operations</p>
+        <a routerLink="/back-office/orders" routerLinkActive="active">
+          <span class="icon">🧾</span> Commandes
+        </a>
+        <a routerLink="/back-office/rentals" routerLinkActive="active">
+          <span class="icon">🚴</span> Locations
+        </a>
+        <a routerLink="/back-office/appointments" routerLinkActive="active">
+          <span class="icon">📅</span> Rendez-vous
+        </a>
+        <a routerLink="/back-office/repairs" routerLinkActive="active">
+          <span class="icon">🔧</span> Reparations
+        </a>
+      </div>
+
+      <div class="nav-section" *ngIf="isManager">
+        <p class="section-title">Catalogue</p>
+        <a routerLink="/back-office/products" routerLinkActive="active">
+          <span class="icon">🛒</span> Produits
+        </a>
+        <a routerLink="/back-office/stocks" routerLinkActive="active">
+          <span class="icon">📦</span> Stocks
+        </a>
+      </div>
+
+      <div class="nav-section" *ngIf="isAdmin">
+        <p class="section-title">Administration</p>
+        <a routerLink="/admin/stores" routerLinkActive="active">
+          <span class="icon">🏪</span> Magasins
+        </a>
+        <a routerLink="/admin/users" routerLinkActive="active">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a routerLink="/admin/roles" routerLinkActive="active">
+          <span class="icon">🔐</span> Roles
+        </a>
+      </div>
+    </nav>
+
+    <div class="bo-user">
+      <div class="user-info">
+        <div class="avatar">{{ userName().charAt(0).toUpperCase() }}</div>
+        <div>
+          <p class="name">{{ userName() }}</p>
+          <p class="role">{{ role }}</p>
+        </div>
+      </div>
+      <a routerLink="/" class="link">← Site public</a>
+      <button class="link" (click)="logout()">Deconnexion</button>
+    </div>
+  </aside>
+
+  <!-- Content -->
+  <main class="bo-main">
+    <router-outlet></router-outlet>
+  </main>
+</div>

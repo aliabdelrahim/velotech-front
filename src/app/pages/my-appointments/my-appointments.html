@@ -1,0 +1,107 @@
+<app-header></app-header>
+
+<main class="my-appointments">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/dashboard">Mon espace</a>
+      <span>›</span>
+      <strong>Mes rendez-vous</strong>
+    </nav>
+
+    <header class="page-head">
+      <div>
+        <h1>Mes rendez-vous atelier</h1>
+        <p class="page-subtitle">
+          {{ totals().all }} rendez-vous au total · {{ totals().upcoming }} a venir
+        </p>
+      </div>
+      <a routerLink="/appointments/new" class="btn btn-primary btn-sm">+ Prendre rendez-vous</a>
+    </header>
+
+    <ng-container *ngIf="!loading(); else loadingTpl">
+      <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+        <div class="tabs">
+          <button type="button"
+            [class.active]="activeTab() === 'upcoming'"
+            (click)="setTab('upcoming')">
+            A venir ({{ totals().upcoming }})
+          </button>
+          <button type="button"
+            [class.active]="activeTab() === 'past'"
+            (click)="setTab('past')">
+            Passes ({{ totals().past }})
+          </button>
+          <button type="button"
+            [class.active]="activeTab() === 'cancelled'"
+            (click)="setTab('cancelled')">
+            Annules ({{ totals().cancelled }})
+          </button>
+          <button type="button"
+            [class.active]="activeTab() === 'all'"
+            (click)="setTab('all')">
+            Tous ({{ totals().all }})
+          </button>
+        </div>
+
+        <div class="empty" *ngIf="filtered().length === 0">
+          <p *ngIf="appointments().length === 0">
+            Vous n'avez aucun rendez-vous a l'atelier.
+          </p>
+          <p *ngIf="appointments().length > 0">
+            Aucun rendez-vous dans cette categorie.
+          </p>
+          <a routerLink="/appointments/new" class="btn btn-primary">Prendre rendez-vous</a>
+        </div>
+
+        <ul class="appt-list" *ngIf="filtered().length > 0">
+          <li class="appt-card card" *ngFor="let a of filtered()">
+
+            <div class="date-block">
+              <span class="day">{{ a.scheduledAt | date:'dd' }}</span>
+              <span class="month">{{ a.scheduledAt | date:'MMM' }}</span>
+              <span class="year">{{ a.scheduledAt | date:'yyyy' }}</span>
+            </div>
+
+            <div class="info">
+              <p class="ref">RDV-{{ a.appointmentId }}</p>
+              <h3>{{ a.serviceType }}</h3>
+              <p class="hour">🕒 {{ a.scheduledAt | date:'HH:mm' }}</p>
+              <p class="store">📍 {{ a.storeName }}</p>
+              <p class="product" *ngIf="a.productName">
+                Velo : <strong>{{ a.productName }}</strong>
+              </p>
+              <p class="notes" *ngIf="a.notes">{{ a.notes }}</p>
+            </div>
+
+            <div class="side">
+              <span class="badge" [ngClass]="statusClass(a.status)">{{ a.status }}</span>
+              <button
+                *ngIf="canCancel(a)"
+                class="btn btn-ghost btn-sm"
+                [disabled]="cancellingId() === a.appointmentId"
+                (click)="cancel(a)">
+                {{ cancellingId() === a.appointmentId ? 'Annulation…' : 'Annuler' }}
+              </button>
+            </div>
+          </li>
+        </ul>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <p class="state-msg">Chargement de vos rendez-vous…</p>
+    </ng-template>
+
+    <ng-template #errorTpl>
+      <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

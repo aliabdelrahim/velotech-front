@@ -1,0 +1,81 @@
+<header class="page-head">
+  <div>
+    <h1>Roles et permissions</h1>
+    <p class="page-subtitle">Vue d'ensemble des roles configures dans Velotech.</p>
+  </div>
+</header>
+
+<div class="roles-grid">
+  <article *ngFor="let r of roles" class="role-card">
+    <header [style.background-color]="r.color">
+      <h2>{{ r.name }}</h2>
+    </header>
+    <div class="content">
+      <p class="desc">{{ r.description }}</p>
+
+      <p class="perm-title">Permissions :</p>
+      <ul>
+        <li *ngFor="let p of r.permissions">✓ {{ p }}</li>
+      </ul>
+    </div>
+  </article>
+</div>
+
+<style>
+  .roles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .role-card {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .role-card header {
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-white);
+  }
+
+  .role-card h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--color-white);
+  }
+
+  .role-card .content {
+    padding: var(--space-4);
+  }
+
+  .role-card .desc {
+    font-size: 13px;
+    color: var(--color-grey);
+    margin-bottom: var(--space-3);
+    line-height: 1.5;
+  }
+
+  .role-card .perm-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-grey);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+  }
+
+  .role-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .role-card li {
+    font-size: 13px;
+    color: var(--color-dark);
+    padding: 4px 0;
+    line-height: 1.4;
+  }
+</style>

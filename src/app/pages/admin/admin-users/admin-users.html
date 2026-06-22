@@ -1,0 +1,52 @@
+<header class="page-head">
+  <div>
+    <h1>Utilisateurs du reseau</h1>
+    <p class="page-subtitle">{{ filtered().length }} utilisateur(s)</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (id, nom, email, magasin)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+  <select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+    <option *ngFor="let r of roles()" [ngValue]="r">
+      {{ r === 'all' ? 'Tous les roles' : r }}
+    </option>
+  </select>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+    <div class="empty" *ngIf="filtered().length === 0">Aucun utilisateur.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Magasin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let u of filtered()">
+          <td>#{{ u.id }}</td>
+          <td><strong>{{ u.name }}</strong></td>
+          <td>{{ u.email }}</td>
+          <td><span class="badge" [ngClass]="roleBadgeClass(u.roleName)">{{ u.roleName }}</span></td>
+          <td>{{ u.storeName || '—' }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>

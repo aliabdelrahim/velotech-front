@@ -1,0 +1,40 @@
+<div class="products-container">
+  <div class="products-header">
+    <h1>Produits</h1>
+    <div class="actions">
+      <a routerLink="/dashboard">Retour au dashboard</a>
+    </div>
+
+    <div class="products-header">
+  <h1>Produits</h1>
+  <div class="actions">
+    <a routerLink="/dashboard">Retour au dashboard</a>
+    <a routerLink="/products/create">Ajouter un produit</a>
+    </div>
+    </div>
+  </div>
+
+  <p *ngIf="isLoading">Chargement...</p>
+  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <div class="products-grid" *ngIf="!isLoading && products.length > 0">
+    <div class="product-card" *ngFor="let product of products">
+      <h2>{{ product.name }}</h2>
+      <p><strong>Type :</strong> {{ product.type }}</p>
+      <p><strong>Prix vente :</strong> {{ product.priceSale }} €</p>
+      <p>
+        <strong>Prix location :</strong>
+        {{ product.priceRental !== null ? (product.priceRental + ' €') : 'Non disponible' }}
+      </p>
+      <p>
+        <strong>Louable :</strong>
+        {{ product.isRentable ? 'Oui' : 'Non' }}
+      </p>
+
+      <button (click)="deleteProduct(product.id)">Supprimer</button>
+      <button (click)="editProduct(product.id)">Modifier</button>
+    </div>
+  </div>
+
+  <p *ngIf="!isLoading && products.length === 0">Aucun produit trouvé.</p>
+</div>

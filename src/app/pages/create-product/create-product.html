@@ -1,0 +1,75 @@
+<div class="create-product-container">
+  <div class="header">
+    <h1>Ajouter un produit</h1>
+    <a routerLink="/products">Retour aux produits</a>
+  </div>
+
+  <form (ngSubmit)="onSubmit()" class="product-form">
+    <div class="form-group">
+      <label for="name">Nom</label>
+      <input
+        id="name"
+        name="name"
+        type="text"
+        [(ngModel)]="model.name"
+        required
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="type">Type</label>
+      <select
+        id="type"
+        name="type"
+        [(ngModel)]="model.type"
+        (change)="onTypeChange()"
+      >
+        <option value="Bike">Bike</option>
+        <option value="Accessory">Accessory</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="priceSale">Prix de vente</label>
+      <input
+        id="priceSale"
+        name="priceSale"
+        type="number"
+        [(ngModel)]="model.priceSale"
+        required
+        min="0.01"
+        step="0.01"
+      />
+    </div>
+
+    <div class="form-group checkbox-group">
+      <label>
+        <input
+          type="checkbox"
+          name="isRentable"
+          [(ngModel)]="model.isRentable"
+          (change)="onRentableChange()"
+        />
+        Produit louable
+      </label>
+    </div>
+
+    <div class="form-group" *ngIf="model.isRentable">
+      <label for="priceRental">Prix de location</label>
+      <input
+        id="priceRental"
+        name="priceRental"
+        type="number"
+        [(ngModel)]="model.priceRental"
+        min="0.01"
+        step="0.01"
+      />
+    </div>
+
+    <button type="submit" [disabled]="isLoading">
+      {{ isLoading ? 'Création...' : 'Créer le produit' }}
+    </button>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+  </form>
+</div>

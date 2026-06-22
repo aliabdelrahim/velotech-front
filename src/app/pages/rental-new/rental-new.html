@@ -1,0 +1,141 @@
+<app-header></app-header>
+
+<main class="rental-new">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/dashboard">Mon espace</a>
+      <span>›</span>
+      <a routerLink="/my-rentals">Mes locations</a>
+      <span>›</span>
+      <strong>Nouvelle reservation</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Reserver une location</h1>
+      <p class="page-subtitle">Choisissez votre velo, vos dates et confirmez la reservation.</p>
+    </header>
+
+    <div class="error-banner" *ngIf="serverError()">
+      <span class="icon">!</span>
+      <p>{{ serverError() }}</p>
+    </div>
+
+    <ng-container *ngIf="!loading(); else loadingTpl">
+      <div class="layout">
+
+        <!-- Form -->
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate class="form-card card">
+
+          <h2>Detail de la reservation</h2>
+
+          <!-- Magasin -->
+          <div class="field" [class.error]="errors().storeId">
+            <label for="storeId">Magasin *</label>
+            <select
+              id="storeId"
+              name="storeId"
+              [ngModel]="model().storeId"
+              (ngModelChange)="set('storeId', +$event || null)"
+            >
+              <option [ngValue]="null" disabled>-- Choisissez un magasin --</option>
+              <option *ngFor="let s of stores()" [ngValue]="s.id">
+                {{ s.name }} — {{ s.address }}
+              </option>
+            </select>
+            <p class="hint" *ngIf="errors().storeId">! {{ errors().storeId }}</p>
+          </div>
+
+          <!-- Velo -->
+          <div class="field" [class.error]="errors().productId">
+            <label for="productId">Velo a louer *</label>
+            <select
+              id="productId"
+              name="productId"
+              [ngModel]="model().productId"
+              (ngModelChange)="set('productId', +$event || null)"
+            >
+              <option [ngValue]="null" disabled>-- Choisissez un velo --</option>
+              <option *ngFor="let p of rentableProducts()" [ngValue]="p.id">
+                {{ p.name }} ({{ p.type }}) — {{ p.priceRental }} €/jour
+              </option>
+            </select>
+            <p class="hint" *ngIf="errors().productId">! {{ errors().productId }}</p>
+          </div>
+
+          <!-- Dates -->
+          <div class="form-row two">
+            <div class="field" [class.error]="errors().startDate">
+              <label for="startDate">Date de debut *</label>
+              <input
+                id="startDate"
+                name="startDate"
+                type="date"
+                [min]="model().startDate"
+                [ngModel]="model().startDate"
+                (ngModelChange)="set('startDate', $event)"
+              />
+              <p class="hint" *ngIf="errors().startDate">! {{ errors().startDate }}</p>
+            </div>
+
+            <div class="field" [class.error]="errors().endDate">
+              <label for="endDate">Date de fin *</label>
+              <input
+                id="endDate"
+                name="endDate"
+                type="date"
+                [ngModel]="model().endDate"
+                (ngModelChange)="set('endDate', $event)"
+              />
+              <p class="hint" *ngIf="errors().endDate">! {{ errors().endDate }}</p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+              {{ submitting() ? 'Reservation…' : 'Confirmer la reservation' }}
+            </button>
+            <a routerLink="/my-rentals" class="btn btn-ghost">Annuler</a>
+          </div>
+        </form>
+
+        <!-- Recap dynamique -->
+        <aside class="recap card">
+          <h3>Recapitulatif</h3>
+
+          <div *ngIf="selectedProduct() as p; else noProduct">
+            <p class="prod-name">{{ p.name }}</p>
+            <p class="prod-type">{{ p.type }}</p>
+            <p class="prod-rate">
+              <span class="amount">{{ p.priceRental }} €</span>
+              <span class="unit">/ jour</span>
+            </p>
+          </div>
+          <ng-template #noProduct>
+            <p class="placeholder">Choisissez un velo pour voir le tarif.</p>
+          </ng-template>
+
+          <dl class="meta" *ngIf="durationDays() > 0">
+            <dt>Duree</dt>
+            <dd>{{ durationDays() }} jour(s)</dd>
+            <dt>Total estime</dt>
+            <dd class="total">{{ estimatedPrice() | number:'1.2-2' }} €</dd>
+          </dl>
+
+          <p class="info-note">
+            Le prix definitif est confirme apres validation par le magasin.
+          </p>
+        </aside>
+      </div>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <p class="state-msg">Chargement…</p>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

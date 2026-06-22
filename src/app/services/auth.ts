@@ -8,6 +8,17 @@ export interface LoginDto {
   password: string;
 }
 
+export interface RegisterDto {
+  name: string;
+  email: string;
+  password: string;
+}
+
+export interface RegisterResult {
+  message: string;
+  userId: number;
+}
+
 export interface AuthResultDto {
   token: string;
   expiresAtUtc: string;
@@ -22,6 +33,26 @@ export interface AuthResultDto {
 export class AuthService {
   private http = inject(HttpClient);
   private apiUrl = `${environment.apiUrl}/auth`;
+
+  register(dto: RegisterDto): Observable<RegisterResult> {
+    return this.http.post<RegisterResult>(`${this.apiUrl}/register`, dto);
+  }
+
+  /** Demande un reset de mot de passe (email). */
+  forgotPassword(email: string): Observable<{ message: string; devToken?: string }> {
+    return this.http.post<{ message: string; devToken?: string }>(
+      `${this.apiUrl}/forgot-password`,
+      { email }
+    );
+  }
+
+  /** Reset effectif avec le token recu. */
+  resetPassword(token: string, newPassword: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
+      `${this.apiUrl}/reset-password`,
+      { token, newPassword }
+    );
+  }
 
   login(dto: LoginDto): Observable<AuthResultDto> {
     return this.http.post<AuthResultDto>(`${this.apiUrl}/login`, dto).pipe(

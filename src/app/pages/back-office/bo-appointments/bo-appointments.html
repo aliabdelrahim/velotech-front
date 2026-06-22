@@ -1,0 +1,52 @@
+<header class="page-head">
+  <div>
+    <h1>Rendez-vous atelier</h1>
+    <p class="page-subtitle">{{ filtered().length }} rendez-vous</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (n°, client, service)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+  <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+    <option *ngFor="let s of statuses" [ngValue]="s">
+      {{ s === 'all' ? 'Tous les statuts' : s }}
+    </option>
+  </select>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+    <div class="empty" *ngIf="filtered().length === 0">Aucun rendez-vous.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Date / heure</th>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Velo</th>
+          <th>Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of filtered()">
+          <td><strong>RDV-{{ a.appointmentId }}</strong></td>
+          <td>{{ a.scheduledAt | date:'dd/MM/yy HH:mm' }}</td>
+          <td>{{ a.userName }}</td>
+          <td>{{ a.serviceType }}</td>
+          <td>{{ a.productName || '—' }}</td>
+          <td><span class="badge" [ngClass]="statusClass(a.status)">{{ a.status }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>

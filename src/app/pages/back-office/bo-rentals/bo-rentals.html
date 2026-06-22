@@ -1,0 +1,54 @@
+<header class="page-head">
+  <div>
+    <h1>Locations du magasin</h1>
+    <p class="page-subtitle">{{ filtered().length }} location(s) affichee(s)</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (n°, client, velo)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+  <select [ngModel]="statusFilter()" (ngModelChange)="statusFilter.set($event)">
+    <option *ngFor="let s of statuses" [ngValue]="s">
+      {{ s === 'all' ? 'Tous les statuts' : s }}
+    </option>
+  </select>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+    <div class="empty" *ngIf="filtered().length === 0">Aucune location.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Client</th>
+          <th>Velo</th>
+          <th>Du</th>
+          <th>Au</th>
+          <th>Statut</th>
+          <th class="num">Prix</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let r of filtered()">
+          <td><strong>LOC-{{ r.rentalId }}</strong></td>
+          <td>{{ r.userName }}</td>
+          <td>{{ r.productName }}</td>
+          <td>{{ r.startDate | date:'dd/MM/yy' }}</td>
+          <td>{{ r.endDate | date:'dd/MM/yy' }}</td>
+          <td><span class="badge" [ngClass]="statusClass(r.status)">{{ r.status }}</span></td>
+          <td class="num"><strong>{{ r.totalPrice | number:'1.2-2' }} €</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>

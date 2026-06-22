@@ -1,0 +1,77 @@
+<div class="card mb-4">
+    <div class="card-header">
+        Nouvelle vente (panier)
+    </div>
+
+    <div class="card-body">
+
+        <!-- Ajout produit -->
+        <div class="row mb-3">
+            <div class="col">
+                <label>Produit</label>
+                <select class="form-select" [(ngModel)]="selectedProductId" name="productId">
+                    <option [value]="0">Choisir un produit</option>
+                    <option *ngFor="let sp of storeProducts" [value]="sp.productId">
+                        {{ sp.productName }} — Stock : {{ sp.stockSale }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label>Quantité</label>
+                <input type="number" class="form-control" [(ngModel)]="selectedQuantity" name="quantity" min="1" />
+            </div>
+
+
+
+            <div class="col d-flex align-items-end">
+                <button class="btn btn-success w-100" (click)="addToCart()">
+                    ➕ Ajouter
+                </button>
+            </div>
+        </div>
+
+        <!-- Panier -->
+        <div *ngIf="cartItems.length > 0" class="mb-3">
+            <h5>Panier</h5>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Quantité</th>
+                        <th>Prix unitaire</th>
+                        <th>Total</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let item of cartItems; let i = index">
+                        <td>{{ item.productName }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.unitPrice }} €</td>
+                        <td>{{ item.quantity * item.unitPrice }} €</td>
+                        <td>
+                            <button class="btn btn-danger btn-sm" (click)="cartItems.splice(i,1)">
+                                ❌
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <h5>
+                Total panier : {{ getCartTotal() }} €
+            </h5>
+        </div>
+
+        <!-- Créer commande -->
+        <button class="btn btn-primary" (click)="createOrder()" [disabled]="cartItems.length === 0">
+            Créer la vente
+        </button>
+        <button class="btn btn-warning" (click)="cartItems = []">
+            Vider panier
+        </button>
+
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<h1>Stocks par magasin</h1>
+
+<p *ngIf="loading">Chargement...</p>
+
+<p *ngIf="errorMessage" style="color: red;">
+  {{ errorMessage }}
+</p>
+
+<table border="1" cellpadding="8" cellspacing="0" *ngIf="!loading && storeProducts.length > 0">
+  <thead>
+    <tr>
+      <th>Magasin</th>
+      <th>Produit</th>
+      <th>Type</th>
+      <th>Stock vente</th>
+      <th>Stock location</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let item of storeProducts">
+      <td>{{ item.storeName }}</td>
+      <td>{{ item.productName }}</td>
+      <td>{{ item.productType }}</td>
+      <td>{{ item.stockSale }}</td>
+      <td>{{ item.stockRental }}</td>
+      <td>
+        <button type="button" (click)="edit(item)">Modifier</button>
+        <button (click)="delete(item)">Supprimer</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+<p *ngIf="!loading && storeProducts.length === 0">
+  Aucun stock trouvé.
+</p>
+
+<h2>Ajouter / modifier un stock</h2>
+
+<form (ngSubmit)="saveStock()">
+    <div>
+      <label>Magasin</label>
+      <span>{{ storeName }}</span>
+    </div>
+
+  <div>
+    <label>Produit</label>
+    <select [(ngModel)]="form.productId" name="productId">
+      <option [ngValue]="0">-- Choisir un produit --</option>
+      <option *ngFor="let p of products" [ngValue]="p.id">
+        {{ p.name }}
+      </option>
+    </select>
+  </div>
+
+  <div>
+    <label>Stock vente</label>
+    <input type="number" [(ngModel)]="form.stockSale" name="stockSale">
+  </div>
+
+  <div>
+    <label>Stock location</label>
+    <input type="number" [(ngModel)]="form.stockRental" name="stockRental">
+  </div>
+
+  <button type="submit">Enregistrer</button>
+</form>

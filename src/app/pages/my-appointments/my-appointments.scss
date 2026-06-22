@@ -1,0 +1,197 @@
+:host { display: block; }
+
+.my-appointments {
+  background-color: var(--color-cream);
+  padding: var(--space-5) 0 var(--space-7);
+  min-height: 70vh;
+}
+
+.breadcrumb {
+  display: flex;
+  gap: var(--space-2);
+  font-size: 13px;
+  color: var(--color-grey);
+  margin-bottom: var(--space-4);
+}
+
+.breadcrumb a { color: var(--color-grey); }
+.breadcrumb a:hover { color: var(--color-green); }
+.breadcrumb strong { color: var(--color-dark); }
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.page-head h1 { font-size: 1.8rem; margin-bottom: var(--space-1); }
+.page-subtitle { color: var(--color-grey); font-size: 14px; }
+
+/* Tabs - meme style que my-rentals */
+.tabs {
+  display: flex;
+  gap: var(--space-2);
+  border-bottom: 1px solid var(--color-grey-light);
+  margin-bottom: var(--space-5);
+  overflow-x: auto;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: var(--space-3) var(--space-4);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-grey);
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+}
+
+.tabs button:hover { color: var(--color-dark); }
+
+.tabs button.active {
+  color: var(--color-green);
+  font-weight: 600;
+}
+
+.tabs button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background-color: var(--color-green);
+}
+
+/* List */
+.appt-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.appt-card {
+  display: grid;
+  grid-template-columns: 90px 1fr auto;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background-color: var(--color-white);
+  align-items: center;
+}
+
+/* Date block */
+.date-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-green-light);
+  color: var(--color-green-dark);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.date-block .day {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.date-block .month {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.date-block .year {
+  font-size: 11px;
+  color: var(--color-grey);
+}
+
+/* Info */
+.info { min-width: 0; }
+
+.info .ref {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--color-grey);
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.info h3 {
+  font-size: 1.05rem;
+  margin-bottom: var(--space-2);
+}
+
+.info .hour,
+.info .store,
+.info .product {
+  font-size: 13px;
+  color: var(--color-grey);
+  margin-bottom: 2px;
+}
+
+.info .product strong { color: var(--color-dark); }
+
+.info .notes {
+  font-size: 12px;
+  color: var(--color-grey);
+  font-style: italic;
+  margin-top: var(--space-2);
+}
+
+/* Side */
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+}
+
+/* States */
+.empty {
+  text-align: center;
+  padding: var(--space-7);
+  background-color: var(--color-white);
+  border-radius: var(--radius-lg);
+}
+
+.empty p { margin-bottom: var(--space-4); color: var(--color-grey); }
+
+.state-msg {
+  text-align: center;
+  padding: var(--space-6);
+  color: var(--color-grey);
+}
+
+.state-msg--error { color: var(--color-error); }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .appt-card {
+    grid-template-columns: 70px 1fr;
+    grid-template-areas:
+      "date info"
+      "side side";
+  }
+  .date-block { grid-area: date; }
+  .info { grid-area: info; }
+  .side {
+    grid-area: side;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

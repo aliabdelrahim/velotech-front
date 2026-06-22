@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProductService, ProductDetailsDto } from '../../services/product';
@@ -6,7 +6,46 @@ import { CartService } from '../../services/cart';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
-type Size = 'S' | 'M' | 'L' | 'XL';
+/**
+ * Tailles disponibles selon le produit.
+ * On detecte d'abord par TYPE, puis on retombe sur des mots-cles du NOM
+ * (car le DbSeeder regroupe casques + antivols dans le type generique "Accessory").
+ */
+const BIKE_TYPES = [
+  'Velo route', 'VTT', 'Velo electrique', 'Velo ville', 'Velo enfant',
+  'Velo cargo', 'BMX', 'Velo pliable', 'Gravel',
+  'Bike', // tag generique du seeder
+];
+const HELMET_TYPES = ['Casque', 'Helmet'];
+const APPAREL_TYPES = ['Equipement', 'Apparel', 'Vetement'];
+
+// Detection par mot-cle dans le nom (fallback quand le type est trop generique)
+const HELMET_KEYWORDS = ['casque', 'helmet'];
+const APPAREL_KEYWORDS = ['gants', 'maillot', 'cuissard', 'veste', 'chaussures', 'bonnet', 'manchettes', 'jambieres', 'surchaussures', 'short', 'pantalon'];
+
+const SIZES_BIKE = ['S', 'M', 'L', 'XL'] as const;
+const SIZES_HELMET = ['S', 'M', 'L', 'XL'] as const;
+const SIZES_APPAREL = ['XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
+
+type SizeCategory = 'bike' | 'helmet' | 'apparel' | 'none';
+
+function detectCategory(type: string, name: string): SizeCategory {
+  const t = (type ?? '').trim();
+  const n = (name ?? '').toLowerCase();
+
+  // 1) par type explicite
+  if (BIKE_TYPES.includes(t)) return 'bike';
+  if (HELMET_TYPES.includes(t)) return 'helmet';
+  if (APPAREL_TYPES.includes(t)) return 'apparel';
+
+  // 2) fallback par mot-cle du nom (utile quand type === "Accessory")
+  if (HELMET_KEYWORDS.some((k) => n.includes(k))) return 'helmet';
+  if (APPAREL_KEYWORDS.some((k) => n.includes(k))) return 'apparel';
+
+  return 'none';
+}
+
+type Size = string;
 
 @Component({
   selector: 'app-product-detail',
@@ -25,11 +64,37 @@ export class ProductDetailComponent implements OnInit {
   loading = signal(true);
   errorMsg = signal<string | null>(null);
 
-  selectedSize = signal<Size>('M');
+  selectedSize = signal<Size | null>(null);
   selectedTab = signal<'description' | 'specs' | 'reviews' | 'shipping'>('description');
   addedToCart = signal(false);
 
-  sizes: Size[] = ['S', 'M', 'L', 'XL'];
+  /** Categorie (bike/helmet/apparel/none) deduite du produit. */
+  private category = computed<SizeCategory>(() => {
+    const p = this.product();
+    return p ? detectCategory(p.type ?? '', p.name ?? '') : 'none';
+  });
+
+  /** Tailles disponibles selon le produit (vide si pas de taille). */
+  sizes = computed<readonly string[]>(() => {
+    switch (this.category()) {
+      case 'bike': return SIZES_BIKE;
+      case 'helmet': return SIZES_HELMET;
+      case 'apparel': return SIZES_APPAREL;
+      default: return [];
+    }
+  });
+
+  /** Libelle affiche au-dessus du selecteur. */
+  sizeLabel = computed<string>(() => {
+    switch (this.category()) {
+      case 'helmet': return 'Tour de tete';
+      case 'apparel': return 'Taille (vetement)';
+      case 'bike': return 'Taille du cadre';
+      default: return 'Taille';
+    }
+  });
+
+  hasSizes = computed(() => this.sizes().length > 0);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -48,6 +113,15 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getProductById(id).subscribe({
       next: (p) => {
         this.product.set(p);
+        // Initialise la taille selectionnee si le produit en a
+        const sizes = this.sizes();
+        if (sizes.length > 0) {
+          // Choisit la taille du milieu par defaut (M pour bike/helmet, M pour apparel)
+          const defaultSize = sizes.includes('M' as never) ? 'M' : sizes[Math.floor(sizes.length / 2)];
+          this.selectedSize.set(defaultSize);
+        } else {
+          this.selectedSize.set(null);
+        }
         this.loading.set(false);
       },
       error: () => {
@@ -68,12 +142,13 @@ export class ProductDetailComponent implements OnInit {
   addToCart(): void {
     const p = this.product();
     if (!p) return;
+    const size = this.selectedSize() ?? undefined;
     this.cart.add({
       productId: p.id,
       name: p.name,
       type: p.type,
       priceSale: p.priceSale,
-      size: this.selectedSize(),
+      size,
       quantity: 1,
     });
     this.addedToCart.set(true);

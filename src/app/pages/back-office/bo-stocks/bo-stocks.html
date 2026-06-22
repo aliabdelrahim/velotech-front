@@ -1,0 +1,59 @@
+<header class="page-head">
+  <div>
+    <h1>Stocks du magasin</h1>
+    <p class="page-subtitle">
+      {{ filtered().length }} reference(s) · {{ alerts() }} alerte(s) seuil bas
+    </p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (nom, type)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+    <div class="empty" *ngIf="filtered().length === 0">Aucun produit en stock.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          <th>Type</th>
+          <th class="num">Prix vente</th>
+          <th>Stock vente</th>
+          <th>Stock location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filtered()" [class.alert]="s.stockSale <= alertThreshold">
+          <td><strong>{{ s.productName }}</strong></td>
+          <td>{{ s.productType }}</td>
+          <td class="num">{{ s.priceSale | number:'1.2-2' }} €</td>
+          <td>
+            <div class="stock-control">
+              <button class="step" (click)="updateStock(s, 'stockSale', -1)">−</button>
+              <span class="value" [class.low]="s.stockSale <= alertThreshold">{{ s.stockSale }}</span>
+              <button class="step" (click)="updateStock(s, 'stockSale', +1)">+</button>
+            </div>
+          </td>
+          <td>
+            <div class="stock-control">
+              <button class="step" (click)="updateStock(s, 'stockRental', -1)">−</button>
+              <span class="value">{{ s.stockRental }}</span>
+              <button class="step" (click)="updateStock(s, 'stockRental', +1)">+</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>

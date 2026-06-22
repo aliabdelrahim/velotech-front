@@ -1,0 +1,62 @@
+<header class="page-head">
+  <div>
+    <h1>Produits du catalogue</h1>
+    <p class="page-subtitle">{{ filtered().length }} produit(s) reference(s)</p>
+  </div>
+  <a routerLink="/products/create" class="btn btn-primary btn-sm">+ Nouveau produit</a>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (n°, nom, type)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+  <select [ngModel]="typeFilter()" (ngModelChange)="typeFilter.set($event)">
+    <option *ngFor="let t of types()" [ngValue]="t">
+      {{ t === 'all' ? 'Tous les types' : t }}
+    </option>
+  </select>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+    <div class="empty" *ngIf="filtered().length === 0">Aucun produit.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Nom</th>
+          <th>Type</th>
+          <th class="num">Prix vente</th>
+          <th class="num">Prix location/jour</th>
+          <th>Location</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filtered()">
+          <td><strong>#{{ p.id }}</strong></td>
+          <td>{{ p.name }}</td>
+          <td>{{ p.type }}</td>
+          <td class="num">{{ p.priceSale | number:'1.2-2' }} €</td>
+          <td class="num">{{ p.priceRental ? (p.priceRental | number:'1.2-2') + ' €' : '—' }}</td>
+          <td>
+            <span class="badge" [ngClass]="p.isRentable ? 'badge-success' : 'badge-info'">
+              {{ p.isRentable ? 'Oui' : 'Non' }}
+            </span>
+          </td>
+          <td>
+            <a [routerLink]="['/products/edit', p.id]" class="btn btn-sm btn-outline">Modifier</a>
+            <button class="btn btn-sm btn-ghost danger" (click)="deleteProduct(p)">Supprimer</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>

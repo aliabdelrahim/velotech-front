@@ -1,0 +1,90 @@
+:host { display: block; }
+
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: var(--space-4);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.page-head h1 { font-size: 1.6rem; margin: 0; }
+.page-subtitle { color: var(--color-grey); font-size: 14px; margin-top: 4px; }
+
+/* Toolbar */
+.toolbar {
+  background-color: var(--color-white);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-4);
+}
+
+.toolbar input {
+  width: 100%;
+  max-width: 360px;
+  padding: 9px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  border: 1px solid var(--color-grey-light);
+  border-radius: var(--radius-md);
+}
+
+.toolbar input:focus {
+  outline: none;
+  border-color: var(--color-green);
+}
+
+/* Table */
+.data-table {
+  width: 100%;
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+  border-collapse: collapse;
+  overflow: hidden;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 13px;
+}
+
+.data-table thead {
+  background-color: var(--color-grey-bg);
+}
+
+.data-table th {
+  font-weight: 600;
+  color: var(--color-grey);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+}
+
+.data-table th.num,
+.data-table td.num {
+  text-align: right;
+}
+
+.data-table tbody tr {
+  border-top: 1px solid var(--color-grey-light);
+}
+
+.data-table tbody tr:hover {
+  background-color: var(--color-grey-bg);
+}
+
+.data-table strong { color: var(--color-dark); }
+
+.empty,
+.state-msg {
+  text-align: center;
+  padding: var(--space-6);
+  color: var(--color-grey);
+  background-color: var(--color-white);
+  border-radius: var(--radius-md);
+}
+
+.state-msg--error { color: var(--color-error); }
