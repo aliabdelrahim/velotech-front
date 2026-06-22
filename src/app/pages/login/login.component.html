@@ -1,33 +1,78 @@
-<div class="login-container">
-  <h1>Connexion</h1>
+<app-header></app-header>
 
-  <form (ngSubmit)="onSubmit()">
-    <div>
-      <label for="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        [(ngModel)]="model.email"
-        required
-      />
+<main class="login-page">
+  <div class="container">
+    <div class="layout">
+
+      <!-- Pitch a gauche -->
+      <aside class="pitch">
+        <p class="eyebrow">Espace personnel</p>
+        <h1>Heureux de vous<br />revoir.</h1>
+        <p class="lead">
+          Connectez-vous pour acceder a votre tableau de bord, suivre vos commandes,
+          gerer vos locations et vos rendez-vous d'atelier.
+        </p>
+        <p class="register-hint">
+          Pas encore de compte ?
+          <a routerLink="/register">Creer un compte</a>
+        </p>
+      </aside>
+
+      <!-- Form a droite -->
+      <section class="form-card card">
+        <header class="form-head">
+          <h2>Connexion</h2>
+          <p>Acces a votre espace Velotech.</p>
+        </header>
+
+        <form (ngSubmit)="onSubmit()">
+          <div class="field">
+            <label for="email">Adresse email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="vous@example.com"
+              [(ngModel)]="model.email"
+              required
+            />
+          </div>
+
+          <div class="field">
+            <label for="password">Mot de passe</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="••••••••"
+              [(ngModel)]="model.password"
+              required
+            />
+          </div>
+
+          <p class="forgot">
+            <a routerLink="/forgot-password">Mot de passe oublie ?</a>
+          </p>
+
+          <button type="submit" class="btn btn-primary btn-lg full" [disabled]="isLoading">
+            {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          </button>
+
+          <p class="error-banner" *ngIf="errorMessage">
+            <span class="icon">!</span>
+            {{ errorMessage }}
+          </p>
+
+          <p class="register-link">
+            Pas encore de compte ?
+            <a routerLink="/register">Inscription</a>
+          </p>
+        </form>
+      </section>
     </div>
+  </div>
+</main>
 
-    <div>
-      <label for="password">Mot de passe</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        [(ngModel)]="model.password"
-        required
-      />
-    </div>
-
-    <button type="submit" [disabled]="isLoading">
-      {{ isLoading ? 'Connexion...' : 'Se connecter' }}
-    </button>
-
-    <p *ngIf="errorMessage">{{ errorMessage }}</p>
-  </form>
-</div>
+<app-footer></app-footer>

@@ -1,0 +1,156 @@
+<app-header></app-header>
+
+<main class="profile-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <a routerLink="/dashboard">Mon espace</a>
+      <span>›</span>
+      <strong>Mon profil</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Mon profil</h1>
+      <p class="page-subtitle">Modifier vos informations personnelles et votre mot de passe.</p>
+    </header>
+
+    <ng-container *ngIf="!loading(); else loadingTpl">
+      <ng-container *ngIf="!loadError(); else errorTpl">
+
+        <div class="layout">
+
+          <!-- Carte profil (resume) -->
+          <aside class="profile-card card" *ngIf="user() as u">
+            <div class="avatar">{{ u.name.charAt(0).toUpperCase() }}</div>
+            <h2>{{ u.name }}</h2>
+            <p class="email">{{ u.email }}</p>
+            <p class="role">
+              <span class="badge badge-info">{{ u.roleName }}</span>
+              <span class="badge badge-success" *ngIf="u.storeName">{{ u.storeName }}</span>
+            </p>
+            <dl>
+              <dt>ID</dt><dd>#{{ u.id }}</dd>
+              <dt *ngIf="u.storeName">Magasin</dt>
+              <dd *ngIf="u.storeName">{{ u.storeName }}</dd>
+            </dl>
+          </aside>
+
+          <!-- Formulaire d'edition -->
+          <section class="edit-card card">
+
+            <!-- Banners -->
+            <div class="success-banner" *ngIf="successMsg()">
+              <span class="check">✓</span>
+              <p>{{ successMsg() }}</p>
+            </div>
+
+            <div class="error-banner" *ngIf="serverError()">
+              <span class="icon">!</span>
+              <p>{{ serverError() }}</p>
+            </div>
+
+            <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+
+              <!-- Section 1 : Identite -->
+              <h3>Informations personnelles</h3>
+
+              <div class="field" [class.error]="errors().name">
+                <label for="name">Nom complet *</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  autocomplete="name"
+                  [ngModel]="model().name"
+                  (ngModelChange)="set('name', $event)"
+                />
+                <p class="hint" *ngIf="errors().name">! {{ errors().name }}</p>
+              </div>
+
+              <div class="field" [class.error]="errors().email">
+                <label for="email">Adresse email *</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  [ngModel]="model().email"
+                  (ngModelChange)="set('email', $event)"
+                />
+                <p class="hint" *ngIf="errors().email">! {{ errors().email }}</p>
+              </div>
+
+              <!-- Section 2 : Mot de passe (optionnel) -->
+              <h3>Changer le mot de passe</h3>
+              <p class="hint-section">Laissez vide pour conserver le mot de passe actuel.</p>
+
+              <div class="field" [class.error]="errors().currentPassword">
+                <label for="currentPassword">Mot de passe actuel</label>
+                <input
+                  id="currentPassword"
+                  name="currentPassword"
+                  type="password"
+                  autocomplete="current-password"
+                  [ngModel]="model().currentPassword"
+                  (ngModelChange)="set('currentPassword', $event)"
+                />
+                <p class="hint" *ngIf="errors().currentPassword">! {{ errors().currentPassword }}</p>
+              </div>
+
+              <div class="form-row two">
+                <div class="field" [class.error]="errors().newPassword">
+                  <label for="newPassword">Nouveau mot de passe</label>
+                  <input
+                    id="newPassword"
+                    name="newPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    [ngModel]="model().newPassword"
+                    (ngModelChange)="set('newPassword', $event)"
+                  />
+                  <p class="hint" *ngIf="errors().newPassword">! {{ errors().newPassword }}</p>
+                </div>
+
+                <div class="field" [class.error]="errors().confirmNewPassword">
+                  <label for="confirmNewPassword">Confirmer</label>
+                  <input
+                    id="confirmNewPassword"
+                    name="confirmNewPassword"
+                    type="password"
+                    autocomplete="new-password"
+                    [ngModel]="model().confirmNewPassword"
+                    (ngModelChange)="set('confirmNewPassword', $event)"
+                  />
+                  <p class="hint" *ngIf="errors().confirmNewPassword">! {{ errors().confirmNewPassword }}</p>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="actions">
+                <button type="submit" class="btn btn-primary" [disabled]="submitting()">
+                  {{ submitting() ? 'Enregistrement…' : 'Enregistrer les modifications' }}
+                </button>
+                <a routerLink="/dashboard" class="btn btn-ghost">Annuler</a>
+              </div>
+            </form>
+
+          </section>
+        </div>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <p class="state-msg">Chargement de votre profil…</p>
+    </ng-template>
+
+    <ng-template #errorTpl>
+      <p class="state-msg state-msg--error">{{ loadError() }}</p>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

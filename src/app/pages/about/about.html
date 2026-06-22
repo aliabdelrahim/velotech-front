@@ -1,0 +1,97 @@
+<app-header></app-header>
+
+<main class="about-page">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">Notre histoire</p>
+      <h1>Le vélo,<br />une affaire de quartier.</h1>
+      <p class="lead">
+        Velotech connecte les magasins de vélo indépendants de Belgique pour offrir
+        une expérience numérique moderne tout en gardant le contact humain qui fait
+        la richesse du commerce local.
+      </p>
+    </div>
+  </section>
+
+  <!-- Notre mission -->
+  <section class="mission">
+    <div class="container">
+      <div class="mission-grid">
+        <div>
+          <h2>Notre mission</h2>
+          <p>
+            Permettre aux magasins de vélo indépendants de proposer une expérience
+            numérique au niveau des grandes enseignes (catalogue en ligne, paiement,
+            réservation atelier) sans perdre leur identité ni leur indépendance.
+          </p>
+          <p>
+            Nous mutualisons la plateforme technique, vous gardez la main sur votre
+            commerce, vos stocks, vos clients et vos prix.
+          </p>
+        </div>
+        <div class="big-quote">
+          <span class="quote-mark">"</span>
+          <p>
+            Faire passer la mobilité douce du discours marketing à la réalité du
+            quotidien, un magasin de quartier à la fois.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Valeurs -->
+  <section class="values">
+    <div class="container">
+      <h2 class="section-title">Nos valeurs</h2>
+      <div class="values-grid">
+        <article *ngFor="let v of values" class="value-card card">
+          <div class="value-icon">{{ v.icon }}</div>
+          <h3>{{ v.title }}</h3>
+          <p>{{ v.text }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="timeline">
+    <div class="container">
+      <h2 class="section-title">Notre parcours</h2>
+      <ol class="milestones">
+        <li *ngFor="let m of milestones">
+          <span class="year">{{ m.year }}</span>
+          <span class="event">{{ m.event }}</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Équipe -->
+  <section class="team">
+    <div class="container">
+      <h2 class="section-title">L'équipe</h2>
+      <div class="team-grid">
+        <article *ngFor="let t of team" class="team-card card">
+          <div class="avatar">{{ t.initials }}</div>
+          <h3>{{ t.name }}</h3>
+          <p>{{ t.role }}</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA final -->
+  <section class="cta">
+    <div class="container">
+      <h2>Vous êtes magasin de vélo ?</h2>
+      <p>Rejoignez le réseau Velotech et offrez à vos clients une expérience numérique premium.</p>
+      <a routerLink="/contact" class="btn btn-primary btn-lg">Nous contacter</a>
+    </div>
+  </section>
+
+</main>
+
+<app-footer></app-footer>

@@ -1,0 +1,90 @@
+<header class="page-head">
+  <div>
+    <p class="eyebrow">Aujourd'hui</p>
+    <h1>Vue d'ensemble</h1>
+  </div>
+</header>
+
+<!-- KPI grid -->
+<section class="kpis">
+  <article class="kpi card">
+    <div class="kpi-icon icon-green">💰</div>
+    <div>
+      <p class="kpi-label">CA total</p>
+      <p class="kpi-value">{{ totalRevenue() | number:'1.2-2' }} €</p>
+    </div>
+  </article>
+
+  <article class="kpi card">
+    <div class="kpi-icon icon-orange">🧾</div>
+    <div>
+      <p class="kpi-label">Commandes</p>
+      <p class="kpi-value">{{ ordersCount() }}</p>
+    </div>
+  </article>
+
+  <article class="kpi card">
+    <div class="kpi-icon icon-blue">🚴</div>
+    <div>
+      <p class="kpi-label">Locations actives</p>
+      <p class="kpi-value">{{ activeRentals() }}</p>
+    </div>
+  </article>
+
+  <article class="kpi card">
+    <div class="kpi-icon icon-dark">📅</div>
+    <div>
+      <p class="kpi-label">RDV a venir</p>
+      <p class="kpi-value">{{ upcomingAppts() }}</p>
+    </div>
+  </article>
+</section>
+
+<!-- 2 colonnes : derniere commande + prochains RDV -->
+<section class="grid-2">
+  <article class="card">
+    <header class="card-head">
+      <h2>Dernieres commandes</h2>
+      <a routerLink="/back-office/orders" class="link-more">Voir tout →</a>
+    </header>
+
+    <div class="empty" *ngIf="recentOrders().length === 0">
+      Aucune commande pour l'instant.
+    </div>
+
+    <ul class="data-list" *ngIf="recentOrders().length > 0">
+      <li *ngFor="let o of recentOrders()">
+        <div>
+          <p class="primary">CMD-{{ o.orderId }} · {{ o.customerName || 'Client' }}</p>
+          <p class="secondary">{{ o.orderDate | date:'dd MMM yyyy HH:mm' }}</p>
+        </div>
+        <span class="amount">{{ o.totalAmount | number:'1.2-2' }} €</span>
+      </li>
+    </ul>
+  </article>
+
+  <article class="card">
+    <header class="card-head">
+      <h2>Prochains rendez-vous</h2>
+      <a routerLink="/back-office/appointments" class="link-more">Voir tout →</a>
+    </header>
+
+    <div class="empty" *ngIf="upcomingApptsList().length === 0">
+      Aucun rendez-vous a venir.
+    </div>
+
+    <ul class="data-list" *ngIf="upcomingApptsList().length > 0">
+      <li *ngFor="let a of upcomingApptsList()">
+        <div class="date-tag">
+          <span class="day">{{ a.scheduledAt | date:'dd' }}</span>
+          <span class="month">{{ a.scheduledAt | date:'MMM' }}</span>
+        </div>
+        <div class="grow">
+          <p class="primary">{{ a.serviceType }}</p>
+          <p class="secondary">{{ a.userName }} — {{ a.scheduledAt | date:'HH:mm' }}</p>
+        </div>
+        <span class="badge badge-info">{{ a.status }}</span>
+      </li>
+    </ul>
+  </article>
+</section>

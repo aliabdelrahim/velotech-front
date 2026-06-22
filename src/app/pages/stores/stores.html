@@ -1,0 +1,85 @@
+<app-header></app-header>
+
+<main class="stores-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <strong>Nos magasins</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Nos magasins</h1>
+      <p class="page-subtitle">
+        {{ filtered().length }} magasin(s) Velotech a votre service.
+      </p>
+    </header>
+
+    <div class="layout">
+
+      <!-- Liste a gauche -->
+      <aside class="list-pane">
+        <div class="search">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="search"
+            placeholder="Rechercher (ville, code postal, nom)…"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="onSearch($event)"
+          />
+        </div>
+
+        <ng-container *ngIf="!loading(); else loadingTpl">
+          <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+            <ul class="store-list" *ngIf="filtered().length > 0; else emptyTpl">
+              <li
+                *ngFor="let s of filtered()"
+                class="store-item"
+                [class.selected]="selectedId() === s.id"
+                (click)="selectStore(s)"
+              >
+                <h3>{{ s.name }}</h3>
+                <p class="address">📍 {{ s.address }}</p>
+                <a
+                  [routerLink]="['/catalog', s.id]"
+                  class="cta"
+                  (click)="$event.stopPropagation()"
+                >
+                  Voir le catalogue →
+                </a>
+              </li>
+            </ul>
+
+            <ng-template #emptyTpl>
+              <p class="state-msg">Aucun magasin ne correspond a votre recherche.</p>
+            </ng-template>
+
+          </ng-container>
+        </ng-container>
+
+        <ng-template #loadingTpl>
+          <p class="state-msg">Chargement des magasins…</p>
+        </ng-template>
+
+        <ng-template #errorTpl>
+          <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+        </ng-template>
+      </aside>
+
+      <!-- Carte a droite -->
+      <section class="map-pane">
+        <div class="map-wrapper">
+          <div #mapEl class="map"></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

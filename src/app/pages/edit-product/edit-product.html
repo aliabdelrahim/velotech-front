@@ -1,0 +1,23 @@
+<h1>Modifier produit</h1>
+
+<form (ngSubmit)="onSubmit()">
+
+  <input [(ngModel)]="model.name" name="name" placeholder="Nom" required />
+
+  <select [(ngModel)]="model.type" name="type">
+    <option value="Bike">Bike</option>
+    <option value="Accessory">Accessory</option>
+  </select>
+
+  <input [(ngModel)]="model.priceSale" name="priceSale" type="number" />
+
+  <label>
+    <input type="checkbox" [(ngModel)]="model.isRentable" name="isRentable" />
+    Louable
+  </label>
+
+  <input [(ngModel)]="model.priceRental" name="priceRental" type="number" />
+
+  <button type="submit">Sauvegarder</button>
+
+</form>

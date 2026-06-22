@@ -1,0 +1,74 @@
+<header class="page-head">
+  <div>
+    <h1>Magasins du reseau</h1>
+    <p class="page-subtitle">{{ filtered().length }} magasin(s)</p>
+  </div>
+</header>
+
+<!-- Formulaire creation -->
+<section class="card create-form">
+  <h2>Ajouter un magasin</h2>
+  <div class="form-row">
+    <input
+      type="text"
+      placeholder="Nom du magasin"
+      [ngModel]="form().name"
+      (ngModelChange)="set('name', $event)"
+    />
+    <input
+      type="text"
+      placeholder="Adresse complete"
+      [ngModel]="form().address"
+      (ngModelChange)="set('address', $event)"
+    />
+    <button class="btn btn-primary btn-sm" [disabled]="creating()" (click)="createStore()">
+      {{ creating() ? '…' : '+ Creer' }}
+    </button>
+  </div>
+</section>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+    <div class="empty" *ngIf="filtered().length === 0">Aucun magasin.</div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr><th>ID</th><th>Nom</th><th>Adresse</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of filtered()">
+          <td>#{{ s.id }}</td>
+          <td><strong>{{ s.name }}</strong></td>
+          <td>{{ s.address }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>
+
+<style>
+  .create-form { padding: var(--space-4); margin-bottom: var(--space-4); }
+  .create-form h2 { font-size: 14px; margin-bottom: var(--space-3); }
+  .form-row { display: flex; gap: var(--space-2); }
+  .form-row input {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: 13px;
+    border: 1px solid var(--color-grey-light);
+    border-radius: var(--radius-md);
+  }
+  .form-row input:focus { outline: none; border-color: var(--color-green); }
+</style>

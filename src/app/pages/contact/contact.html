@@ -1,0 +1,160 @@
+<app-header></app-header>
+
+<main class="contact-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <strong>Contact</strong>
+    </nav>
+
+    <header class="page-head">
+      <h1>Nous contacter</h1>
+      <p class="page-subtitle">
+        Une question, une remarque, un partenariat ? Nous repondons sous 48 heures ouvrees.
+      </p>
+    </header>
+
+    <div class="layout">
+
+      <!-- Form -->
+      <section class="form-card card">
+
+        <div class="success-banner" *ngIf="success()">
+          <span class="check">✓</span>
+          <div>
+            <strong>Message envoye !</strong>
+            <p>Nous vous repondrons sous 48 heures.</p>
+          </div>
+        </div>
+
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate *ngIf="!success()">
+          <h2>Envoyer un message</h2>
+
+          <div class="form-row two">
+            <div class="field" [class.error]="errors().name">
+              <label for="name">Votre nom *</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                [ngModel]="model().name"
+                (ngModelChange)="set('name', $event)"
+              />
+              <p class="hint" *ngIf="errors().name">! {{ errors().name }}</p>
+            </div>
+
+            <div class="field" [class.error]="errors().email">
+              <label for="email">Adresse email *</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                [ngModel]="model().email"
+                (ngModelChange)="set('email', $event)"
+              />
+              <p class="hint" *ngIf="errors().email">! {{ errors().email }}</p>
+            </div>
+          </div>
+
+          <div class="field" [class.error]="errors().subject">
+            <label for="subject">Sujet *</label>
+            <select
+              id="subject"
+              name="subject"
+              [ngModel]="model().subject"
+              (ngModelChange)="set('subject', $event)"
+            >
+              <option value="" disabled>-- Choisissez un sujet --</option>
+              <option *ngFor="let s of subjects" [ngValue]="s">{{ s }}</option>
+            </select>
+            <p class="hint" *ngIf="errors().subject">! {{ errors().subject }}</p>
+          </div>
+
+          <div class="field" [class.error]="errors().message">
+            <label for="message">Votre message *</label>
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              placeholder="Decrivez votre demande en detail…"
+              [ngModel]="model().message"
+              (ngModelChange)="set('message', $event)"
+            ></textarea>
+            <p class="hint" *ngIf="errors().message">! {{ errors().message }}</p>
+          </div>
+
+          <label class="terms" [class.error]="errors().terms">
+            <input
+              type="checkbox"
+              name="terms"
+              [checked]="model().acceptedTerms"
+              (change)="set('acceptedTerms', !model().acceptedTerms)"
+            />
+            <span>
+              J'accepte que mes donnees soient utilisees uniquement pour le traitement
+              de cette demande. Voir la
+              <a routerLink="/legal/rgpd">politique de confidentialite</a>.
+            </span>
+          </label>
+          <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
+
+          <button type="submit" class="btn btn-primary btn-lg" [disabled]="submitting()">
+            {{ submitting() ? 'Envoi…' : 'Envoyer le message' }}
+          </button>
+        </form>
+      </section>
+
+      <!-- Coordonnees -->
+      <aside class="info-card card">
+        <h3>Coordonnees</h3>
+
+        <div class="info-block">
+          <div class="info-icon">✉️</div>
+          <div>
+            <strong>Email general</strong>
+            <a href="mailto:contact@velotech.com">contact@velotech.com</a>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">🤝</div>
+          <div>
+            <strong>Partenariats magasins</strong>
+            <a href="mailto:partenaires@velotech.com">partenaires@velotech.com</a>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">🏢</div>
+          <div>
+            <strong>Siege social</strong>
+            <p>Rue de la Loi 16<br />1000 Bruxelles, Belgique</p>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">📞</div>
+          <div>
+            <strong>Telephone (back-office)</strong>
+            <a href="tel:+3220000000">+32 2 000 00 00</a>
+            <p class="opening">Lun-Ven 9h-18h</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <p class="store-cta">
+          Question sur un produit en particulier ?<br />
+          <a routerLink="/stores">Voir tous nos magasins →</a>
+        </p>
+      </aside>
+
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

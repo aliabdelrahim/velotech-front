@@ -1,0 +1,53 @@
+<app-header></app-header>
+
+<main class="legal-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">Accueil</a>
+      <span>›</span>
+      <strong>{{ doc().title }}</strong>
+    </nav>
+
+    <div class="layout">
+
+      <!-- Sidebar de navigation -->
+      <aside class="legal-nav">
+        <h3>Documents</h3>
+        <ul>
+          <li *ngFor="let n of nav">
+            <a
+              [routerLink]="n.path"
+              [class.active]="doc().key === n.key"
+            >{{ n.label }}</a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Document -->
+      <article class="legal-doc card">
+        <header>
+          <h1>{{ doc().title }}</h1>
+          <p class="last-update">{{ doc().lastUpdate }}</p>
+        </header>
+
+        <p class="intro">{{ doc().intro }}</p>
+
+        <section *ngFor="let s of doc().sections" class="legal-section">
+          <h2>{{ s.title }}</h2>
+          <p *ngFor="let p of s.paragraphs">{{ p }}</p>
+        </section>
+
+        <footer class="doc-foot">
+          <p>
+            Une question ? Contactez-nous :
+            <a routerLink="/contact">page de contact</a> ou
+            <a href="mailto:dpo@velotech.com">dpo&#64;velotech.com</a>.
+          </p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</main>
+
+<app-footer></app-footer>

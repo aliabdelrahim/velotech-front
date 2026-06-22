@@ -1,0 +1,57 @@
+<header class="page-head">
+  <div>
+    <h1>Commandes du magasin</h1>
+    <p class="page-subtitle">
+      {{ filtered().length }} commande(s) ·
+      CA total {{ totalRevenue() | number:'1.2-2' }} €
+    </p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (n°, client, magasin)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+    <div class="empty" *ngIf="filtered().length === 0">
+      Aucune commande a afficher.
+    </div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Articles</th>
+          <th class="num">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let o of filtered()">
+          <td><strong>CMD-{{ o.orderId }}</strong></td>
+          <td>{{ o.orderDate | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ o.customerName || '—' }}</td>
+          <td>{{ o.items.length }} article(s)</td>
+          <td class="num"><strong>{{ o.totalAmount | number:'1.2-2' }} €</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl>
+  <p class="state-msg">Chargement…</p>
+</ng-template>
+
+<ng-template #errorTpl>
+  <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+</ng-template>
