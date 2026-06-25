@@ -1,13 +1,13 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { OrderService, OrderDetailsDto } from '../../../services/order';
 import { AuthService } from '../../../services/auth';
 
 @Component({
   selector: 'app-bo-orders',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './bo-orders.html',
   styleUrl: './bo-orders.scss',
 })
