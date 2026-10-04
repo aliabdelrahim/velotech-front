@@ -1,51 +1,36 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './about.html',
   styleUrl: './about.scss',
 })
 export class AboutComponent {
   values = [
-    {
-      icon: '🌍',
-      title: 'Écologie',
-      text: 'Promouvoir le vélo comme alternative de mobilité durable et accessible.',
-    },
-    {
-      icon: '🤝',
-      title: 'Proximité',
-      text: 'Réseau de magasins indépendants, conseils humains, atelier de quartier.',
-    },
-    {
-      icon: '🔧',
-      title: 'Expertise',
-      text: 'Techniciens certifiés, pièces d\'origine, service après-vente garanti.',
-    },
-    {
-      icon: '💚',
-      title: 'Transparence',
-      text: 'Prix clairs, données privées protégées, plateforme open source.',
-    },
+    { icon: '🌍', titleKey: 'ABOUT.VALUE1_TITLE', textKey: 'ABOUT.VALUE1_TEXT' },
+    { icon: '🤝', titleKey: 'ABOUT.VALUE2_TITLE', textKey: 'ABOUT.VALUE2_TEXT' },
+    { icon: '🔧', titleKey: 'ABOUT.VALUE3_TITLE', textKey: 'ABOUT.VALUE3_TEXT' },
+    { icon: '💚', titleKey: 'ABOUT.VALUE4_TITLE', textKey: 'ABOUT.VALUE4_TEXT' },
   ];
 
   team = [
-    { role: 'Fondateur & CEO', name: 'Ali Abdelrahim', initials: 'AA' },
-    { role: 'Lead Tech', name: 'Mehdi El Khattabi', initials: 'ME' },
-    { role: 'Designer', name: 'Sarah Bernard', initials: 'SB' },
-    { role: 'Responsable Atelier', name: 'Lucas Martin', initials: 'LM' },
+    { roleKey: 'ABOUT.TEAM_ROLE_CEO', name: 'Ali Abdelrahim', initials: 'AA' },
+    { roleKey: 'ABOUT.TEAM_ROLE_TECH', name: 'Mehdi El Khattabi', initials: 'ME' },
+    { roleKey: 'ABOUT.TEAM_ROLE_DESIGN', name: 'Sarah Bernard', initials: 'SB' },
+    { roleKey: 'ABOUT.TEAM_ROLE_WORKSHOP', name: 'Lucas Martin', initials: 'LM' },
   ];
 
   milestones = [
-    { year: '2023', event: 'Idée du projet pendant un stage en magasin de vélo.' },
-    { year: '2024', event: 'Premier prototype, premier magasin partenaire à Bruxelles.' },
-    { year: '2025', event: 'Lancement officiel, 5 magasins en Belgique.' },
-    { year: '2026', event: 'Objectif : 20 magasins, lancement de l\'application mobile.' },
+    { year: '2023', eventKey: 'ABOUT.MILESTONE1' },
+    { year: '2024', eventKey: 'ABOUT.MILESTONE2' },
+    { year: '2025', eventKey: 'ABOUT.MILESTONE3' },
+    { year: '2026', eventKey: 'ABOUT.MILESTONE4' },
   ];
 }

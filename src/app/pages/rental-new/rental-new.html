@@ -4,18 +4,18 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/dashboard">Mon espace</a>
+      <a routerLink="/dashboard">{{ 'RENTAL.BREADCRUMB_DASHBOARD' | translate }}</a>
       <span>›</span>
-      <a routerLink="/my-rentals">Mes locations</a>
+      <a routerLink="/my-rentals">{{ 'RENTAL_NEW.BREADCRUMB_MY' | translate }}</a>
       <span>›</span>
-      <strong>Nouvelle reservation</strong>
+      <strong>{{ 'RENTAL_NEW.BREADCRUMB' | translate }}</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Reserver une location</h1>
-      <p class="page-subtitle">Choisissez votre velo, vos dates et confirmez la reservation.</p>
+      <h1>{{ 'RENTAL_NEW.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'RENTAL_NEW.SUBTITLE' | translate }}</p>
     </header>
 
     <div class="error-banner" *ngIf="serverError()">
@@ -29,18 +29,18 @@
         <!-- Form -->
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate class="form-card card">
 
-          <h2>Detail de la reservation</h2>
+          <h2>{{ 'RENTAL_NEW.DETAIL_TITLE' | translate }}</h2>
 
           <!-- Magasin -->
           <div class="field" [class.error]="errors().storeId">
-            <label for="storeId">Magasin *</label>
+            <label for="storeId">{{ 'RENTAL_NEW.STORE' | translate }}</label>
             <select
               id="storeId"
               name="storeId"
               [ngModel]="model().storeId"
               (ngModelChange)="set('storeId', +$event || null)"
             >
-              <option [ngValue]="null" disabled>-- Choisissez un magasin --</option>
+              <option [ngValue]="null" disabled>{{ 'RENTAL_NEW.STORE_PLACEHOLDER' | translate }}</option>
               <option *ngFor="let s of stores()" [ngValue]="s.id">
                 {{ s.name }} — {{ s.address }}
               </option>
@@ -50,16 +50,16 @@
 
           <!-- Velo -->
           <div class="field" [class.error]="errors().productId">
-            <label for="productId">Velo a louer *</label>
+            <label for="productId">{{ 'RENTAL_NEW.BIKE' | translate }}</label>
             <select
               id="productId"
               name="productId"
               [ngModel]="model().productId"
               (ngModelChange)="set('productId', +$event || null)"
             >
-              <option [ngValue]="null" disabled>-- Choisissez un velo --</option>
+              <option [ngValue]="null" disabled>{{ 'RENTAL_NEW.BIKE_PLACEHOLDER' | translate }}</option>
               <option *ngFor="let p of rentableProducts()" [ngValue]="p.id">
-                {{ p.name }} ({{ p.type }}) — {{ p.priceRental }} €/jour
+                {{ 'RENTAL_NEW.BIKE_OPTION' | translate:{ name: p.name, type: p.type, price: p.priceRental } }}
               </option>
             </select>
             <p class="hint" *ngIf="errors().productId">! {{ errors().productId }}</p>
@@ -68,7 +68,7 @@
           <!-- Dates -->
           <div class="form-row two">
             <div class="field" [class.error]="errors().startDate">
-              <label for="startDate">Date de debut *</label>
+              <label for="startDate">{{ 'RENTAL_NEW.START_DATE' | translate }}</label>
               <input
                 id="startDate"
                 name="startDate"
@@ -81,7 +81,7 @@
             </div>
 
             <div class="field" [class.error]="errors().endDate">
-              <label for="endDate">Date de fin *</label>
+              <label for="endDate">{{ 'RENTAL_NEW.END_DATE' | translate }}</label>
               <input
                 id="endDate"
                 name="endDate"
@@ -95,44 +95,44 @@
 
           <div class="actions">
             <button type="submit" class="btn btn-primary" [disabled]="submitting()">
-              {{ submitting() ? 'Reservation…' : 'Confirmer la reservation' }}
+              {{ submitting() ? ('RENTAL_NEW.SUBMITTING' | translate) : ('RENTAL_NEW.CONFIRM' | translate) }}
             </button>
-            <a routerLink="/my-rentals" class="btn btn-ghost">Annuler</a>
+            <a routerLink="/my-rentals" class="btn btn-ghost">{{ 'RENTAL_NEW.CANCEL' | translate }}</a>
           </div>
         </form>
 
         <!-- Recap dynamique -->
         <aside class="recap card">
-          <h3>Recapitulatif</h3>
+          <h3>{{ 'RENTAL_NEW.RECAP' | translate }}</h3>
 
           <div *ngIf="selectedProduct() as p; else noProduct">
             <p class="prod-name">{{ p.name }}</p>
             <p class="prod-type">{{ p.type }}</p>
             <p class="prod-rate">
               <span class="amount">{{ p.priceRental }} €</span>
-              <span class="unit">/ jour</span>
+              <span class="unit">{{ 'RENTAL_NEW.PER_DAY' | translate }}</span>
             </p>
           </div>
           <ng-template #noProduct>
-            <p class="placeholder">Choisissez un velo pour voir le tarif.</p>
+            <p class="placeholder">{{ 'RENTAL_NEW.RECAP_PLACEHOLDER' | translate }}</p>
           </ng-template>
 
           <dl class="meta" *ngIf="durationDays() > 0">
-            <dt>Duree</dt>
-            <dd>{{ durationDays() }} jour(s)</dd>
-            <dt>Total estime</dt>
+            <dt>{{ 'RENTAL_NEW.DURATION' | translate }}</dt>
+            <dd>{{ 'RENTAL_NEW.DURATION_VAL' | translate:{ count: durationDays() } }}</dd>
+            <dt>{{ 'RENTAL_NEW.TOTAL_ESTIMATE' | translate }}</dt>
             <dd class="total">{{ estimatedPrice() | number:'1.2-2' }} €</dd>
           </dl>
 
           <p class="info-note">
-            Le prix definitif est confirme apres validation par le magasin.
+            {{ 'RENTAL_NEW.INFO_NOTE' | translate }}
           </p>
         </aside>
       </div>
     </ng-container>
 
     <ng-template #loadingTpl>
-      <p class="state-msg">Chargement…</p>
+      <p class="state-msg">{{ 'RENTAL_NEW.LOADING' | translate }}</p>
     </ng-template>
 
   </div>

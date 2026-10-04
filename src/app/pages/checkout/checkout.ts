@@ -2,9 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import { OrderService, CreateOrderDto } from '../../services/order';
+import { PaymentService } from '../../services/payment';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
@@ -36,7 +38,7 @@ interface FieldErrors {
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './checkout.html',
   styleUrl: './checkout.scss',
 })
@@ -44,7 +46,9 @@ export class CheckoutComponent {
   cart = inject(CartService);
   private auth = inject(AuthService);
   private orderService = inject(OrderService);
+  private paymentService = inject(PaymentService);
   private router = inject(Router);
+  private i18n = inject(TranslateService);
 
   model = signal<CheckoutModel>({
     firstName: '',
@@ -81,21 +85,21 @@ export class CheckoutComponent {
   private validate(): FieldErrors {
     const m = this.model();
     const e: FieldErrors = {};
-    if (!m.firstName.trim()) e.firstName = 'Prénom requis';
-    if (!m.lastName.trim()) e.lastName = 'Nom requis';
-    if (!m.address.trim()) e.address = 'Veuillez renseigner votre adresse';
+    if (!m.firstName.trim()) e.firstName = this.i18n.instant('CHECKOUT.ERR_FIRST_NAME');
+    if (!m.lastName.trim()) e.lastName = this.i18n.instant('CHECKOUT.ERR_LAST_NAME');
+    if (!m.address.trim()) e.address = this.i18n.instant('CHECKOUT.ERR_ADDRESS');
     if (!/^\d{4}$/.test(m.zip.trim()))
-      e.zip = 'Code postal invalide (4 chiffres)';
-    if (!m.city.trim()) e.city = 'Ville requise';
+      e.zip = this.i18n.instant('CHECKOUT.ERR_ZIP');
+    if (!m.city.trim()) e.city = this.i18n.instant('CHECKOUT.ERR_CITY');
     const digits = m.cardNumber.replace(/\s+/g, '');
     if (!/^\d{16}$/.test(digits))
-      e.cardNumber = 'Numéro incomplet (16 chiffres requis)';
+      e.cardNumber = this.i18n.instant('CHECKOUT.ERR_CARD_NUMBER');
     if (!/^\d{2}\/\d{2}$/.test(m.cardExpiry.trim()))
-      e.cardExpiry = 'Format attendu : MM/AA';
+      e.cardExpiry = this.i18n.instant('CHECKOUT.ERR_CARD_EXPIRY');
     if (!/^\d{3,4}$/.test(m.cardCvv.trim()))
-      e.cardCvv = 'CVV invalide';
+      e.cardCvv = this.i18n.instant('CHECKOUT.ERR_CARD_CVV');
     if (!m.acceptedTerms)
-      e.terms = 'Vous devez accepter les conditions générales';
+      e.terms = this.i18n.instant('CHECKOUT.ERR_TERMS');
     return e;
   }
 
@@ -126,16 +130,35 @@ export class CheckoutComponent {
       })),
     };
 
+    const amount = this.finalTotal();
+
     this.orderService.createOrder(dto).subscribe({
       next: (order) => {
-        this.cart.clear();
         const orderId = (order as { orderId?: number })?.orderId ?? 0;
-        this.router.navigate(['/order-confirmation', orderId]);
+
+        // Enregistre le paiement simule dans la table Payments.
+        // Le back marque immediatement le paiement comme "Paid".
+        // Si le paiement echoue, la commande reste creee mais non payee :
+        // l'operateur pourra la relancer depuis le back-office.
+        this.paymentService
+          .create({ userId, orderId, amount })
+          .subscribe({
+            next: () => {
+              this.cart.clear();
+              this.router.navigate(['/order-confirmation', orderId]);
+            },
+            error: () => {
+              // On redirige quand meme vers la confirmation :
+              // la commande est bien creee, seul le paiement est en erreur.
+              this.cart.clear();
+              this.router.navigate(['/order-confirmation', orderId]);
+            },
+          });
       },
       error: (err) => {
         this.submitting.set(false);
         this.serverError.set(
-          err?.error?.message || 'Une erreur est survenue. Réessayez.'
+          err?.error?.message || this.i18n.instant('CHECKOUT.ERR_GENERIC')
         );
       },
     });

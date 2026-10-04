@@ -1,7 +1,8 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProductService, ProductDetailsDto } from '../../services/product';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ProductService, ProductDetailsDto, parseImageUrls } from '../../services/product';
 import { CartService } from '../../services/cart';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -50,7 +51,7 @@ type Size = string;
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './product-detail.html',
   styleUrl: './product-detail.scss',
 })
@@ -59,6 +60,7 @@ export class ProductDetailComponent implements OnInit {
   private router = inject(Router);
   private productService = inject(ProductService);
   private cart = inject(CartService);
+  private i18n = inject(TranslateService);
 
   product = signal<ProductDetailsDto | null>(null);
   loading = signal(true);
@@ -67,6 +69,23 @@ export class ProductDetailComponent implements OnInit {
   selectedSize = signal<Size | null>(null);
   selectedTab = signal<'description' | 'specs' | 'reviews' | 'shipping'>('description');
   addedToCart = signal(false);
+
+  /** Index de l'image actuellement affichee dans la galerie. */
+  selectedImageIndex = signal(0);
+
+  /** Liste des URLs d'images du produit courant. */
+  images = computed<string[]>(() => parseImageUrls(this.product()?.imageUrls));
+
+  /** URL de l'image principale (celle actuellement selectionnee). */
+  mainImage = computed<string | null>(() => {
+    const list = this.images();
+    const idx = this.selectedImageIndex();
+    return list.length > 0 ? list[Math.min(idx, list.length - 1)] : null;
+  });
+
+  selectImage(index: number): void {
+    this.selectedImageIndex.set(index);
+  }
 
   /** Categorie (bike/helmet/apparel/none) deduite du produit. */
   private category = computed<SizeCategory>(() => {
@@ -87,10 +106,10 @@ export class ProductDetailComponent implements OnInit {
   /** Libelle affiche au-dessus du selecteur. */
   sizeLabel = computed<string>(() => {
     switch (this.category()) {
-      case 'helmet': return 'Tour de tete';
-      case 'apparel': return 'Taille (vetement)';
-      case 'bike': return 'Taille du cadre';
-      default: return 'Taille';
+      case 'helmet': return this.i18n.instant('PRODUCT.SIZE_LABEL_HELMET');
+      case 'apparel': return this.i18n.instant('PRODUCT.SIZE_LABEL_APPAREL');
+      case 'bike': return this.i18n.instant('PRODUCT.SIZE_LABEL_BIKE');
+      default: return this.i18n.instant('PRODUCT.SIZE_LABEL_DEFAULT');
     }
   });
 
@@ -125,7 +144,7 @@ export class ProductDetailComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.errorMsg.set('Produit introuvable.');
+        this.errorMsg.set(this.i18n.instant('PRODUCT.NOT_FOUND'));
         this.loading.set(false);
       },
     });

@@ -38,6 +38,9 @@
         <a routerLink="/back-office/repairs" routerLinkActive="active">
           <span class="icon">🔧</span> Reparations
         </a>
+        <a routerLink="/back-office/payments" routerLinkActive="active">
+          <span class="icon">💳</span> Paiements
+        </a>
       </div>
 
       <div class="nav-section" *ngIf="isManager">
@@ -72,7 +75,8 @@
           <p class="role">{{ role }}</p>
         </div>
       </div>
-      <a routerLink="/" class="link">← Site public</a>
+      <a routerLink="/dashboard" class="link">← Mon espace</a>
+      <a routerLink="/" class="link">🌐 Site public</a>
       <button class="link" (click)="logout()">Deconnexion</button>
     </div>
   </aside>

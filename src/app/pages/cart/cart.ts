@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { CartService, CartItem } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import { HeaderComponent } from '../../shared/header/header';
@@ -9,7 +10,7 @@ import { FooterComponent } from '../../shared/footer/footer';
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })

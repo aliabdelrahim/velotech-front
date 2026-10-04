@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService, RegisterDto } from '../../services/auth';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -25,13 +26,14 @@ interface FieldErrors {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './register.html',
   styleUrl: './register.scss',
 })
 export class RegisterComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
+  private i18n = inject(TranslateService);
 
   model = signal<RegisterModel>({
     name: '',
@@ -55,9 +57,9 @@ export class RegisterComponent {
     if (/[A-Z]/.test(pwd)) score++;
     if (/[0-9]/.test(pwd)) score++;
     if (/[^A-Za-z0-9]/.test(pwd)) score++;
-    if (score <= 2) return { label: 'Faible', color: 'weak' };
-    if (score <= 4) return { label: 'Moyen', color: 'medium' };
-    return { label: 'Fort', color: 'strong' };
+    if (score <= 2) return { label: this.i18n.instant('REGISTER.STRENGTH_WEAK'), color: 'weak' };
+    if (score <= 4) return { label: this.i18n.instant('REGISTER.STRENGTH_MEDIUM'), color: 'medium' };
+    return { label: this.i18n.instant('REGISTER.STRENGTH_STRONG'), color: 'strong' };
   });
 
   set<K extends keyof RegisterModel>(key: K, value: RegisterModel[K]): void {
@@ -69,23 +71,23 @@ export class RegisterComponent {
     const e: FieldErrors = {};
 
     if (!m.name.trim() || m.name.trim().length < 2) {
-      e.name = 'Le nom doit contenir au moins 2 caractères';
+      e.name = this.i18n.instant('REGISTER.ERR_NAME');
     }
     if (!m.email.trim()) {
-      e.email = 'Email requis';
+      e.email = this.i18n.instant('REGISTER.ERR_EMAIL');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.email.trim())) {
-      e.email = 'Format d\'email invalide';
+      e.email = this.i18n.instant('REGISTER.ERR_EMAIL_FORMAT');
     }
     if (!m.password) {
-      e.password = 'Mot de passe requis';
+      e.password = this.i18n.instant('REGISTER.ERR_PASSWORD');
     } else if (m.password.length < 6) {
-      e.password = 'Au moins 6 caractères';
+      e.password = this.i18n.instant('REGISTER.ERR_PASSWORD_SHORT');
     }
     if (m.password !== m.confirmPassword) {
-      e.confirmPassword = 'Les mots de passe ne correspondent pas';
+      e.confirmPassword = this.i18n.instant('REGISTER.ERR_CONFIRM');
     }
     if (!m.acceptedTerms) {
-      e.terms = 'Vous devez accepter les conditions';
+      e.terms = this.i18n.instant('REGISTER.ERR_TERMS');
     }
     return e;
   }
@@ -119,7 +121,7 @@ export class RegisterComponent {
       error: (err) => {
         this.submitting.set(false);
         const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;
-        this.serverError.set(msg || 'Erreur lors de l\'inscription. Réessayez.');
+        this.serverError.set(msg || this.i18n.instant('REGISTER.ERR_GENERIC'));
       },
     });
   }

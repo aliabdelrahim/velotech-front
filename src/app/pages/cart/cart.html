@@ -4,29 +4,29 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <strong>Mon panier</strong>
+      <strong>{{ 'CART.TITLE' | translate }}</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Mon panier</h1>
-      <p class="page-subtitle">{{ cart.count() }} article(s) dans votre panier</p>
+      <h1>{{ 'CART.TITLE' | translate }}</h1>
+      <p class="page-subtitle">{{ 'CART.SUBTITLE' | translate:{ count: cart.count() } }}</p>
     </header>
 
     <!-- Stepper 4 etapes -->
-    <ol class="stepper" aria-label="Étapes de commande">
+    <ol class="stepper" [attr.aria-label]="'CART.STEPS_ARIA' | translate">
       <li class="step current">
-        <span class="step-circle">1</span><span class="step-label">Panier</span>
+        <span class="step-circle">1</span><span class="step-label">{{ 'CART.STEP_CART' | translate }}</span>
       </li>
       <li class="step">
-        <span class="step-circle">2</span><span class="step-label">Livraison</span>
+        <span class="step-circle">2</span><span class="step-label">{{ 'CART.STEP_SHIPPING' | translate }}</span>
       </li>
       <li class="step">
-        <span class="step-circle">3</span><span class="step-label">Paiement</span>
+        <span class="step-circle">3</span><span class="step-label">{{ 'CART.STEP_PAYMENT' | translate }}</span>
       </li>
       <li class="step">
-        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+        <span class="step-circle">4</span><span class="step-label">{{ 'CART.STEP_CONFIRM' | translate }}</span>
       </li>
     </ol>
 
@@ -34,7 +34,7 @@
 
       <!-- Liste articles -->
       <section class="items card">
-        <header><h2>Articles</h2></header>
+        <header><h2>{{ 'CART.ARTICLES' | translate }}</h2></header>
 
         <article class="cart-item" *ngFor="let item of cart.items()">
           <div class="thumb">
@@ -51,13 +51,13 @@
 
           <div class="info">
             <h3>{{ item.name }}</h3>
-            <p class="ref">Référence VEL-{{ item.productId }}</p>
-            <p class="opts" *ngIf="item.size">Taille {{ item.size }}</p>
+            <p class="ref">{{ 'CART.REF' | translate:{ id: item.productId } }}</p>
+            <p class="opts" *ngIf="item.size">{{ 'CART.SIZE' | translate:{ size: item.size } }}</p>
 
             <div class="qty">
-              <button type="button" (click)="dec(item)" aria-label="Diminuer">−</button>
+              <button type="button" (click)="dec(item)" [attr.aria-label]="'CART.DECREASE' | translate">−</button>
               <span>{{ item.quantity }}</span>
-              <button type="button" (click)="inc(item)" aria-label="Augmenter">+</button>
+              <button type="button" (click)="inc(item)" [attr.aria-label]="'CART.INCREASE' | translate">+</button>
             </div>
           </div>
 
@@ -67,7 +67,7 @@
             </p>
             <p class="total">{{ item.quantity * item.priceSale }} €</p>
             <button class="link-danger" type="button" (click)="remove(item)">
-              Supprimer
+              {{ 'CART.DELETE' | translate }}
             </button>
           </div>
         </article>
@@ -75,38 +75,38 @@
 
       <!-- Recap -->
       <aside class="recap">
-        <h3>Récapitulatif</h3>
+        <h3>{{ 'CART.RECAP' | translate }}</h3>
         <dl>
-          <dt>Sous-total ({{ cart.count() }} articles)</dt>
+          <dt>{{ 'CART.SUBTOTAL_ITEMS' | translate:{ count: cart.count() } }}</dt>
           <dd>{{ cart.subtotal() | number:'1.2-2' }} €</dd>
-          <dt>Livraison</dt>
+          <dt>{{ 'CART.SHIPPING' | translate }}</dt>
           <dd>
             <ng-container *ngIf="cart.shipping() > 0; else free">
               {{ cart.shipping() | number:'1.2-2' }} €
             </ng-container>
-            <ng-template #free><span class="free">Gratuit</span></ng-template>
+            <ng-template #free><span class="free">{{ 'CART.FREE' | translate }}</span></ng-template>
           </dd>
-          <dt>TVA incluse (21 %)</dt>
+          <dt>{{ 'CART.VAT' | translate }}</dt>
           <dd>{{ cart.vatIncluded() | number:'1.2-2' }} €</dd>
         </dl>
 
         <div class="total-row">
-          <span>Total TTC</span>
+          <span>{{ 'CART.TOTAL_TTC' | translate }}</span>
           <span class="total-amount">{{ cart.total() | number:'1.2-2' }} €</span>
         </div>
 
         <button class="btn btn-primary btn-lg full" (click)="proceedToCheckout()">
-          Passer la commande →
+          {{ 'CART.CHECKOUT' | translate }}
         </button>
 
-        <a routerLink="/catalog/1" class="continue-link">‹ Continuer mes achats</a>
+        <a routerLink="/catalog/1" class="continue-link">{{ 'CART.CONTINUE' | translate }}</a>
       </aside>
     </div>
 
     <ng-template #emptyTpl>
       <div class="empty">
-        <p>Votre panier est vide.</p>
-        <a routerLink="/catalog/1" class="btn btn-primary">Voir le catalogue</a>
+        <p>{{ 'CART.EMPTY' | translate }}</p>
+        <a routerLink="/catalog/1" class="btn btn-primary">{{ 'CART.SEE_CATALOG' | translate }}</a>
       </div>
     </ng-template>
 

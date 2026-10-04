@@ -5,14 +5,14 @@
 
     <header class="page-head">
       <div>
-        <p class="welcome">Bonjour 👋</p>
-        <h1>Mon espace</h1>
+        <p class="welcome">{{ 'DASHBOARD.HELLO' | translate }}</p>
+        <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
         <p class="role">
-          Connecté en tant que <strong>{{ role }}</strong>
-          <span *ngIf="storeId">· Magasin #{{ storeId }}</span>
+          {{ 'DASHBOARD.ROLE_LABEL' | translate }} <strong>{{ role }}</strong>
+          <span *ngIf="storeId">· {{ 'DASHBOARD.STORE_LABEL' | translate:{ id: storeId } }}</span>
         </p>
       </div>
-      <button class="btn btn-ghost btn-sm" (click)="logout()">Déconnexion</button>
+      <button class="btn btn-ghost btn-sm" (click)="logout()">{{ 'DASHBOARD.LOGOUT' | translate }}</button>
     </header>
 
     <!-- Stats -->
@@ -22,7 +22,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18l-2 13H5L3 7z"/><path d="M8 7V5a4 4 0 0 1 8 0v2"/></svg>
         </div>
         <div>
-          <p class="metric-label">Mes commandes</p>
+          <p class="metric-label">{{ 'DASHBOARD.METRIC_ORDERS' | translate }}</p>
           <p class="metric-value">{{ loadingOrders() ? '…' : totalOrders() }}</p>
         </div>
       </article>
@@ -32,7 +32,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
         </div>
         <div>
-          <p class="metric-label">Total dépensé</p>
+          <p class="metric-label">{{ 'DASHBOARD.METRIC_SPENT' | translate }}</p>
           <p class="metric-value">{{ totalSpent() | number:'1.2-2' }} €</p>
         </div>
       </article>
@@ -42,55 +42,82 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h3l3 14h14l3-10H7"/><circle cx="10" cy="22" r="1.5"/><circle cx="20" cy="22" r="1.5"/></svg>
         </div>
         <div>
-          <p class="metric-label">Panier en cours</p>
-          <p class="metric-value">{{ cartItemsCount() }} article(s)</p>
+          <p class="metric-label">{{ 'DASHBOARD.METRIC_CART' | translate }}</p>
+          <p class="metric-value">{{ 'DASHBOARD.METRIC_CART_VALUE' | translate:{ count: cartItemsCount() } }}</p>
         </div>
       </article>
     </section>
 
     <!-- Derniere commande -->
     <section class="recent" *ngIf="lastOrder() as last">
-      <h2>Dernière commande</h2>
+      <h2>{{ 'DASHBOARD.LAST_ORDER' | translate }}</h2>
       <article class="card recent-card">
         <div class="recent-info">
           <p class="ref">CMD-{{ last.orderId }}</p>
           <p class="date">{{ last.orderDate | date:'dd MMMM yyyy' }} · {{ last.storeName }}</p>
-          <p class="items-count">{{ last.items.length }} article(s)</p>
+          <p class="items-count">{{ 'DASHBOARD.ITEMS_COUNT' | translate:{ count: last.items.length } }}</p>
         </div>
         <div class="recent-total">
           <p>{{ last.totalAmount | number:'1.2-2' }} €</p>
-          <a routerLink="/my-orders" class="btn btn-outline btn-sm">Voir le détail</a>
+          <a routerLink="/my-orders" class="btn btn-outline btn-sm">{{ 'DASHBOARD.VIEW_DETAIL' | translate }}</a>
         </div>
       </article>
     </section>
 
     <!-- Raccourcis -->
     <section class="shortcuts">
-      <h2>Mon compte</h2>
+      <h2>{{ 'DASHBOARD.MY_ACCOUNT' | translate }}</h2>
       <div class="cards-grid">
 
         <a routerLink="/my-orders" class="shortcut card">
           <div class="shortcut-icon icon-green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
-          <h3>Mes commandes</h3>
-          <p>Historique, factures, statut de livraison.</p>
+          <h3>{{ 'DASHBOARD.SHORTCUT_ORDERS_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.SHORTCUT_ORDERS_TEXT' | translate }}</p>
         </a>
 
         <a routerLink="/cart" class="shortcut card">
           <div class="shortcut-icon icon-orange">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4h3l3 14h14l3-10H7"/></svg>
           </div>
-          <h3>Mon panier</h3>
-          <p>{{ cartItemsCount() }} article(s) en attente.</p>
+          <h3>{{ 'DASHBOARD.SHORTCUT_CART_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.SHORTCUT_CART_TEXT' | translate:{ count: cartItemsCount() } }}</p>
         </a>
 
         <a routerLink="/catalog/1" class="shortcut card">
           <div class="shortcut-icon icon-dark">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           </div>
-          <h3>Catalogue</h3>
-          <p>Découvrir les nouveautés de la semaine.</p>
+          <h3>{{ 'DASHBOARD.SHORTCUT_CATALOG_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.SHORTCUT_CATALOG_TEXT' | translate }}</p>
+        </a>
+
+        <a routerLink="/my-rentals" class="shortcut card">
+          <div class="shortcut-icon icon-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="6" cy="17" r="4"/>
+              <circle cx="18" cy="17" r="4"/>
+              <line x1="6" y1="17" x2="12" y2="9"/>
+              <line x1="12" y1="9" x2="18" y2="17"/>
+              <line x1="6" y1="17" x2="18" y2="17"/>
+            </svg>
+          </div>
+          <h3>{{ 'MENU.MY_RENTALS' | translate }}</h3>
+          <p>{{ 'DASHBOARD.SHORTCUT_RENTALS_TEXT' | translate }}</p>
+        </a>
+
+        <a routerLink="/my-appointments" class="shortcut card">
+          <div class="shortcut-icon icon-orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+          </div>
+          <h3>{{ 'MENU.MY_APPOINTMENTS' | translate }}</h3>
+          <p>{{ 'DASHBOARD.SHORTCUT_APPT_TEXT' | translate }}</p>
         </a>
 
       </div>
@@ -98,22 +125,22 @@
 
     <!-- Acces back-office -->
     <section class="shortcuts" *ngIf="hasBackOfficeAccess">
-      <h2>Back-office</h2>
+      <h2>{{ 'DASHBOARD.BACK_OFFICE' | translate }}</h2>
       <div class="cards-grid">
 
         <a routerLink="/products" class="shortcut card">
-          <h3>Produits</h3>
-          <p>Catalogue et fiches produits.</p>
+          <h3>{{ 'DASHBOARD.BO_PRODUCTS_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.BO_PRODUCTS_TEXT' | translate }}</p>
         </a>
 
         <a routerLink="/store-products" class="shortcut card">
-          <h3>Stocks</h3>
-          <p>Gérer les stocks par magasin.</p>
+          <h3>{{ 'DASHBOARD.BO_STOCKS_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.BO_STOCKS_TEXT' | translate }}</p>
         </a>
 
         <a routerLink="/orders" class="shortcut card">
-          <h3>Commandes</h3>
-          <p>Suivi des ventes en magasin.</p>
+          <h3>{{ 'DASHBOARD.BO_ORDERS_TITLE' | translate }}</h3>
+          <p>{{ 'DASHBOARD.BO_ORDERS_TEXT' | translate }}</p>
         </a>
       </div>
     </section>

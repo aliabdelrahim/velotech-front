@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService, ProductDetailsDto } from '../../services/product';
 import { StoreService, StoreDetailsDto } from '../../services/store';
 import {
@@ -28,17 +29,17 @@ interface FieldErrors {
   time?: string;
 }
 
-const SERVICES = [
-  'Revision generale',
-  'Reparation freins',
-  'Reparation derailleur',
-  'Changement chaine',
-  'Centrage roues',
-  'Pose accessoires',
-  'Diagnostic batterie (velo electrique)',
-  'Mise au point',
-  'Reparation pneu / chambre a air',
-  'Reglage suspension',
+const SERVICE_KEYS = [
+  'APPT_NEW.SERVICE_REVISION',
+  'APPT_NEW.SERVICE_BRAKES',
+  'APPT_NEW.SERVICE_DERAILLEUR',
+  'APPT_NEW.SERVICE_CHAIN',
+  'APPT_NEW.SERVICE_WHEELS',
+  'APPT_NEW.SERVICE_ACCESSORIES',
+  'APPT_NEW.SERVICE_BATTERY',
+  'APPT_NEW.SERVICE_TUNING',
+  'APPT_NEW.SERVICE_TIRE',
+  'APPT_NEW.SERVICE_SUSPENSION',
 ];
 
 const HOURS = [
@@ -49,7 +50,7 @@ const HOURS = [
 @Component({
   selector: 'app-appointment-new',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './appointment-new.html',
   styleUrl: './appointment-new.scss',
 })
@@ -59,8 +60,9 @@ export class AppointmentNewComponent implements OnInit {
   private appointmentService = inject(AppointmentService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private i18n = inject(TranslateService);
 
-  serviceTypes = SERVICES;
+  serviceKeys = SERVICE_KEYS;
   hours = HOURS;
 
   stores = signal<StoreDetailsDto[]>([]);
@@ -122,14 +124,14 @@ export class AppointmentNewComponent implements OnInit {
   private validate(): FieldErrors {
     const m = this.model();
     const e: FieldErrors = {};
-    if (!m.storeId) e.storeId = 'Choisissez un magasin';
-    if (!m.serviceType) e.serviceType = 'Choisissez un type de service';
-    if (!m.date) e.date = 'Date requise';
-    if (!m.time) e.time = 'Heure requise';
+    if (!m.storeId) e.storeId = this.i18n.instant('APPT_NEW.ERR_STORE');
+    if (!m.serviceType) e.serviceType = this.i18n.instant('APPT_NEW.ERR_SERVICE');
+    if (!m.date) e.date = this.i18n.instant('APPT_NEW.ERR_DATE');
+    if (!m.time) e.time = this.i18n.instant('APPT_NEW.ERR_TIME');
     if (m.date && m.time) {
       const dt = new Date(`${m.date}T${m.time}:00`);
       if (dt.getTime() < Date.now()) {
-        e.date = 'La date doit etre dans le futur';
+        e.date = this.i18n.instant('APPT_NEW.ERR_DATE_FUTURE');
       }
     }
     return e;
@@ -168,7 +170,7 @@ export class AppointmentNewComponent implements OnInit {
       error: (err) => {
         this.submitting.set(false);
         const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;
-        this.serverError.set(msg || 'Erreur lors de la prise de rendez-vous.');
+        this.serverError.set(msg || this.i18n.instant('APPT_NEW.ERR_CREATE'));
       },
     });
   }

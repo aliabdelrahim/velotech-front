@@ -1,0 +1,84 @@
+<header class="page-head">
+  <div>
+    <h1>Historique des paiements</h1>
+    <p class="page-subtitle">
+      {{ filtered().length }} paiement(s) ·
+      Total encaisse {{ totalPaid() | number:'1.2-2' }} €
+    </p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <input
+    type="search"
+    placeholder="Rechercher (n°, client, cible)…"
+    [ngModel]="searchTerm()"
+    (ngModelChange)="searchTerm.set($event)"
+  />
+
+  <div class="chip-group" role="tablist" aria-label="Filtre par type">
+    <button type="button"
+      [class.active]="typeFilter() === 'all'"
+      (click)="setType('all')">
+      Tous ({{ countByType().all }})
+    </button>
+    <button type="button"
+      [class.active]="typeFilter() === 'Order'"
+      (click)="setType('Order')">
+      Commandes ({{ countByType().Order }})
+    </button>
+    <button type="button"
+      [class.active]="typeFilter() === 'Rental'"
+      (click)="setType('Rental')">
+      Locations ({{ countByType().Rental }})
+    </button>
+    <button type="button"
+      [class.active]="typeFilter() === 'Repair'"
+      (click)="setType('Repair')">
+      Reparations ({{ countByType().Repair }})
+    </button>
+  </div>
+</div>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+    <div class="empty" *ngIf="filtered().length === 0">
+      Aucun paiement a afficher.
+    </div>
+
+    <table class="data-table" *ngIf="filtered().length > 0">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Date</th>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Cible</th>
+          <th>Statut</th>
+          <th class="num">Montant</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of filtered()">
+          <td><strong>PAY-{{ p.paymentId }}</strong></td>
+          <td>{{ p.createdAt | date:'dd/MM/yyyy HH:mm' }}</td>
+          <td>{{ p.userName || '—' }}</td>
+          <td>{{ typeLabel(p.paymentType) }}</td>
+          <td>{{ targetLabel(p) }}</td>
+          <td><span class="badge" [ngClass]="statusClass(p.status)">{{ p.status }}</span></td>
+          <td class="num"><strong>{{ p.amount | number:'1.2-2' }} €</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl>
+  <p class="state-msg">Chargement…</p>
+</ng-template>
+
+<ng-template #errorTpl>
+  <p class="state-msg state-msg--error">{{ errorMsg() }}</p>
+</ng-template>

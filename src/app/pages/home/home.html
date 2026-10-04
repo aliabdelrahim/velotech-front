@@ -6,30 +6,27 @@
     <div class="container hero-inner">
       <div class="hero-text">
         <h1>
-          Le vélo,<br />
-          partout près de<br />
-          chez vous.
+          {{ 'HOME.HERO_TITLE_L1' | translate }}<br />
+          {{ 'HOME.HERO_TITLE_L2' | translate }}<br />
+          {{ 'HOME.HERO_TITLE_L3' | translate }}
         </h1>
         <p class="hero-subtitle">
-          Achetez, louez, faites entretenir.<br />
-          Une plateforme, des dizaines de magasins partenaires.
+          {{ 'HOME.HERO_SUBTITLE_L1' | translate }}<br />
+          {{ 'HOME.HERO_SUBTITLE_L2' | translate }}
         </p>
         <div class="hero-cta">
           <a routerLink="/catalog/1" class="btn btn-primary btn-lg">
-            Voir le catalogue
+            {{ 'HOME.HERO_CTA_CATALOG' | translate }}
           </a>
           <a routerLink="/rentals/new" class="btn btn-outline btn-lg hero-outline">
-            Louer un vélo
+            {{ 'HOME.HERO_CTA_RENT' | translate }}
           </a>
         </div>
       </div>
       <div class="hero-illustration" aria-hidden="true">
         <svg viewBox="0 0 400 320">
-          <!-- Cercle decoratif vert fonce -->
           <circle cx="220" cy="160" r="160" fill="#1B5E20" opacity="0.4" />
-          <!-- Cercle orange decalque -->
           <circle cx="330" cy="240" r="60" fill="#FF7043" />
-          <!-- Velo blanc stylise -->
           <g stroke="white" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="120" cy="200" r="50" />
             <circle cx="280" cy="200" r="50" />
@@ -47,7 +44,7 @@
   <!-- POURQUOI VELOTECH -->
   <section class="features">
     <div class="container">
-      <h6 class="section-eyebrow">Pourquoi Velotech</h6>
+      <h6 class="section-eyebrow">{{ 'HOME.WHY' | translate }}</h6>
       <div class="features-grid">
         <article class="feature card">
           <div class="feature-icon">
@@ -59,8 +56,8 @@
               <line x1="8" y1="22" x2="24" y2="22" />
             </svg>
           </div>
-          <h3>Catalogue 100+ modèles</h3>
-          <p>VTT, route, ville, électriques. Du débutant à l'expert.</p>
+          <h3>{{ 'HOME.FEATURE1_TITLE' | translate }}</h3>
+          <p>{{ 'HOME.FEATURE1_TEXT' | translate }}</p>
         </article>
 
         <article class="feature card">
@@ -75,8 +72,8 @@
               <circle cx="21" cy="18" r="1.5" fill="currentColor" />
             </svg>
           </div>
-          <h3>Réservation en ligne</h3>
-          <p>Location ou entretien, vous choisissez votre créneau.</p>
+          <h3>{{ 'HOME.FEATURE2_TITLE' | translate }}</h3>
+          <p>{{ 'HOME.FEATURE2_TEXT' | translate }}</p>
         </article>
 
         <article class="feature card">
@@ -88,8 +85,8 @@
               <circle cx="10" cy="10" r="3" />
             </svg>
           </div>
-          <h3>Atelier technicien</h3>
-          <p>Réparation, diagnostic, pièces d'origine.</p>
+          <h3>{{ 'HOME.FEATURE3_TITLE' | translate }}</h3>
+          <p>{{ 'HOME.FEATURE3_TEXT' | translate }}</p>
         </article>
       </div>
     </div>
@@ -100,10 +97,10 @@
     <div class="container">
       <div class="section-head">
         <div>
-          <h2>Nos vélos phares</h2>
-          <p class="section-subtitle">Une sélection de modèles disponibles dans les magasins Velotech.</p>
+          <h2>{{ 'HOME.FEATURED_TITLE' | translate }}</h2>
+          <p class="section-subtitle">{{ 'HOME.FEATURED_SUBTITLE' | translate }}</p>
         </div>
-        <a routerLink="/catalog/1" class="btn btn-ghost btn-sm">Tout le catalogue →</a>
+        <a routerLink="/catalog/1" class="btn btn-ghost btn-sm">{{ 'HOME.FEATURED_ALL' | translate }}</a>
       </div>
 
       <div class="products-grid" *ngIf="!loading(); else loadingTpl">
@@ -114,17 +111,20 @@
             [routerLink]="['/products', p.id]"
           >
             <div class="product-thumb">
-              <span class="badge badge-success">EN STOCK</span>
-              <svg viewBox="0 0 200 130" aria-hidden="true">
-                <g stroke="#2E7D32" stroke-width="4" fill="none" stroke-linecap="round">
-                  <circle cx="50" cy="85" r="30" />
-                  <circle cx="150" cy="85" r="30" />
-                  <line x1="50" y1="85" x2="100" y2="40" />
-                  <line x1="100" y1="40" x2="150" y2="85" />
-                  <line x1="50" y1="85" x2="150" y2="85" />
-                  <line x1="100" y1="40" x2="115" y2="25" />
-                </g>
-              </svg>
+              <span class="badge badge-success">{{ 'COMMON.IN_STOCK' | translate }}</span>
+              <img *ngIf="firstImage(p) as img; else fallbackHome" [src]="img" [alt]="p.name" loading="lazy" />
+              <ng-template #fallbackHome>
+                <svg viewBox="0 0 200 130" aria-hidden="true">
+                  <g stroke="#2E7D32" stroke-width="4" fill="none" stroke-linecap="round">
+                    <circle cx="50" cy="85" r="30" />
+                    <circle cx="150" cy="85" r="30" />
+                    <line x1="50" y1="85" x2="100" y2="40" />
+                    <line x1="100" y1="40" x2="150" y2="85" />
+                    <line x1="50" y1="85" x2="150" y2="85" />
+                    <line x1="100" y1="40" x2="115" y2="25" />
+                  </g>
+                </svg>
+              </ng-template>
             </div>
             <div class="product-info">
               <h4>{{ p.name }}</h4>
@@ -136,7 +136,7 @@
       </div>
 
       <ng-template #loadingTpl>
-        <p class="state-msg">Chargement des produits…</p>
+        <p class="state-msg">{{ 'HOME.LOADING_PRODUCTS' | translate }}</p>
       </ng-template>
 
       <ng-template #errorTpl>
@@ -149,15 +149,15 @@
   <section class="dual-cta">
     <div class="container dual-cta-grid">
       <article class="cta-card cta-card--orange">
-        <h3>Louer un vélo</h3>
-        <p>À la journée, à la semaine, au mois.<br />Réservez en ligne et passez prendre votre vélo.</p>
-        <a routerLink="/rentals/new" class="btn btn-light">Réserver →</a>
+        <h3>{{ 'HOME.CTA_RENT_TITLE' | translate }}</h3>
+        <p>{{ 'HOME.CTA_RENT_TEXT_L1' | translate }}<br />{{ 'HOME.CTA_RENT_TEXT_L2' | translate }}</p>
+        <a routerLink="/rentals/new" class="btn btn-light">{{ 'HOME.CTA_RENT_BTN' | translate }}</a>
       </article>
 
       <article class="cta-card cta-card--dark">
-        <h3>Atelier entretien</h3>
-        <p>Diagnostic gratuit, réparation rapide.<br />Prenez rendez-vous en quelques clics.</p>
-        <a routerLink="/appointments/new" class="btn btn-light">Prendre RDV →</a>
+        <h3>{{ 'HOME.CTA_WORKSHOP_TITLE' | translate }}</h3>
+        <p>{{ 'HOME.CTA_WORKSHOP_TEXT_L1' | translate }}<br />{{ 'HOME.CTA_WORKSHOP_TEXT_L2' | translate }}</p>
+        <a routerLink="/appointments/new" class="btn btn-light">{{ 'HOME.CTA_WORKSHOP_BTN' | translate }}</a>
       </article>
     </div>
   </section>

@@ -1,0 +1,206 @@
+<app-header></app-header>
+
+<main class="rental-payment-page">
+  <div class="container">
+
+    <nav class="breadcrumb">
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
+      <span>›</span>
+      <a routerLink="/my-rentals">{{ 'RENTAL_PAY.BREADCRUMB_MY' | translate }}</a>
+      <span>›</span>
+      <strong>{{ 'RENTAL_PAY.BREADCRUMB' | translate }}</strong>
+    </nav>
+
+    <h1>{{ 'RENTAL_PAY.TITLE' | translate }}</h1>
+
+    <!-- Stepper -->
+    <ol class="stepper">
+      <li class="step done">
+        <span class="step-circle">✓</span><span class="step-label">{{ 'RENTAL_PAY.STEP_RESERVATION' | translate }}</span>
+      </li>
+      <li class="step current">
+        <span class="step-circle">2</span><span class="step-label">{{ 'RENTAL_PAY.STEP_PAYMENT' | translate }}</span>
+      </li>
+      <li class="step">
+        <span class="step-circle">3</span><span class="step-label">{{ 'RENTAL_PAY.STEP_CONFIRM' | translate }}</span>
+      </li>
+    </ol>
+
+    <!-- Loading / error de chargement -->
+    <ng-container *ngIf="!loading(); else loadingTpl">
+      <ng-container *ngIf="!loadError(); else loadErrorTpl">
+
+        <!-- Bandeau succès -->
+        <div class="success-banner" *ngIf="paymentSuccess()">
+          <span class="icon">✓</span>
+          <div>
+            <strong>{{ 'RENTAL_PAY.SUCCESS_TITLE' | translate }}</strong>
+            <p>{{ 'RENTAL_PAY.SUCCESS_MSG' | translate }}</p>
+          </div>
+        </div>
+
+        <!-- Bandeau erreur -->
+        <div class="error-banner" *ngIf="showErrorBanner() && errorCount() > 0 && !paymentSuccess()">
+          <span class="icon">!</span>
+          <div>
+            <strong>{{ 'RENTAL_PAY.ERROR_TITLE' | translate }}</strong>
+            <p>{{ 'RENTAL_PAY.ERROR_COUNT' | translate:{ count: errorCount() } }}</p>
+          </div>
+        </div>
+
+        <div class="error-banner" *ngIf="serverError()">
+          <span class="icon">!</span>
+          <div>
+            <strong>{{ 'RENTAL_PAY.SERVER_ERROR_TITLE' | translate }}</strong>
+            <p>{{ serverError() }}</p>
+          </div>
+        </div>
+
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate *ngIf="!paymentSuccess()">
+          <div class="layout">
+
+            <!-- Colonne gauche : formulaire -->
+            <div class="form-area">
+
+              <section class="form-section">
+                <h2>{{ 'RENTAL_PAY.SECTION_CARD' | translate }}</h2>
+                <p class="section-hint">
+                  {{ 'RENTAL_PAY.SECTION_HINT' | translate }}
+                </p>
+
+                <div class="field" [class.error]="errors().cardHolder">
+                  <label for="cardHolder">{{ 'RENTAL_PAY.CARD_HOLDER' | translate }}</label>
+                  <input
+                    id="cardHolder"
+                    name="cardHolder"
+                    type="text"
+                    [placeholder]="'RENTAL_PAY.CARD_HOLDER_PLACEHOLDER' | translate"
+                    [ngModel]="model().cardHolder"
+                    (ngModelChange)="set('cardHolder', $event)"
+                  />
+                  <p class="hint" *ngIf="errors().cardHolder">! {{ errors().cardHolder }}</p>
+                </div>
+
+                <div class="field" [class.error]="errors().cardNumber">
+                  <label for="cardNumber">{{ 'RENTAL_PAY.CARD_NUMBER' | translate }}</label>
+                  <input
+                    id="cardNumber"
+                    name="cardNumber"
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="19"
+                    placeholder="4532 1234 5678 9012"
+                    [ngModel]="model().cardNumber"
+                    (ngModelChange)="set('cardNumber', $event)"
+                  />
+                  <p class="hint" *ngIf="errors().cardNumber">! {{ errors().cardNumber }}</p>
+                </div>
+
+                <div class="form-row two">
+                  <div class="field" [class.error]="errors().cardExpiry">
+                    <label for="cardExpiry">{{ 'RENTAL_PAY.CARD_EXPIRY' | translate }}</label>
+                    <input
+                      id="cardExpiry"
+                      name="cardExpiry"
+                      type="text"
+                      placeholder="12/27"
+                      maxlength="5"
+                      [ngModel]="model().cardExpiry"
+                      (ngModelChange)="set('cardExpiry', $event)"
+                    />
+                    <p class="hint" *ngIf="errors().cardExpiry">! {{ errors().cardExpiry }}</p>
+                  </div>
+                  <div class="field" [class.error]="errors().cardCvv">
+                    <label for="cardCvv">{{ 'RENTAL_PAY.CARD_CVV' | translate }}</label>
+                    <input
+                      id="cardCvv"
+                      name="cardCvv"
+                      type="text"
+                      inputmode="numeric"
+                      maxlength="4"
+                      placeholder="***"
+                      [ngModel]="model().cardCvv"
+                      (ngModelChange)="set('cardCvv', $event)"
+                    />
+                    <p class="hint" *ngIf="errors().cardCvv">! {{ errors().cardCvv }}</p>
+                  </div>
+                </div>
+
+                <label class="terms" [class.error]="errors().terms">
+                  <input
+                    type="checkbox"
+                    name="terms"
+                    [checked]="model().acceptedTerms"
+                    (change)="set('acceptedTerms', !model().acceptedTerms)"
+                  />
+                  {{ 'RENTAL_PAY.TERMS' | translate }}
+                </label>
+                <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
+
+                <p class="test-hint" [innerHTML]="'RENTAL_PAY.TEST_HINT' | translate">
+                </p>
+              </section>
+            </div>
+
+            <!-- Colonne droite : recap -->
+            <aside class="recap" *ngIf="rental() as r">
+              <h3>{{ 'RENTAL_PAY.RECAP_TITLE' | translate }}</h3>
+              <div class="recap-item">
+                <p class="recap-label">{{ 'RENTAL_PAY.BIKE' | translate }}</p>
+                <p class="recap-value">{{ r.productName }}</p>
+              </div>
+              <div class="recap-item">
+                <p class="recap-label">{{ 'RENTAL_PAY.STORE' | translate }}</p>
+                <p class="recap-value">📍 {{ r.storeName }}</p>
+              </div>
+              <div class="recap-item">
+                <p class="recap-label">{{ 'RENTAL_PAY.PERIOD' | translate }}</p>
+                <p class="recap-value">
+                  {{ r.startDate | date:'dd MMM yyyy' }} → {{ r.endDate | date:'dd MMM yyyy' }}
+                </p>
+                <p class="recap-sub">{{ 'RENTAL_PAY.DURATION' | translate:{ count: durationDays() } }}</p>
+              </div>
+
+              <div class="total-row">
+                <span>{{ 'RENTAL_PAY.TOTAL_PAY' | translate }}</span>
+                <span class="total-amount">{{ r.totalPrice | number:'1.2-2' }} €</span>
+              </div>
+
+              <button
+                type="submit"
+                class="btn btn-primary btn-lg full"
+                [disabled]="submitting()"
+              >
+                <ng-container *ngIf="!submitting()">
+                  {{ 'RENTAL_PAY.PAY' | translate:{ amount: (r.totalPrice | number:'1.2-2') } }}
+                </ng-container>
+                <ng-container *ngIf="submitting()">{{ 'RENTAL_PAY.PAYING' | translate }}</ng-container>
+              </button>
+
+              <p class="ssl">
+                {{ 'RENTAL_PAY.SSL' | translate }}
+                <span class="card-brand">VISA</span>
+                <span class="card-brand">MC</span>
+              </p>
+            </aside>
+          </div>
+        </form>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template #loadingTpl>
+      <p class="state-msg">{{ 'RENTAL_PAY.LOADING' | translate }}</p>
+    </ng-template>
+
+    <ng-template #loadErrorTpl>
+      <p class="state-msg state-msg--error">{{ loadError() }}</p>
+      <p style="text-align:center">
+        <a routerLink="/my-rentals" class="btn btn-outline">{{ 'RENTAL_PAY.BACK_TO_RENTALS' | translate }}</a>
+      </p>
+    </ng-template>
+
+  </div>
+</main>
+
+<app-footer></app-footer>

@@ -1,0 +1,101 @@
+{
+  "APP": {
+    "TITLE": "Velotech",
+    "TAGLINE": "Plateforme web de gestion pour magasins de vélos"
+  },
+  "MENU": {
+    "HOME": "Accueil",
+    "CATALOG": "Catalogue",
+    "STORES": "Magasins",
+    "ABOUT": "À propos",
+    "CONTACT": "Contact",
+    "LEGAL": "Mentions légales",
+    "LOGIN": "Connexion",
+    "REGISTER": "Inscription",
+    "DASHBOARD": "Mon espace",
+    "BACK_OFFICE": "Back-office",
+    "PROFILE": "Profil",
+    "MY_ORDERS": "Mes commandes",
+    "MY_RENTALS": "Mes locations",
+    "MY_APPOINTMENTS": "Mes rendez-vous",
+    "CART": "Panier",
+    "LOGOUT": "Déconnexion"
+  },
+  "COMMON": {
+    "SAVE": "Enregistrer",
+    "CANCEL": "Annuler",
+    "DELETE": "Supprimer",
+    "EDIT": "Modifier",
+    "ADD": "Ajouter",
+    "SEARCH": "Rechercher",
+    "BACK": "Retour",
+    "CONFIRM": "Confirmer",
+    "LOADING": "Chargement...",
+    "YES": "Oui",
+    "NO": "Non",
+    "REQUIRED": "Champ obligatoire",
+    "INVALID_EMAIL": "Adresse e-mail invalide",
+    "PASSWORD_TOO_SHORT": "Mot de passe trop court",
+    "ERROR_OCCURRED": "Une erreur est survenue",
+    "SUCCESS": "Opération réussie"
+  },
+  "AUTH": {
+    "EMAIL": "Adresse e-mail",
+    "PASSWORD": "Mot de passe",
+    "PASSWORD_CONFIRM": "Confirmer le mot de passe",
+    "FORGOT_PASSWORD": "Mot de passe oublié ?",
+    "RESET_PASSWORD": "Réinitialiser le mot de passe",
+    "REMEMBER_ME": "Se souvenir de moi",
+    "SIGN_IN": "Se connecter",
+    "SIGN_UP": "Créer un compte",
+    "SIGN_OUT": "Se déconnecter",
+    "WELCOME_BACK": "Content de vous revoir",
+    "CREATE_ACCOUNT": "Créer votre compte Velotech"
+  },
+  "CATALOG": {
+    "TITLE": "Catalogue",
+    "FILTER_STORE": "Filtrer par magasin",
+    "FILTER_CATEGORY": "Filtrer par catégorie",
+    "PRICE": "Prix",
+    "ADD_TO_CART": "Ajouter au panier",
+    "RENT": "Louer",
+    "NO_PRODUCTS": "Aucun produit disponible"
+  },
+  "CART": {
+    "TITLE": "Mon panier",
+    "EMPTY": "Votre panier est vide",
+    "QUANTITY": "Quantité",
+    "SUBTOTAL": "Sous-total",
+    "TOTAL": "Total",
+    "CHECKOUT": "Passer la commande",
+    "REMOVE": "Retirer"
+  },
+  "RENTAL": {
+    "TITLE": "Location",
+    "START_DATE": "Date de début",
+    "END_DATE": "Date de fin",
+    "DAYS": "jours",
+    "TOTAL_PRICE": "Prix total",
+    "CONFIRM_RENTAL": "Confirmer la location",
+    "CANCEL_RENTAL": "Annuler la location"
+  },
+  "APPOINTMENT": {
+    "TITLE": "Rendez-vous",
+    "SERVICE_TYPE": "Type de service",
+    "DATE": "Date et heure",
+    "NOTES": "Notes",
+    "BOOK": "Réserver"
+  },
+  "FOOTER": {
+    "ABOUT_US": "À propos",
+    "CONTACT_US": "Nous contacter",
+    "TERMS": "Conditions générales",
+    "PRIVACY": "Politique de confidentialité",
+    "COPYRIGHT": "Tous droits réservés"
+  },
+  "LANG": {
+    "SWITCH": "Langue",
+    "FR": "Français",
+    "NL": "Nederlands"
+  }
+}

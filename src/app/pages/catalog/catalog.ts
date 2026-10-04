@@ -2,7 +2,8 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ProductService, ProductDetailsDto } from '../../services/product';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ProductService, ProductDetailsDto, firstImage } from '../../services/product';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
@@ -11,13 +12,16 @@ type SortKey = 'relevance' | 'price-asc' | 'price-desc' | 'name';
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './catalog.html',
   styleUrl: './catalog.scss',
 })
 export class CatalogComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private productService = inject(ProductService);
+  // Exposition du helper pour le template.
+  firstImage = firstImage;
+  private i18n = inject(TranslateService);
 
   storeId = signal<number>(1);
   storeName = signal<string>('Velotech Ixelles');
@@ -80,7 +84,7 @@ export class CatalogComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.errorMsg.set('Impossible de charger le catalogue.');
+        this.errorMsg.set(this.i18n.instant('CATALOG.LOAD_ERROR'));
         this.loading.set(false);
       },
     });

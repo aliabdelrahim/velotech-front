@@ -4,15 +4,15 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <strong>Contact</strong>
+      <strong>{{ 'CONTACT.BREADCRUMB' | translate }}</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Nous contacter</h1>
+      <h1>{{ 'CONTACT.TITLE' | translate }}</h1>
       <p class="page-subtitle">
-        Une question, une remarque, un partenariat ? Nous repondons sous 48 heures ouvrees.
+        {{ 'CONTACT.SUBTITLE' | translate }}
       </p>
     </header>
 
@@ -24,17 +24,17 @@
         <div class="success-banner" *ngIf="success()">
           <span class="check">✓</span>
           <div>
-            <strong>Message envoye !</strong>
-            <p>Nous vous repondrons sous 48 heures.</p>
+            <strong>{{ 'CONTACT.SUCCESS_TITLE' | translate }}</strong>
+            <p>{{ 'CONTACT.SUCCESS_TEXT' | translate }}</p>
           </div>
         </div>
 
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate *ngIf="!success()">
-          <h2>Envoyer un message</h2>
+          <h2>{{ 'CONTACT.FORM_TITLE' | translate }}</h2>
 
           <div class="form-row two">
             <div class="field" [class.error]="errors().name">
-              <label for="name">Votre nom *</label>
+              <label for="name">{{ 'CONTACT.NAME' | translate }}</label>
               <input
                 id="name"
                 name="name"
@@ -47,7 +47,7 @@
             </div>
 
             <div class="field" [class.error]="errors().email">
-              <label for="email">Adresse email *</label>
+              <label for="email">{{ 'CONTACT.EMAIL' | translate }}</label>
               <input
                 id="email"
                 name="email"
@@ -61,26 +61,26 @@
           </div>
 
           <div class="field" [class.error]="errors().subject">
-            <label for="subject">Sujet *</label>
+            <label for="subject">{{ 'CONTACT.SUBJECT' | translate }}</label>
             <select
               id="subject"
               name="subject"
               [ngModel]="model().subject"
               (ngModelChange)="set('subject', $event)"
             >
-              <option value="" disabled>-- Choisissez un sujet --</option>
-              <option *ngFor="let s of subjects" [ngValue]="s">{{ s }}</option>
+              <option value="" disabled>{{ 'CONTACT.SUBJECT_PLACEHOLDER' | translate }}</option>
+              <option *ngFor="let k of subjectKeys" [ngValue]="k">{{ k | translate }}</option>
             </select>
             <p class="hint" *ngIf="errors().subject">! {{ errors().subject }}</p>
           </div>
 
           <div class="field" [class.error]="errors().message">
-            <label for="message">Votre message *</label>
+            <label for="message">{{ 'CONTACT.MESSAGE' | translate }}</label>
             <textarea
               id="message"
               name="message"
               rows="6"
-              placeholder="Decrivez votre demande en detail…"
+              [placeholder]="'CONTACT.MESSAGE_PLACEHOLDER' | translate"
               [ngModel]="model().message"
               (ngModelChange)="set('message', $event)"
             ></textarea>
@@ -95,27 +95,26 @@
               (change)="set('acceptedTerms', !model().acceptedTerms)"
             />
             <span>
-              J'accepte que mes donnees soient utilisees uniquement pour le traitement
-              de cette demande. Voir la
-              <a routerLink="/legal/rgpd">politique de confidentialite</a>.
+              {{ 'CONTACT.TERMS_P1' | translate }}
+              <a routerLink="/legal/rgpd">{{ 'CONTACT.TERMS_LINK' | translate }}</a>.
             </span>
           </label>
           <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
 
           <button type="submit" class="btn btn-primary btn-lg" [disabled]="submitting()">
-            {{ submitting() ? 'Envoi…' : 'Envoyer le message' }}
+            {{ submitting() ? ('CONTACT.SUBMITTING' | translate) : ('CONTACT.SUBMIT' | translate) }}
           </button>
         </form>
       </section>
 
       <!-- Coordonnees -->
       <aside class="info-card card">
-        <h3>Coordonnees</h3>
+        <h3>{{ 'CONTACT.INFO_TITLE' | translate }}</h3>
 
         <div class="info-block">
           <div class="info-icon">✉️</div>
           <div>
-            <strong>Email general</strong>
+            <strong>{{ 'CONTACT.INFO_EMAIL' | translate }}</strong>
             <a href="mailto:contact@velotech.com">contact@velotech.com</a>
           </div>
         </div>
@@ -123,7 +122,7 @@
         <div class="info-block">
           <div class="info-icon">🤝</div>
           <div>
-            <strong>Partenariats magasins</strong>
+            <strong>{{ 'CONTACT.INFO_PARTNERS' | translate }}</strong>
             <a href="mailto:partenaires@velotech.com">partenaires@velotech.com</a>
           </div>
         </div>
@@ -131,25 +130,25 @@
         <div class="info-block">
           <div class="info-icon">🏢</div>
           <div>
-            <strong>Siege social</strong>
-            <p>Rue de la Loi 16<br />1000 Bruxelles, Belgique</p>
+            <strong>{{ 'CONTACT.INFO_HQ' | translate }}</strong>
+            <p>{{ 'CONTACT.INFO_HQ_ADDRESS_L1' | translate }}<br />{{ 'CONTACT.INFO_HQ_ADDRESS_L2' | translate }}</p>
           </div>
         </div>
 
         <div class="info-block">
           <div class="info-icon">📞</div>
           <div>
-            <strong>Telephone (back-office)</strong>
+            <strong>{{ 'CONTACT.INFO_PHONE' | translate }}</strong>
             <a href="tel:+3220000000">+32 2 000 00 00</a>
-            <p class="opening">Lun-Ven 9h-18h</p>
+            <p class="opening">{{ 'CONTACT.INFO_HOURS' | translate }}</p>
           </div>
         </div>
 
         <hr />
 
         <p class="store-cta">
-          Question sur un produit en particulier ?<br />
-          <a routerLink="/stores">Voir tous nos magasins →</a>
+          {{ 'CONTACT.STORE_CTA_Q' | translate }}<br />
+          <a routerLink="/stores">{{ 'CONTACT.STORE_CTA_LINK' | translate }}</a>
         </p>
       </aside>
 

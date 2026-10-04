@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -8,13 +9,14 @@ import { FooterComponent } from '../../shared/footer/footer';
 @Component({
   selector: 'app-order-confirmation',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './order-confirmation.html',
   styleUrl: './order-confirmation.scss',
 })
 export class OrderConfirmationComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private auth = inject(AuthService);
+  private i18n = inject(TranslateService);
 
   orderId = signal<number>(0);
   orderRef = signal<string>('CMD-2026-0000');
@@ -30,6 +32,6 @@ export class OrderConfirmationComponent implements OnInit {
 
   get email(): string {
     // Pas d'API user/me pour l'instant — on affiche un placeholder neutre
-    return 'votre adresse email';
+    return this.i18n.instant('ORDER_CONFIRM.DEFAULT_EMAIL');
   }
 }

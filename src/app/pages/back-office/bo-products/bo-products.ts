@@ -2,7 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ProductService, ProductDetailsDto } from '../../../services/product';
+import { ProductService, ProductDetailsDto, firstImage } from '../../../services/product';
 
 @Component({
   selector: 'app-bo-products',
@@ -13,6 +13,7 @@ import { ProductService, ProductDetailsDto } from '../../../services/product';
 })
 export class BoProductsComponent implements OnInit {
   private productService = inject(ProductService);
+  firstImage = firstImage;
 
   products = signal<ProductDetailsDto[]>([]);
   loading = signal(true);

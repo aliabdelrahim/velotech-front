@@ -1,0 +1,218 @@
+.product-form-page {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background: #f7f8f9;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.form-card {
+  width: 100%;
+  max-width: 640px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid #ececec;
+}
+
+.form-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eee;
+
+  .eyebrow {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #777;
+    letter-spacing: 0.03em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 1.6rem;
+  }
+
+  .btn-link {
+    color: var(--color-primary, #2E7D32);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding-top: 0.3rem;
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-row {
+  display: grid;
+  gap: 1rem;
+  &.two { grid-template-columns: 1fr 1fr; }
+
+  @media (max-width: 500px) {
+    &.two { grid-template-columns: 1fr; }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select {
+    padding: 0.6rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background: white;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-primary, #2E7D32);
+      box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+    }
+  }
+
+  &.checkbox-group {
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--color-primary, #2E7D32);
+      }
+    }
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+
+  &.btn-primary {
+    background: var(--color-primary, #2E7D32);
+    color: white;
+    &:hover { background: #1B5E20; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    color: #666;
+    border-color: #ddd;
+    &:hover { background: #f5f5f5; }
+  }
+}
+
+textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  resize: vertical;
+  min-height: 90px;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary, #2E7D32);
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+  }
+}
+
+.images-gallery {
+  margin-top: 0.75rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.5rem;
+
+  .gallery-item {
+    position: relative;
+    aspect-ratio: 1;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #f5f5f5;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .gallery-badge {
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      background: var(--color-primary, #2E7D32);
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 600;
+    }
+  }
+}
+
+.hint-section {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0.25rem 0 0;
+}
+
+.state-msg {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+}
+
+.error-message {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: #fdecea;
+  color: #b71c1c;
+  border-radius: 6px;
+  border: 1px solid #f5c2c0;
+  font-size: 0.9rem;
+}

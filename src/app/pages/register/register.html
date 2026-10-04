@@ -6,21 +6,20 @@
     <div class="layout">
       <!-- Colonne gauche : pitch -->
       <aside class="pitch">
-        <p class="eyebrow">Rejoindre Velotech</p>
-        <h1>Créez votre compte<br />en 30 secondes</h1>
+        <p class="eyebrow">{{ 'REGISTER.EYEBROW' | translate }}</p>
+        <h1>{{ 'REGISTER.TITLE_L1' | translate }}<br />{{ 'REGISTER.TITLE_L2' | translate }}</h1>
         <p class="lead">
-          Commandez en ligne, réservez vos locations, prenez rendez-vous à l'atelier,
-          suivez votre historique. Tout depuis un seul compte.
+          {{ 'REGISTER.LEAD' | translate }}
         </p>
         <ul class="perks">
-          <li>✓ Livraison gratuite dès 50&nbsp;€</li>
-          <li>✓ Réservation 24h/24, 7j/7</li>
-          <li>✓ Retour gratuit sous 30 jours</li>
-          <li>✓ Programme de fidélité</li>
+          <li>{{ 'REGISTER.PERK_SHIPPING' | translate }}</li>
+          <li>{{ 'REGISTER.PERK_247' | translate }}</li>
+          <li>{{ 'REGISTER.PERK_RETURN' | translate }}</li>
+          <li>{{ 'REGISTER.PERK_LOYALTY' | translate }}</li>
         </ul>
         <p class="login-hint">
-          Vous avez déjà un compte ?
-          <a routerLink="/login">Se connecter</a>
+          {{ 'REGISTER.LOGIN_HINT' | translate }}
+          <a routerLink="/login">{{ 'REGISTER.LOGIN_LINK' | translate }}</a>
         </p>
       </aside>
 
@@ -28,16 +27,16 @@
       <section class="form-card card">
 
         <header class="form-head">
-          <h2>Inscription</h2>
-          <p>Tous les champs marqués d'un astérisque sont obligatoires.</p>
+          <h2>{{ 'REGISTER.FORM_TITLE' | translate }}</h2>
+          <p>{{ 'REGISTER.FORM_SUBTITLE' | translate }}</p>
         </header>
 
         <!-- Succès -->
         <div class="success-banner" *ngIf="success()">
           <span class="check">✓</span>
           <div>
-            <strong>Compte créé avec succès !</strong>
-            <p>Redirection vers votre tableau de bord…</p>
+            <strong>{{ 'REGISTER.SUCCESS_TITLE' | translate }}</strong>
+            <p>{{ 'REGISTER.SUCCESS_TEXT' | translate }}</p>
           </div>
         </div>
 
@@ -45,7 +44,7 @@
         <div class="error-banner" *ngIf="serverError()">
           <span class="icon">!</span>
           <div>
-            <strong>Erreur</strong>
+            <strong>{{ 'REGISTER.ERROR_TITLE' | translate }}</strong>
             <p>{{ serverError() }}</p>
           </div>
         </div>
@@ -53,13 +52,13 @@
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate *ngIf="!success()">
 
           <div class="field" [class.error]="errors().name">
-            <label for="name">Nom complet *</label>
+            <label for="name">{{ 'REGISTER.NAME' | translate }}</label>
             <input
               id="name"
               name="name"
               type="text"
               autocomplete="name"
-              placeholder="Ali Abdelrahim"
+              [placeholder]="'REGISTER.NAME_PLACEHOLDER' | translate"
               [ngModel]="model().name"
               (ngModelChange)="set('name', $event)"
             />
@@ -67,13 +66,13 @@
           </div>
 
           <div class="field" [class.error]="errors().email">
-            <label for="email">Adresse email *</label>
+            <label for="email">{{ 'REGISTER.EMAIL' | translate }}</label>
             <input
               id="email"
               name="email"
               type="email"
               autocomplete="email"
-              placeholder="vous@example.com"
+              [placeholder]="'REGISTER.EMAIL_PLACEHOLDER' | translate"
               [ngModel]="model().email"
               (ngModelChange)="set('email', $event)"
             />
@@ -81,7 +80,7 @@
           </div>
 
           <div class="field" [class.error]="errors().password">
-            <label for="password">Mot de passe *</label>
+            <label for="password">{{ 'REGISTER.PASSWORD' | translate }}</label>
             <input
               id="password"
               name="password"
@@ -99,7 +98,7 @@
           </div>
 
           <div class="field" [class.error]="errors().confirmPassword">
-            <label for="confirmPassword">Confirmer le mot de passe *</label>
+            <label for="confirmPassword">{{ 'REGISTER.CONFIRM_PASSWORD' | translate }}</label>
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -120,10 +119,10 @@
               (change)="set('acceptedTerms', !model().acceptedTerms)"
             />
             <span>
-              J'accepte les
-              <a routerLink="/legal/cgv">conditions générales</a>
-              et la
-              <a routerLink="/legal/rgpd">politique de confidentialité</a>.
+              {{ 'REGISTER.TERMS_P1' | translate }}
+              <a routerLink="/legal/cgv">{{ 'REGISTER.TERMS_CGV' | translate }}</a>
+              {{ 'REGISTER.TERMS_AND' | translate }}
+              <a routerLink="/legal/rgpd">{{ 'REGISTER.TERMS_PRIVACY' | translate }}</a>.
             </span>
           </label>
           <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
@@ -133,13 +132,13 @@
             class="btn btn-primary btn-lg full"
             [disabled]="submitting()"
           >
-            <ng-container *ngIf="!submitting()">Créer mon compte</ng-container>
-            <ng-container *ngIf="submitting()">Création en cours…</ng-container>
+            <ng-container *ngIf="!submitting()">{{ 'REGISTER.SUBMIT' | translate }}</ng-container>
+            <ng-container *ngIf="submitting()">{{ 'REGISTER.SUBMITTING' | translate }}</ng-container>
           </button>
 
           <p class="login-link">
-            Déjà inscrit ?
-            <a routerLink="/login">Se connecter</a>
+            {{ 'REGISTER.ALREADY' | translate }}
+            <a routerLink="/login">{{ 'REGISTER.SIGN_IN' | translate }}</a>
           </p>
         </form>
 

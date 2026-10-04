@@ -4,28 +4,28 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/cart">Mon panier</a>
+      <a routerLink="/cart">{{ 'CHECKOUT.BREADCRUMB_CART' | translate }}</a>
       <span>›</span>
-      <strong>Paiement</strong>
+      <strong>{{ 'CHECKOUT.BREADCRUMB_PAYMENT' | translate }}</strong>
     </nav>
 
-    <h1>Finaliser ma commande</h1>
+    <h1>{{ 'CHECKOUT.TITLE' | translate }}</h1>
 
     <!-- Stepper -->
     <ol class="stepper">
       <li class="step done">
-        <span class="step-circle">✓</span><span class="step-label">Panier</span>
+        <span class="step-circle">✓</span><span class="step-label">{{ 'CHECKOUT.STEP_CART' | translate }}</span>
       </li>
       <li class="step done">
-        <span class="step-circle">✓</span><span class="step-label">Livraison</span>
+        <span class="step-circle">✓</span><span class="step-label">{{ 'CHECKOUT.STEP_SHIPPING' | translate }}</span>
       </li>
       <li class="step current">
-        <span class="step-circle">3</span><span class="step-label">Paiement</span>
+        <span class="step-circle">3</span><span class="step-label">{{ 'CHECKOUT.STEP_PAYMENT' | translate }}</span>
       </li>
       <li class="step">
-        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+        <span class="step-circle">4</span><span class="step-label">{{ 'CHECKOUT.STEP_CONFIRM' | translate }}</span>
       </li>
     </ol>
 
@@ -33,15 +33,15 @@
     <div class="error-banner" *ngIf="showErrorBanner() && errorCount() > 0">
       <span class="icon">!</span>
       <div>
-        <strong>Veuillez corriger les erreurs ci-dessous</strong>
-        <p>{{ errorCount() }} champ(s) obligatoire(s) manquant(s) ou incorrect(s)</p>
+        <strong>{{ 'CHECKOUT.ERROR_TITLE' | translate }}</strong>
+        <p>{{ 'CHECKOUT.ERROR_COUNT' | translate:{ count: errorCount() } }}</p>
       </div>
     </div>
 
     <div class="error-banner" *ngIf="serverError()">
       <span class="icon">!</span>
       <div>
-        <strong>Erreur serveur</strong>
+        <strong>{{ 'CHECKOUT.SERVER_ERROR_TITLE' | translate }}</strong>
         <p>{{ serverError() }}</p>
       </div>
     </div>
@@ -54,10 +54,10 @@
 
           <!-- 1. Adresse -->
           <section class="form-section">
-            <h2>1. Adresse de livraison</h2>
+            <h2>{{ 'CHECKOUT.SECTION_ADDRESS' | translate }}</h2>
             <div class="form-row two">
               <div class="field" [class.error]="errors().firstName">
-                <label for="firstName">Prénom *</label>
+                <label for="firstName">{{ 'CHECKOUT.FIRST_NAME' | translate }}</label>
                 <input
                   id="firstName"
                   name="firstName"
@@ -68,7 +68,7 @@
                 <p class="hint" *ngIf="errors().firstName">! {{ errors().firstName }}</p>
               </div>
               <div class="field" [class.error]="errors().lastName">
-                <label for="lastName">Nom *</label>
+                <label for="lastName">{{ 'CHECKOUT.LAST_NAME' | translate }}</label>
                 <input
                   id="lastName"
                   name="lastName"
@@ -81,12 +81,12 @@
             </div>
 
             <div class="field" [class.error]="errors().address">
-              <label for="address">Adresse *</label>
+              <label for="address">{{ 'CHECKOUT.ADDRESS' | translate }}</label>
               <input
                 id="address"
                 name="address"
                 type="text"
-                placeholder="Rue et numéro"
+                [placeholder]="'CHECKOUT.ADDRESS_PLACEHOLDER' | translate"
                 [ngModel]="model().address"
                 (ngModelChange)="set('address', $event)"
               />
@@ -95,7 +95,7 @@
 
             <div class="form-row zip-city">
               <div class="field" [class.error]="errors().zip">
-                <label for="zip">Code postal *</label>
+                <label for="zip">{{ 'CHECKOUT.ZIP' | translate }}</label>
                 <input
                   id="zip"
                   name="zip"
@@ -108,7 +108,7 @@
                 <p class="hint" *ngIf="errors().zip">! {{ errors().zip }}</p>
               </div>
               <div class="field" [class.error]="errors().city">
-                <label for="city">Ville *</label>
+                <label for="city">{{ 'CHECKOUT.CITY' | translate }}</label>
                 <input
                   id="city"
                   name="city"
@@ -123,7 +123,7 @@
 
           <!-- 2. Livraison -->
           <section class="form-section">
-            <h2>2. Mode de livraison</h2>
+            <h2>{{ 'CHECKOUT.SECTION_SHIPPING' | translate }}</h2>
 
             <label class="ship-option" [class.selected]="model().shippingMode === 'standard'">
               <input
@@ -134,8 +134,8 @@
                 (change)="set('shippingMode', 'standard')"
               />
               <div>
-                <strong>Livraison standard (3-5 jours)</strong>
-                <p>Livré par Bpost à l'adresse indiquée</p>
+                <strong>{{ 'CHECKOUT.SHIP_STANDARD_TITLE' | translate }}</strong>
+                <p>{{ 'CHECKOUT.SHIP_STANDARD_DESC' | translate }}</p>
               </div>
               <span class="ship-price">9,90 €</span>
             </label>
@@ -149,19 +149,19 @@
                 (change)="set('shippingMode', 'pickup')"
               />
               <div>
-                <strong>Retrait magasin Velotech Ixelles</strong>
-                <p>Disponible sous 24-48h</p>
+                <strong>{{ 'CHECKOUT.SHIP_PICKUP_TITLE' | translate }}</strong>
+                <p>{{ 'CHECKOUT.SHIP_PICKUP_DESC' | translate }}</p>
               </div>
-              <span class="ship-price free">Gratuit</span>
+              <span class="ship-price free">{{ 'CHECKOUT.SHIP_FREE' | translate }}</span>
             </label>
           </section>
 
           <!-- 3. Paiement -->
           <section class="form-section">
-            <h2>3. Méthode de paiement</h2>
+            <h2>{{ 'CHECKOUT.SECTION_PAYMENT' | translate }}</h2>
 
             <div class="field" [class.error]="errors().cardNumber">
-              <label for="cardNumber">Numéro de carte *</label>
+              <label for="cardNumber">{{ 'CHECKOUT.CARD_NUMBER' | translate }}</label>
               <input
                 id="cardNumber"
                 name="cardNumber"
@@ -177,7 +177,7 @@
 
             <div class="form-row two">
               <div class="field" [class.error]="errors().cardExpiry">
-                <label for="cardExpiry">Expiration (MM/AA) *</label>
+                <label for="cardExpiry">{{ 'CHECKOUT.CARD_EXPIRY' | translate }}</label>
                 <input
                   id="cardExpiry"
                   name="cardExpiry"
@@ -190,7 +190,7 @@
                 <p class="hint" *ngIf="errors().cardExpiry">! {{ errors().cardExpiry }}</p>
               </div>
               <div class="field" [class.error]="errors().cardCvv">
-                <label for="cardCvv">CVV *</label>
+                <label for="cardCvv">{{ 'CHECKOUT.CARD_CVV' | translate }}</label>
                 <input
                   id="cardCvv"
                   name="cardCvv"
@@ -212,7 +212,7 @@
                 [checked]="model().acceptedTerms"
                 (change)="set('acceptedTerms', !model().acceptedTerms)"
               />
-              J'accepte les conditions générales de vente et la politique de confidentialité
+              {{ 'CHECKOUT.TERMS' | translate }}
             </label>
             <p class="hint" *ngIf="errors().terms">! {{ errors().terms }}</p>
           </section>
@@ -220,23 +220,23 @@
 
         <!-- Colonne droite : recap -->
         <aside class="recap">
-          <h3>Récapitulatif</h3>
+          <h3>{{ 'CHECKOUT.RECAP' | translate }}</h3>
           <dl>
-            <dt>{{ cart.count() }} articles</dt>
+            <dt>{{ 'CHECKOUT.ARTICLES_COUNT' | translate:{ count: cart.count() } }}</dt>
             <dd>{{ cart.subtotal() | number:'1.2-2' }} €</dd>
-            <dt>Livraison</dt>
+            <dt>{{ 'CHECKOUT.SHIPPING' | translate }}</dt>
             <dd>
               <ng-container *ngIf="finalShipping() > 0; else freeShip">
                 {{ finalShipping() | number:'1.2-2' }} €
               </ng-container>
-              <ng-template #freeShip><span class="free">Gratuit</span></ng-template>
+              <ng-template #freeShip><span class="free">{{ 'CHECKOUT.FREE' | translate }}</span></ng-template>
             </dd>
-            <dt>TVA incluse (21 %)</dt>
+            <dt>{{ 'CHECKOUT.VAT' | translate }}</dt>
             <dd>{{ cart.vatIncluded() | number:'1.2-2' }} €</dd>
           </dl>
 
           <div class="total-row">
-            <span>Total</span>
+            <span>{{ 'CHECKOUT.TOTAL' | translate }}</span>
             <span class="total-amount">{{ finalTotal() | number:'1.2-2' }} €</span>
           </div>
 
@@ -246,13 +246,13 @@
             [disabled]="submitting() || cart.count() === 0"
           >
             <ng-container *ngIf="!submitting()">
-              Payer {{ finalTotal() | number:'1.2-2' }} €
+              {{ 'CHECKOUT.PAY' | translate:{ amount: (finalTotal() | number:'1.2-2') } }}
             </ng-container>
-            <ng-container *ngIf="submitting()">Paiement en cours…</ng-container>
+            <ng-container *ngIf="submitting()">{{ 'CHECKOUT.PAYING' | translate }}</ng-container>
           </button>
 
           <p class="ssl">
-            🔒 Paiement sécurisé SSL
+            {{ 'CHECKOUT.SSL' | translate }}
             <span class="card-brand">VISA</span>
             <span class="card-brand">MC</span>
           </p>

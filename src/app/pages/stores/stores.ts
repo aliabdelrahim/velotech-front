@@ -12,6 +12,7 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { StoreService, StoreDetailsDto } from '../../services/store';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -68,12 +69,13 @@ const FALLBACK_CITY = 'Belgique';
 @Component({
   selector: 'app-stores',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './stores.html',
   styleUrl: './stores.scss',
 })
 export class StoresComponent implements OnInit, AfterViewInit, OnDestroy {
   private storeService = inject(StoreService);
+  private i18n = inject(TranslateService);
 
   @ViewChild('mapEl') mapEl!: ElementRef<HTMLDivElement>;
   private map: any;
@@ -104,7 +106,7 @@ export class StoresComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => this.refreshMarkers(), 0);
       },
       error: () => {
-        this.errorMsg.set('Impossible de charger les magasins.');
+        this.errorMsg.set(this.i18n.instant('STORES.LOAD_ERROR'));
         this.loading.set(false);
       },
     });
@@ -157,8 +159,9 @@ export class StoresComponent implements OnInit, AfterViewInit, OnDestroy {
 
     for (const s of items) {
       const marker = L.marker([s.lat, s.lng]).addTo(this.map);
+      const viewCatalog = this.i18n.instant('STORES.VIEW_CATALOG');
       marker.bindPopup(
-        `<strong>${s.name}</strong><br>${s.address}<br><a href="/catalog/${s.id}">Voir le catalogue →</a>`
+        `<strong>${s.name}</strong><br>${s.address}<br><a href="/catalog/${s.id}">${viewCatalog}</a>`
       );
       marker.on('click', () => this.selectedId.set(s.id));
       this.markers.push(marker);
