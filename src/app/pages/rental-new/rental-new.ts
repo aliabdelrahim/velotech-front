@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService, ProductDetailsDto } from '../../services/product';
 import { StoreService, StoreDetailsDto } from '../../services/store';
 import { RentalService, CreateRentalDto } from '../../services/rental';
@@ -26,7 +27,7 @@ interface FieldErrors {
 @Component({
   selector: 'app-rental-new',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './rental-new.html',
   styleUrl: './rental-new.scss',
 })
@@ -36,6 +37,7 @@ export class RentalNewComponent implements OnInit {
   private rentalService = inject(RentalService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private i18n = inject(TranslateService);
 
   stores = signal<StoreDetailsDto[]>([]);
   rentableProducts = signal<ProductDetailsDto[]>([]);
@@ -100,15 +102,15 @@ export class RentalNewComponent implements OnInit {
   private validate(): FieldErrors {
     const m = this.model();
     const e: FieldErrors = {};
-    if (!m.storeId) e.storeId = 'Choisissez un magasin';
-    if (!m.productId) e.productId = 'Choisissez un velo';
-    if (!m.startDate) e.startDate = 'Date de debut requise';
-    if (!m.endDate) e.endDate = 'Date de fin requise';
+    if (!m.storeId) e.storeId = this.i18n.instant('RENTAL_NEW.ERR_STORE');
+    if (!m.productId) e.productId = this.i18n.instant('RENTAL_NEW.ERR_PRODUCT');
+    if (!m.startDate) e.startDate = this.i18n.instant('RENTAL_NEW.ERR_START');
+    if (!m.endDate) e.endDate = this.i18n.instant('RENTAL_NEW.ERR_END');
     if (m.startDate && m.endDate && new Date(m.endDate) <= new Date(m.startDate)) {
-      e.endDate = 'La date de fin doit etre apres la date de debut';
+      e.endDate = this.i18n.instant('RENTAL_NEW.ERR_END_AFTER');
     }
     if (m.startDate && new Date(m.startDate) < new Date(this.todayPlus(0))) {
-      e.startDate = 'La date de debut ne peut pas etre dans le passe';
+      e.startDate = this.i18n.instant('RENTAL_NEW.ERR_START_PAST');
     }
     return e;
   }
@@ -135,15 +137,19 @@ export class RentalNewComponent implements OnInit {
     };
 
     this.submitting.set(true);
+
     this.rentalService.create(dto).subscribe({
-      next: () => {
+      next: (rental) => {
         this.submitting.set(false);
-        this.router.navigate(['/my-rentals']);
+        // La location est cree cote back. Le client passe maintenant
+        // par l'etape de paiement (carte bancaire) avant de voir la
+        // confirmation finale dans son espace.
+        this.router.navigate(['/rentals', rental.rentalId, 'payment']);
       },
       error: (err) => {
         this.submitting.set(false);
         const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;
-        this.serverError.set(msg || 'Erreur lors de la creation de la location.');
+        this.serverError.set(msg || this.i18n.instant('RENTAL_NEW.ERR_CREATE'));
       },
     });
   }

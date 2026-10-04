@@ -4,19 +4,19 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/dashboard">Mon espace</a>
+      <a routerLink="/dashboard">{{ 'RENTAL.BREADCRUMB_DASHBOARD' | translate }}</a>
       <span>›</span>
-      <a routerLink="/my-appointments">Mes RDV</a>
+      <a routerLink="/my-appointments">{{ 'APPT_NEW.BREADCRUMB_MY' | translate }}</a>
       <span>›</span>
-      <strong>Nouveau rendez-vous</strong>
+      <strong>{{ 'APPT_NEW.BREADCRUMB' | translate }}</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Prendre rendez-vous a l'atelier</h1>
+      <h1>{{ 'APPT_NEW.TITLE' | translate }}</h1>
       <p class="page-subtitle">
-        Choisissez un service, un magasin et un creneau qui vous arrange.
+        {{ 'APPT_NEW.SUBTITLE' | translate }}
       </p>
     </header>
 
@@ -31,33 +31,33 @@
         <!-- Form -->
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate class="form-card card">
 
-          <h2>Detail du rendez-vous</h2>
+          <h2>{{ 'APPT_NEW.DETAIL_TITLE' | translate }}</h2>
 
           <!-- Service -->
           <div class="field" [class.error]="errors().serviceType">
-            <label for="serviceType">Type de service *</label>
+            <label for="serviceType">{{ 'APPT_NEW.SERVICE' | translate }}</label>
             <select
               id="serviceType"
               name="serviceType"
               [ngModel]="model().serviceType"
               (ngModelChange)="set('serviceType', $event)"
             >
-              <option value="" disabled>-- Choisissez un service --</option>
-              <option *ngFor="let s of serviceTypes" [ngValue]="s">{{ s }}</option>
+              <option value="" disabled>{{ 'APPT_NEW.SERVICE_PLACEHOLDER' | translate }}</option>
+              <option *ngFor="let k of serviceKeys" [ngValue]="k">{{ k | translate }}</option>
             </select>
             <p class="hint" *ngIf="errors().serviceType">! {{ errors().serviceType }}</p>
           </div>
 
           <!-- Magasin -->
           <div class="field" [class.error]="errors().storeId">
-            <label for="storeId">Magasin *</label>
+            <label for="storeId">{{ 'APPT_NEW.STORE' | translate }}</label>
             <select
               id="storeId"
               name="storeId"
               [ngModel]="model().storeId"
               (ngModelChange)="set('storeId', +$event || null)"
             >
-              <option [ngValue]="null" disabled>-- Choisissez un magasin --</option>
+              <option [ngValue]="null" disabled>{{ 'APPT_NEW.STORE_PLACEHOLDER' | translate }}</option>
               <option *ngFor="let s of stores()" [ngValue]="s.id">
                 {{ s.name }} — {{ s.address }}
               </option>
@@ -67,14 +67,14 @@
 
           <!-- Velo (optionnel) -->
           <div class="field">
-            <label for="productId">Velo concerne (optionnel)</label>
+            <label for="productId">{{ 'APPT_NEW.BIKE_OPTIONAL' | translate }}</label>
             <select
               id="productId"
               name="productId"
               [ngModel]="model().productId"
               (ngModelChange)="set('productId', +$event || null)"
             >
-              <option [ngValue]="null">— Aucun / a preciser sur place</option>
+              <option [ngValue]="null">{{ 'APPT_NEW.BIKE_NONE' | translate }}</option>
               <option *ngFor="let p of products()" [ngValue]="p.id">
                 {{ p.name }} ({{ p.type }})
               </option>
@@ -84,7 +84,7 @@
           <!-- Date / heure -->
           <div class="form-row two">
             <div class="field" [class.error]="errors().date">
-              <label for="date">Date *</label>
+              <label for="date">{{ 'APPT_NEW.DATE' | translate }}</label>
               <input
                 id="date"
                 name="date"
@@ -95,7 +95,7 @@
               <p class="hint" *ngIf="errors().date">! {{ errors().date }}</p>
             </div>
             <div class="field" [class.error]="errors().time">
-              <label for="time">Heure *</label>
+              <label for="time">{{ 'APPT_NEW.TIME' | translate }}</label>
               <select
                 id="time"
                 name="time"
@@ -110,12 +110,12 @@
 
           <!-- Notes -->
           <div class="field">
-            <label for="notes">Notes (optionnel)</label>
+            <label for="notes">{{ 'APPT_NEW.NOTES' | translate }}</label>
             <textarea
               id="notes"
               name="notes"
               rows="3"
-              placeholder="Decrivez votre demande, le probleme rencontre…"
+              [placeholder]="'APPT_NEW.NOTES_PLACEHOLDER' | translate"
               [ngModel]="model().notes"
               (ngModelChange)="set('notes', $event)"
             ></textarea>
@@ -123,37 +123,37 @@
 
           <div class="actions">
             <button type="submit" class="btn btn-primary" [disabled]="submitting()">
-              {{ submitting() ? 'Reservation…' : 'Confirmer le rendez-vous' }}
+              {{ submitting() ? ('APPT_NEW.SUBMITTING' | translate) : ('APPT_NEW.CONFIRM' | translate) }}
             </button>
-            <a routerLink="/my-appointments" class="btn btn-ghost">Annuler</a>
+            <a routerLink="/my-appointments" class="btn btn-ghost">{{ 'APPT_NEW.CANCEL' | translate }}</a>
           </div>
         </form>
 
         <!-- Recap -->
         <aside class="recap card">
-          <h3>Recapitulatif</h3>
+          <h3>{{ 'APPT_NEW.RECAP' | translate }}</h3>
 
           <p class="row" *ngIf="model().serviceType">
-            <span class="label">Service</span>
-            <span class="value">{{ model().serviceType }}</span>
+            <span class="label">{{ 'APPT_NEW.RECAP_SERVICE' | translate }}</span>
+            <span class="value">{{ model().serviceType | translate }}</span>
           </p>
           <p class="row" *ngIf="selectedStore() as s">
-            <span class="label">Magasin</span>
+            <span class="label">{{ 'APPT_NEW.RECAP_STORE' | translate }}</span>
             <span class="value">{{ s.name }}</span>
           </p>
           <p class="row" *ngIf="selectedProduct() as p">
-            <span class="label">Velo</span>
+            <span class="label">{{ 'APPT_NEW.RECAP_BIKE' | translate }}</span>
             <span class="value">{{ p.name }}</span>
           </p>
           <p class="row" *ngIf="model().date && model().time">
-            <span class="label">Date / heure</span>
+            <span class="label">{{ 'APPT_NEW.RECAP_DATE' | translate }}</span>
             <span class="value">
-              {{ model().date | date:'dd MMM yyyy' }} a {{ model().time }}
+              {{ 'APPT_NEW.RECAP_DATE_VAL' | translate:{ date: (model().date | date:'dd MMM yyyy'), time: model().time } }}
             </span>
           </p>
 
           <p class="info-note">
-            La confirmation finale (creneau exact) vous sera envoyee par email.
+            {{ 'APPT_NEW.INFO_NOTE' | translate }}
           </p>
         </aside>
 
@@ -161,7 +161,7 @@
     </ng-container>
 
     <ng-template #loadingTpl>
-      <p class="state-msg">Chargement…</p>
+      <p class="state-msg">{{ 'APPT_NEW.LOADING' | translate }}</p>
     </ng-template>
 
   </div>

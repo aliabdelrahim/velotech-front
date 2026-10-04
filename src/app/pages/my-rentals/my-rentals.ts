@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RentalService, RentalDetailsDto } from '../../services/rental';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -10,12 +11,13 @@ type Tab = 'all' | 'active' | 'past' | 'cancelled';
 @Component({
   selector: 'app-my-rentals',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './my-rentals.html',
   styleUrl: './my-rentals.scss',
 })
 export class MyRentalsComponent implements OnInit {
   private rentalService = inject(RentalService);
+  private i18n = inject(TranslateService);
 
   rentals = signal<RentalDetailsDto[]>([]);
   loading = signal(true);
@@ -70,7 +72,7 @@ export class MyRentalsComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.errorMsg.set('Impossible de charger vos locations.');
+        this.errorMsg.set(this.i18n.instant('RENTAL.LOAD_ERROR'));
         this.loading.set(false);
       },
     });
@@ -92,7 +94,8 @@ export class MyRentalsComponent implements OnInit {
   }
 
   cancel(r: RentalDetailsDto): void {
-    if (!confirm(`Annuler la location de ${r.productName} ?`)) return;
+    const msg = this.i18n.instant('RENTAL.CANCEL_CONFIRM', { name: r.productName });
+    if (!confirm(msg)) return;
     this.cancellingId.set(r.rentalId);
     this.rentalService.cancel(r.rentalId).subscribe({
       next: () => {
@@ -104,10 +107,20 @@ export class MyRentalsComponent implements OnInit {
         this.cancellingId.set(null);
       },
       error: () => {
-        alert('Erreur lors de l\'annulation.');
+        alert(this.i18n.instant('RENTAL.CANCEL_ERROR'));
         this.cancellingId.set(null);
       },
     });
+  }
+
+  statusLabel(status: string): string {
+    switch (status) {
+      case 'Confirmed': return this.i18n.instant('RENTAL.STATUS_CONFIRMED');
+      case 'Active': return this.i18n.instant('RENTAL.STATUS_ACTIVE');
+      case 'Returned': return this.i18n.instant('RENTAL.STATUS_RETURNED');
+      case 'Cancelled': return this.i18n.instant('RENTAL.STATUS_CANCELLED');
+      default: return status;
+    }
   }
 
   statusClass(status: string): string {

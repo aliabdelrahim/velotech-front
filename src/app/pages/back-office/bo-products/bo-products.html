@@ -28,6 +28,7 @@
       <thead>
         <tr>
           <th>N°</th>
+          <th>Image</th>
           <th>Nom</th>
           <th>Type</th>
           <th class="num">Prix vente</th>
@@ -39,6 +40,11 @@
       <tbody>
         <tr *ngFor="let p of filtered()">
           <td><strong>#{{ p.id }}</strong></td>
+          <td>
+            <img *ngIf="firstImage(p) as img" [src]="img" [alt]="p.name"
+                 style="width:50px;height:40px;object-fit:cover;border-radius:4px;" />
+            <span *ngIf="!firstImage(p)" style="color:#999;font-size:11px;">—</span>
+          </td>
           <td>{{ p.name }}</td>
           <td>{{ p.type }}</td>
           <td class="num">{{ p.priceSale | number:'1.2-2' }} €</td>

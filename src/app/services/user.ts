@@ -36,4 +36,16 @@ export class UserService {
   updateMe(dto: UpdateProfileDto): Observable<UserDetailsDto> {
     return this.http.put<UserDetailsDto>(`${this.apiUrl}/me`, dto);
   }
+
+  /**
+   * Suppression du compte client authentifie (desinscription).
+   * Le mot de passe est requis cote back pour verifier l'identite.
+   * Les donnees personnelles sont anonymisees, l'historique conserve.
+   */
+  deleteMyAccount(password: string): Observable<{ message: string }> {
+    // DELETE avec body : on utilise la propriete `body` de HttpClient.
+    return this.http.request<{ message: string }>('DELETE', `${this.apiUrl}/me`, {
+      body: { password },
+    });
+  }
 }

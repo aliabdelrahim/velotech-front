@@ -12,34 +12,34 @@
         </svg>
         <span>velotech</span>
       </div>
-      <p class="tagline">Plateforme de gestion pour magasins de velo.</p>
+      <p class="tagline">{{ 'FOOTER.TAGLINE' | translate }}</p>
     </div>
 
     <div class="footer-col">
-      <h4>Liens</h4>
+      <h4>{{ 'FOOTER.LINKS' | translate }}</h4>
       <ul>
-        <li><a routerLink="/about">A propos</a></li>
-        <li><a routerLink="/stores">Magasins</a></li>
-        <li><a routerLink="/contact">Contact</a></li>
+        <li><a routerLink="/about">{{ 'FOOTER.ABOUT_US' | translate }}</a></li>
+        <li><a routerLink="/stores">{{ 'FOOTER.STORES' | translate }}</a></li>
+        <li><a routerLink="/contact">{{ 'FOOTER.CONTACT_US' | translate }}</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
-      <h4>Legal</h4>
+      <h4>{{ 'FOOTER.LEGAL' | translate }}</h4>
       <ul>
-        <li><a routerLink="/legal/cgv">CGV</a></li>
-        <li><a routerLink="/legal/cgu">CGU</a></li>
-        <li><a routerLink="/legal">Mentions legales</a></li>
-        <li><a routerLink="/legal/rgpd">RGPD</a></li>
+        <li><a routerLink="/legal/cgv">{{ 'FOOTER.CGV' | translate }}</a></li>
+        <li><a routerLink="/legal/cgu">{{ 'FOOTER.CGU' | translate }}</a></li>
+        <li><a routerLink="/legal">{{ 'FOOTER.LEGAL_NOTICE' | translate }}</a></li>
+        <li><a routerLink="/legal/rgpd">{{ 'FOOTER.GDPR' | translate }}</a></li>
       </ul>
     </div>
 
     <div class="footer-col">
-      <h4>Newsletter</h4>
-      <p class="newsletter-text">Recevez nos bons plans et nouveautes.</p>
+      <h4>{{ 'FOOTER.NEWSLETTER' | translate }}</h4>
+      <p class="newsletter-text">{{ 'FOOTER.NEWSLETTER_TEXT' | translate }}</p>
       <form class="newsletter-form" (submit)="$event.preventDefault()">
-        <input type="email" placeholder="votre@email.com" aria-label="Votre email" />
-        <button type="submit" class="btn btn-primary btn-sm" aria-label="S'abonner">→</button>
+        <input type="email" [placeholder]="'FOOTER.EMAIL_PLACEHOLDER' | translate" [attr.aria-label]="'FOOTER.EMAIL_ARIA' | translate" />
+        <button type="submit" class="btn btn-primary btn-sm" [attr.aria-label]="'FOOTER.SUBSCRIBE' | translate">→</button>
       </form>
     </div>
 
@@ -47,7 +47,7 @@
 
   <div class="footer-bottom">
     <div class="container">
-      <p>© {{ currentYear }} Velotech — Tous droits reserves</p>
+      <p>© {{ currentYear }} Velotech — {{ 'FOOTER.COPYRIGHT' | translate }}</p>
     </div>
   </div>
 </footer>

@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { AppointmentService, AppointmentDetailsDto } from '../../services/appointment';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -10,12 +11,13 @@ type Tab = 'all' | 'upcoming' | 'past' | 'cancelled';
 @Component({
   selector: 'app-my-appointments',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './my-appointments.html',
   styleUrl: './my-appointments.scss',
 })
 export class MyAppointmentsComponent implements OnInit {
   private appointmentService = inject(AppointmentService);
+  private i18n = inject(TranslateService);
 
   appointments = signal<AppointmentDetailsDto[]>([]);
   loading = signal(true);
@@ -67,7 +69,7 @@ export class MyAppointmentsComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.errorMsg.set('Impossible de charger vos rendez-vous.');
+        this.errorMsg.set(this.i18n.instant('APPT.LOAD_ERROR'));
         this.loading.set(false);
       },
     });
@@ -83,7 +85,8 @@ export class MyAppointmentsComponent implements OnInit {
   }
 
   cancel(a: AppointmentDetailsDto): void {
-    if (!confirm(`Annuler le rendez-vous du ${new Date(a.scheduledAt).toLocaleDateString()} ?`))
+    const date = new Date(a.scheduledAt).toLocaleDateString();
+    if (!confirm(this.i18n.instant('APPT.CANCEL_CONFIRM', { date })))
       return;
     this.cancellingId.set(a.appointmentId);
     this.appointmentService.cancel(a.appointmentId).subscribe({
@@ -96,7 +99,7 @@ export class MyAppointmentsComponent implements OnInit {
         this.cancellingId.set(null);
       },
       error: () => {
-        alert('Erreur lors de l\'annulation.');
+        alert(this.i18n.instant('APPT.CANCEL_ERROR'));
         this.cancellingId.set(null);
       },
     });

@@ -13,6 +13,25 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./pages/catalog/catalog').then((m) => m.CatalogComponent),
   },
+  // IMPORTANT : /products/create et /products/edit/:id doivent etre declares
+  // AVANT /products/:id, sinon ces chemins matchent la fiche produit publique
+  // (avec id = "create" ou id = "edit").
+  {
+    path: 'products/create',
+    loadComponent: () =>
+      import('./pages/create-product/create-product').then(
+        (m) => m.CreateProductComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'products/edit/:id',
+    loadComponent: () =>
+      import('./pages/edit-product/edit-product').then(
+        (m) => m.EditProductComponent
+      ),
+    canActivate: [authGuard],
+  },
   {
     path: 'products/:id',
     loadComponent: () =>
@@ -127,6 +146,14 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'rentals/:id/payment',
+    loadComponent: () =>
+      import('./pages/rental-payment/rental-payment').then(
+        (m) => m.RentalPaymentComponent
+      ),
+    canActivate: [authGuard],
+  },
+  {
     path: 'appointments/new',
     loadComponent: () =>
       import('./pages/appointment-new/appointment-new').then(
@@ -175,6 +202,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/back-office/bo-repairs/bo-repairs').then(
             (m) => m.BoRepairsComponent
+          ),
+      },
+      {
+        path: 'payments',
+        loadComponent: () =>
+          import('./pages/back-office/bo-payments/bo-payments').then(
+            (m) => m.BoPaymentsComponent
           ),
       },
       {

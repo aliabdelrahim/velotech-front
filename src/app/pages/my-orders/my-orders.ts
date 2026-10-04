@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrderService, OrderDetailsDto } from '../../services/order';
 import { AuthService } from '../../services/auth';
 import { HeaderComponent } from '../../shared/header/header';
@@ -9,13 +10,14 @@ import { FooterComponent } from '../../shared/footer/footer';
 @Component({
   selector: 'app-my-orders',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './my-orders.html',
   styleUrl: './my-orders.scss',
 })
 export class MyOrdersComponent implements OnInit {
   private orderService = inject(OrderService);
   private auth = inject(AuthService);
+  private i18n = inject(TranslateService);
 
   orders = signal<OrderDetailsDto[]>([]);
   loading = signal(true);
@@ -44,7 +46,7 @@ export class MyOrdersComponent implements OnInit {
         // Fallback : si /me n'existe pas, on tente par storeId
         const storeId = Number(this.auth.getStoreId());
         if (!storeId) {
-          this.errorMsg.set("Impossible de charger vos commandes.");
+          this.errorMsg.set(this.i18n.instant('ORDER.LOAD_ERROR'));
           this.loading.set(false);
           return;
         }
@@ -54,7 +56,7 @@ export class MyOrdersComponent implements OnInit {
             this.loading.set(false);
           },
           error: () => {
-            this.errorMsg.set("Impossible de charger vos commandes.");
+            this.errorMsg.set(this.i18n.instant('ORDER.LOAD_ERROR'));
             this.loading.set(false);
           },
         });

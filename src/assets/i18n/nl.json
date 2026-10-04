@@ -1,0 +1,101 @@
+{
+  "APP": {
+    "TITLE": "Velotech",
+    "TAGLINE": "Webplatform voor het beheer van fietsenwinkels"
+  },
+  "MENU": {
+    "HOME": "Home",
+    "CATALOG": "Catalogus",
+    "STORES": "Winkels",
+    "ABOUT": "Over ons",
+    "CONTACT": "Contact",
+    "LEGAL": "Wettelijke vermeldingen",
+    "LOGIN": "Aanmelden",
+    "REGISTER": "Registreren",
+    "DASHBOARD": "Mijn account",
+    "BACK_OFFICE": "Back-office",
+    "PROFILE": "Profiel",
+    "MY_ORDERS": "Mijn bestellingen",
+    "MY_RENTALS": "Mijn verhuringen",
+    "MY_APPOINTMENTS": "Mijn afspraken",
+    "CART": "Winkelmand",
+    "LOGOUT": "Afmelden"
+  },
+  "COMMON": {
+    "SAVE": "Opslaan",
+    "CANCEL": "Annuleren",
+    "DELETE": "Verwijderen",
+    "EDIT": "Bewerken",
+    "ADD": "Toevoegen",
+    "SEARCH": "Zoeken",
+    "BACK": "Terug",
+    "CONFIRM": "Bevestigen",
+    "LOADING": "Laden...",
+    "YES": "Ja",
+    "NO": "Nee",
+    "REQUIRED": "Verplicht veld",
+    "INVALID_EMAIL": "Ongeldig e-mailadres",
+    "PASSWORD_TOO_SHORT": "Wachtwoord te kort",
+    "ERROR_OCCURRED": "Er is een fout opgetreden",
+    "SUCCESS": "Bewerking geslaagd"
+  },
+  "AUTH": {
+    "EMAIL": "E-mailadres",
+    "PASSWORD": "Wachtwoord",
+    "PASSWORD_CONFIRM": "Wachtwoord bevestigen",
+    "FORGOT_PASSWORD": "Wachtwoord vergeten?",
+    "RESET_PASSWORD": "Wachtwoord opnieuw instellen",
+    "REMEMBER_ME": "Onthoud mij",
+    "SIGN_IN": "Aanmelden",
+    "SIGN_UP": "Account aanmaken",
+    "SIGN_OUT": "Afmelden",
+    "WELCOME_BACK": "Welkom terug",
+    "CREATE_ACCOUNT": "Maak uw Velotech-account aan"
+  },
+  "CATALOG": {
+    "TITLE": "Catalogus",
+    "FILTER_STORE": "Filter op winkel",
+    "FILTER_CATEGORY": "Filter op categorie",
+    "PRICE": "Prijs",
+    "ADD_TO_CART": "Toevoegen aan winkelmand",
+    "RENT": "Huren",
+    "NO_PRODUCTS": "Geen producten beschikbaar"
+  },
+  "CART": {
+    "TITLE": "Mijn winkelmand",
+    "EMPTY": "Uw winkelmand is leeg",
+    "QUANTITY": "Aantal",
+    "SUBTOTAL": "Subtotaal",
+    "TOTAL": "Totaal",
+    "CHECKOUT": "Bestelling plaatsen",
+    "REMOVE": "Verwijderen"
+  },
+  "RENTAL": {
+    "TITLE": "Verhuur",
+    "START_DATE": "Startdatum",
+    "END_DATE": "Einddatum",
+    "DAYS": "dagen",
+    "TOTAL_PRICE": "Totale prijs",
+    "CONFIRM_RENTAL": "Verhuur bevestigen",
+    "CANCEL_RENTAL": "Verhuur annuleren"
+  },
+  "APPOINTMENT": {
+    "TITLE": "Afspraak",
+    "SERVICE_TYPE": "Type dienst",
+    "DATE": "Datum en tijd",
+    "NOTES": "Opmerkingen",
+    "BOOK": "Reserveren"
+  },
+  "FOOTER": {
+    "ABOUT_US": "Over ons",
+    "CONTACT_US": "Contacteer ons",
+    "TERMS": "Algemene voorwaarden",
+    "PRIVACY": "Privacybeleid",
+    "COPYRIGHT": "Alle rechten voorbehouden"
+  },
+  "LANG": {
+    "SWITCH": "Taal",
+    "FR": "Français",
+    "NL": "Nederlands"
+  }
+}

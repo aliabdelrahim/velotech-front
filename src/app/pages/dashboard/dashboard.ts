@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth';
 import { OrderService, OrderDetailsDto } from '../../services/order';
 import { CartService } from '../../services/cart';
@@ -10,7 +11,7 @@ import { FooterComponent } from '../../shared/footer/footer';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

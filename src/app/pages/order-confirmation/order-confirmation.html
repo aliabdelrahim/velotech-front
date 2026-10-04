@@ -5,11 +5,11 @@
 
     <!-- Stepper -->
     <ol class="stepper">
-      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Panier</span></li>
-      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Livraison</span></li>
-      <li class="step done"><span class="step-circle">✓</span><span class="step-label">Paiement</span></li>
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">{{ 'ORDER_CONFIRM.STEP_CART' | translate }}</span></li>
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">{{ 'ORDER_CONFIRM.STEP_SHIPPING' | translate }}</span></li>
+      <li class="step done"><span class="step-circle">✓</span><span class="step-label">{{ 'ORDER_CONFIRM.STEP_PAYMENT' | translate }}</span></li>
       <li class="step current">
-        <span class="step-circle">4</span><span class="step-label">Confirmation</span>
+        <span class="step-circle">4</span><span class="step-label">{{ 'ORDER_CONFIRM.STEP_CONFIRM' | translate }}</span>
       </li>
     </ol>
 
@@ -20,20 +20,20 @@
           <path d="M 18 32 L 28 42 L 46 22" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
-      <h1>Commande confirmée !</h1>
-      <p class="lead">Merci pour votre achat. Votre commande a bien été enregistrée.</p>
+      <h1>{{ 'ORDER_CONFIRM.TITLE' | translate }}</h1>
+      <p class="lead">{{ 'ORDER_CONFIRM.LEAD' | translate }}</p>
       <p class="order-ref">
-        Référence de commande : <strong>{{ orderRef() }}</strong>
+        {{ 'ORDER_CONFIRM.REFERENCE' | translate }} <strong>{{ orderRef() }}</strong>
       </p>
     </section>
 
     <section class="email-row">
-      Un email de confirmation a été envoyé à <strong>{{ email }}</strong>
+      {{ 'ORDER_CONFIRM.EMAIL_SENT' | translate }} <strong>{{ email }}</strong>
     </section>
 
     <div class="actions">
-      <a routerLink="/my-orders" class="btn btn-outline btn-lg">Voir mes commandes</a>
-      <a routerLink="/catalog/1" class="btn btn-primary btn-lg">Continuer mes achats</a>
+      <a routerLink="/my-orders" class="btn btn-outline btn-lg">{{ 'ORDER_CONFIRM.VIEW_ORDERS' | translate }}</a>
+      <a routerLink="/catalog/1" class="btn btn-primary btn-lg">{{ 'ORDER_CONFIRM.CONTINUE_SHOPPING' | translate }}</a>
     </div>
 
   </div>

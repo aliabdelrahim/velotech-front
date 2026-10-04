@@ -6,68 +6,69 @@
 
       <!-- Pitch a gauche -->
       <aside class="pitch">
-        <p class="eyebrow">Espace personnel</p>
-        <h1>Heureux de vous<br />revoir.</h1>
+        <p class="eyebrow">{{ 'LOGIN.EYEBROW' | translate }}</p>
+        <h1>{{ 'LOGIN.TITLE_L1' | translate }}<br />{{ 'LOGIN.TITLE_L2' | translate }}</h1>
         <p class="lead">
-          Connectez-vous pour acceder a votre tableau de bord, suivre vos commandes,
-          gerer vos locations et vos rendez-vous d'atelier.
+          {{ 'LOGIN.LEAD' | translate }}
         </p>
         <p class="register-hint">
-          Pas encore de compte ?
-          <a routerLink="/register">Creer un compte</a>
+          {{ 'LOGIN.REGISTER_HINT' | translate }}
+          <a routerLink="/register">{{ 'LOGIN.REGISTER_LINK' | translate }}</a>
         </p>
       </aside>
 
       <!-- Form a droite -->
       <section class="form-card card">
         <header class="form-head">
-          <h2>Connexion</h2>
-          <p>Acces a votre espace Velotech.</p>
+          <h2>{{ 'LOGIN.FORM_TITLE' | translate }}</h2>
+          <p>{{ 'LOGIN.FORM_SUBTITLE' | translate }}</p>
         </header>
 
         <form (ngSubmit)="onSubmit()">
           <div class="field">
-            <label for="email">Adresse email</label>
+            <label for="email">{{ 'LOGIN.EMAIL' | translate }}</label>
             <input
               id="email"
               name="email"
               type="email"
               autocomplete="email"
-              placeholder="vous@example.com"
-              [(ngModel)]="model.email"
+              [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
               required
             />
           </div>
 
           <div class="field">
-            <label for="password">Mot de passe</label>
+            <label for="password">{{ 'LOGIN.PASSWORD' | translate }}</label>
             <input
               id="password"
               name="password"
               type="password"
               autocomplete="current-password"
               placeholder="••••••••"
-              [(ngModel)]="model.password"
+              [ngModel]="password()"
+              (ngModelChange)="password.set($event)"
               required
             />
           </div>
 
           <p class="forgot">
-            <a routerLink="/forgot-password">Mot de passe oublie ?</a>
+            <a routerLink="/forgot-password">{{ 'LOGIN.FORGOT' | translate }}</a>
           </p>
 
-          <button type="submit" class="btn btn-primary btn-lg full" [disabled]="isLoading">
-            {{ isLoading ? 'Connexion...' : 'Se connecter' }}
+          <button type="submit" class="btn btn-primary btn-lg full" [disabled]="isLoading()">
+            {{ isLoading() ? ('LOGIN.SUBMITTING' | translate) : ('LOGIN.SUBMIT' | translate) }}
           </button>
 
-          <p class="error-banner" *ngIf="errorMessage">
+          <p class="error-banner" *ngIf="errorMessage()">
             <span class="icon">!</span>
-            {{ errorMessage }}
+            {{ errorMessage() }}
           </p>
 
           <p class="register-link">
-            Pas encore de compte ?
-            <a routerLink="/register">Inscription</a>
+            {{ 'LOGIN.NO_ACCOUNT' | translate }}
+            <a routerLink="/register">{{ 'LOGIN.SIGN_UP' | translate }}</a>
           </p>
         </form>
       </section>

@@ -20,16 +20,19 @@
 
     <!-- Navigation -->
     <nav class="nav" aria-label="Navigation principale">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Accueil</a>
-      <a routerLink="/catalog/1" routerLinkActive="active">Catalogue</a>
-      <a routerLink="/stores" routerLinkActive="active">Magasins</a>
-      <a routerLink="/about" routerLinkActive="active">A propos</a>
-      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ 'MENU.HOME' | translate }}</a>
+      <a routerLink="/catalog/1" routerLinkActive="active">{{ 'MENU.CATALOG' | translate }}</a>
+      <a routerLink="/stores" routerLinkActive="active">{{ 'MENU.STORES' | translate }}</a>
+      <a routerLink="/about" routerLinkActive="active">{{ 'MENU.ABOUT' | translate }}</a>
+      <a routerLink="/contact" routerLinkActive="active">{{ 'MENU.CONTACT' | translate }}</a>
     </nav>
 
     <!-- Actions -->
     <div class="actions">
-      <a routerLink="/cart" class="icon-btn" aria-label="Mon panier">
+      <!-- Selecteur de langue FR / NL -->
+      <app-language-switcher />
+
+      <a routerLink="/cart" class="icon-btn" [attr.aria-label]="'MENU.CART' | translate">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 4h3l3 14h14l3-10H7"/>
           <circle cx="10" cy="22" r="1.5"/>
@@ -39,19 +42,20 @@
       </a>
 
       <ng-container *ngIf="!isLoggedIn; else loggedActions">
-        <a routerLink="/login" class="btn btn-secondary btn-sm">Se connecter</a>
+        <a routerLink="/login" class="btn btn-secondary btn-sm">{{ 'AUTH.SIGN_IN' | translate }}</a>
       </ng-container>
 
       <ng-template #loggedActions>
-        <a routerLink="/profile" class="icon-btn" aria-label="Mon profil" title="Mon profil">
+        <a routerLink="/profile" class="icon-btn" [attr.aria-label]="'MENU.PROFILE' | translate" [attr.title]="'MENU.PROFILE' | translate">
           <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
             <circle cx="12" cy="7" r="4"/>
           </svg>
         </a>
-        <a [routerLink]="dashboardLink" class="btn btn-outline btn-sm">Mon espace</a>
-        <button class="btn btn-ghost btn-sm" (click)="logout()" aria-label="Se deconnecter">
-          Deconnexion
+        <a [routerLink]="dashboardLink" class="btn btn-outline btn-sm">{{ 'MENU.DASHBOARD' | translate }}</a>
+        <a *ngIf="hasBackOfficeAccess" routerLink="/back-office" class="btn btn-primary btn-sm">{{ 'MENU.BACK_OFFICE' | translate }}</a>
+        <button class="btn btn-ghost btn-sm" (click)="logout()" [attr.aria-label]="'MENU.LOGOUT' | translate">
+          {{ 'MENU.LOGOUT' | translate }}
         </button>
       </ng-template>
     </div>

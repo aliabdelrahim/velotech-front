@@ -4,32 +4,32 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/dashboard">Mon espace</a>
+      <a routerLink="/dashboard">{{ 'RENTAL.BREADCRUMB_DASHBOARD' | translate }}</a>
       <span>›</span>
-      <strong>Mes commandes</strong>
+      <strong>{{ 'ORDER.BREADCRUMB' | translate }}</strong>
     </nav>
 
     <header class="page-head">
       <div>
-        <h1>Mes commandes</h1>
+        <h1>{{ 'ORDER.TITLE' | translate }}</h1>
         <p class="page-subtitle">
-          {{ orders().length }} commande(s)
+          {{ 'ORDER.SUBTITLE_COUNT' | translate:{ count: orders().length } }}
           <span *ngIf="orders().length > 0">
-            · Total dépensé {{ totalSpent() | number:'1.2-2' }} €
+            {{ 'ORDER.SUBTITLE_SPENT' | translate:{ amount: (totalSpent() | number:'1.2-2') } }}
           </span>
         </p>
       </div>
-      <a routerLink="/catalog/1" class="btn btn-outline btn-sm">+ Nouvel achat</a>
+      <a routerLink="/catalog/1" class="btn btn-outline btn-sm">{{ 'ORDER.NEW_PURCHASE' | translate }}</a>
     </header>
 
     <ng-container *ngIf="!loading(); else loadingTpl">
       <ng-container *ngIf="!errorMsg(); else errorTpl">
 
         <div class="empty" *ngIf="orders().length === 0">
-          <p>Vous n'avez pas encore passé de commande.</p>
-          <a routerLink="/catalog/1" class="btn btn-primary">Voir le catalogue</a>
+          <p>{{ 'ORDER.EMPTY' | translate }}</p>
+          <a routerLink="/catalog/1" class="btn btn-primary">{{ 'ORDER.SEE_CATALOG' | translate }}</a>
         </div>
 
         <div class="orders-list" *ngIf="orders().length > 0">
@@ -42,9 +42,9 @@
               </div>
               <div class="order-meta">
                 <span class="store">{{ o.storeName }}</span>
-                <span class="items-count">{{ o.items.length }} article(s)</span>
+                <span class="items-count">{{ 'ORDER.ITEMS' | translate:{ count: o.items.length } }}</span>
                 <span class="total">{{ o.totalAmount | number:'1.2-2' }} €</span>
-                <button type="button" class="chevron" [class.open]="isExpanded(o.orderId)" aria-label="Voir le detail">▾</button>
+                <button type="button" class="chevron" [class.open]="isExpanded(o.orderId)" [attr.aria-label]="'ORDER.VIEW_DETAIL_ARIA' | translate">▾</button>
               </div>
             </header>
 
@@ -52,10 +52,10 @@
               <table>
                 <thead>
                   <tr>
-                    <th>Article</th>
-                    <th>Quantité</th>
-                    <th>P.U.</th>
-                    <th>Total</th>
+                    <th>{{ 'ORDER.TABLE_ARTICLE' | translate }}</th>
+                    <th>{{ 'ORDER.TABLE_QTY' | translate }}</th>
+                    <th>{{ 'ORDER.TABLE_UNIT_PRICE' | translate }}</th>
+                    <th>{{ 'ORDER.TABLE_TOTAL' | translate }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
     </ng-container>
 
     <ng-template #loadingTpl>
-      <p class="state-msg">Chargement de vos commandes…</p>
+      <p class="state-msg">{{ 'ORDER.LOADING' | translate }}</p>
     </ng-template>
 
     <ng-template #errorTpl>

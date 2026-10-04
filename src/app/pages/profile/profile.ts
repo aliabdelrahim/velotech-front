@@ -1,8 +1,10 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { UserService, UpdateProfileDto, UserDetailsDto } from '../../services/user';
+import { AuthService } from '../../services/auth';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
@@ -25,12 +27,21 @@ interface FieldErrors {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
 export class ProfileComponent implements OnInit {
   private userService = inject(UserService);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+  private i18n = inject(TranslateService);
+
+  // Etat de la modale de desinscription
+  showDeleteModal = signal(false);
+  deletePassword = signal('');
+  deleting = signal(false);
+  deleteError = signal<string | null>(null);
 
   loading = signal(true);
   loadError = signal<string | null>(null);
@@ -57,7 +68,7 @@ export class ProfileComponent implements OnInit {
         this.loading.set(false);
       },
       error: () => {
-        this.loadError.set('Impossible de charger votre profil.');
+        this.loadError.set(this.i18n.instant('PROFILE.LOAD_ERROR'));
         this.loading.set(false);
       },
     });
@@ -72,25 +83,25 @@ export class ProfileComponent implements OnInit {
     const e: FieldErrors = {};
 
     if (!m.name.trim() || m.name.trim().length < 2) {
-      e.name = 'Le nom doit contenir au moins 2 caracteres';
+      e.name = this.i18n.instant('PROFILE.ERR_NAME');
     }
     if (!m.email.trim()) {
-      e.email = 'Email requis';
+      e.email = this.i18n.instant('PROFILE.ERR_EMAIL');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.email.trim())) {
-      e.email = "Format d'email invalide";
+      e.email = this.i18n.instant('PROFILE.ERR_EMAIL_FORMAT');
     }
 
     // Validation mot de passe : seulement si l'utilisateur veut le changer
     const wantsChange = !!(m.currentPassword || m.newPassword || m.confirmNewPassword);
     if (wantsChange) {
       if (!m.currentPassword) {
-        e.currentPassword = 'Saisissez votre mot de passe actuel';
+        e.currentPassword = this.i18n.instant('PROFILE.ERR_CURRENT_PWD');
       }
       if (!m.newPassword || m.newPassword.length < 6) {
-        e.newPassword = 'Nouveau mot de passe : 6 caracteres minimum';
+        e.newPassword = this.i18n.instant('PROFILE.ERR_NEW_PWD');
       }
       if (m.newPassword !== m.confirmNewPassword) {
-        e.confirmNewPassword = 'Les mots de passe ne correspondent pas';
+        e.confirmNewPassword = this.i18n.instant('PROFILE.ERR_CONFIRM_PWD');
       }
     }
 
@@ -123,13 +134,50 @@ export class ProfileComponent implements OnInit {
           newPassword: '',
           confirmNewPassword: '',
         }));
-        this.successMsg.set('Profil mis a jour avec succes.');
+        this.successMsg.set(this.i18n.instant('PROFILE.SUCCESS'));
         this.submitting.set(false);
       },
       error: (err) => {
         this.submitting.set(false);
         const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;
-        this.serverError.set(msg || 'Erreur lors de la mise a jour.');
+        this.serverError.set(msg || this.i18n.instant('PROFILE.UPDATE_ERROR'));
+      },
+    });
+  }
+
+  // ===== Desinscription du compte =====
+
+  openDeleteModal(): void {
+    this.deletePassword.set('');
+    this.deleteError.set(null);
+    this.showDeleteModal.set(true);
+  }
+
+  closeDeleteModal(): void {
+    if (this.deleting()) return;
+    this.showDeleteModal.set(false);
+  }
+
+  confirmDelete(): void {
+    const pwd = this.deletePassword();
+    if (!pwd) {
+      this.deleteError.set(this.i18n.instant('PROFILE.DELETE_ERR_PWD_REQUIRED'));
+      return;
+    }
+
+    this.deleting.set(true);
+    this.deleteError.set(null);
+
+    this.userService.deleteMyAccount(pwd).subscribe({
+      next: () => {
+        // Compte supprime : purge du token local + redirection vers l'accueil
+        this.auth.logout();
+        this.router.navigate(['/'], { queryParams: { accountDeleted: 1 } });
+      },
+      error: (err) => {
+        this.deleting.set(false);
+        const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;
+        this.deleteError.set(msg || this.i18n.instant('PROFILE.DELETE_ERROR'));
       },
     });
   }

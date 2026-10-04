@@ -4,21 +4,21 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/dashboard">Mon espace</a>
+      <a routerLink="/dashboard">{{ 'RENTAL.BREADCRUMB_DASHBOARD' | translate }}</a>
       <span>›</span>
-      <strong>Mes locations</strong>
+      <strong>{{ 'RENTAL.PAGE_TITLE' | translate }}</strong>
     </nav>
 
     <header class="page-head">
       <div>
-        <h1>Mes locations</h1>
+        <h1>{{ 'RENTAL.PAGE_TITLE' | translate }}</h1>
         <p class="page-subtitle">
-          {{ totals().all }} location(s) au total
+          {{ 'RENTAL.SUBTITLE' | translate:{ count: totals().all } }}
         </p>
       </div>
-      <a routerLink="/rentals/new" class="btn btn-primary btn-sm">+ Reserver une location</a>
+      <a routerLink="/rentals/new" class="btn btn-primary btn-sm">{{ 'RENTAL.NEW' | translate }}</a>
     </header>
 
     <ng-container *ngIf="!loading(); else loadingTpl">
@@ -29,34 +29,34 @@
           <button type="button"
             [class.active]="activeTab() === 'all'"
             (click)="setTab('all')">
-            Toutes ({{ totals().all }})
+            {{ 'RENTAL.TAB_ALL' | translate }} ({{ totals().all }})
           </button>
           <button type="button"
             [class.active]="activeTab() === 'active'"
             (click)="setTab('active')">
-            En cours / a venir ({{ totals().active }})
+            {{ 'RENTAL.TAB_ACTIVE' | translate }} ({{ totals().active }})
           </button>
           <button type="button"
             [class.active]="activeTab() === 'past'"
             (click)="setTab('past')">
-            Passees ({{ totals().past }})
+            {{ 'RENTAL.TAB_PAST' | translate }} ({{ totals().past }})
           </button>
           <button type="button"
             [class.active]="activeTab() === 'cancelled'"
             (click)="setTab('cancelled')">
-            Annulees ({{ totals().cancelled }})
+            {{ 'RENTAL.TAB_CANCELLED' | translate }} ({{ totals().cancelled }})
           </button>
         </div>
 
         <!-- Empty state -->
         <div class="empty" *ngIf="filtered().length === 0">
           <p *ngIf="rentals().length === 0">
-            Vous n'avez encore aucune location.
+            {{ 'RENTAL.EMPTY_ALL' | translate }}
           </p>
           <p *ngIf="rentals().length > 0">
-            Aucune location dans cette categorie.
+            {{ 'RENTAL.EMPTY_CATEGORY' | translate }}
           </p>
-          <a routerLink="/rentals/new" class="btn btn-primary">Reserver maintenant</a>
+          <a routerLink="/rentals/new" class="btn btn-primary">{{ 'RENTAL.BOOK_NOW' | translate }}</a>
         </div>
 
         <!-- Cards -->
@@ -69,21 +69,21 @@
                 <h3>{{ r.productName }}</h3>
                 <p class="store">📍 {{ r.storeName }}</p>
               </div>
-              <span class="badge" [ngClass]="statusClass(r.status)">{{ r.status }}</span>
+              <span class="badge" [ngClass]="statusClass(r.status)">{{ statusLabel(r.status) }}</span>
             </header>
 
             <div class="dates">
               <div class="date-box">
-                <span class="label">Debut</span>
+                <span class="label">{{ 'RENTAL.START' | translate }}</span>
                 <span class="value">{{ r.startDate | date:'dd MMM yyyy' }}</span>
               </div>
               <div class="separator">→</div>
               <div class="date-box">
-                <span class="label">Fin</span>
+                <span class="label">{{ 'RENTAL.END' | translate }}</span>
                 <span class="value">{{ r.endDate | date:'dd MMM yyyy' }}</span>
               </div>
               <div class="duration">
-                <span>{{ daysBetween(r.startDate, r.endDate) }} jours</span>
+                <span>{{ 'RENTAL.DAYS' | translate:{ count: daysBetween(r.startDate, r.endDate) } }}</span>
               </div>
             </div>
 
@@ -97,7 +97,7 @@
                   class="btn btn-ghost btn-sm"
                   [disabled]="cancellingId() === r.rentalId"
                   (click)="cancel(r)">
-                  {{ cancellingId() === r.rentalId ? 'Annulation…' : 'Annuler' }}
+                  {{ cancellingId() === r.rentalId ? ('RENTAL.CANCELLING' | translate) : ('RENTAL.CANCEL' | translate) }}
                 </button>
               </div>
             </footer>
@@ -108,7 +108,7 @@
     </ng-container>
 
     <ng-template #loadingTpl>
-      <p class="state-msg">Chargement de vos locations…</p>
+      <p class="state-msg">{{ 'RENTAL.LOADING' | translate }}</p>
     </ng-template>
 
     <ng-template #errorTpl>

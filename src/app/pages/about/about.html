@@ -5,12 +5,10 @@
   <!-- Hero -->
   <section class="hero">
     <div class="container">
-      <p class="eyebrow">Notre histoire</p>
-      <h1>Le vélo,<br />une affaire de quartier.</h1>
+      <p class="eyebrow">{{ 'ABOUT.EYEBROW' | translate }}</p>
+      <h1>{{ 'ABOUT.TITLE_L1' | translate }}<br />{{ 'ABOUT.TITLE_L2' | translate }}</h1>
       <p class="lead">
-        Velotech connecte les magasins de vélo indépendants de Belgique pour offrir
-        une expérience numérique moderne tout en gardant le contact humain qui fait
-        la richesse du commerce local.
+        {{ 'ABOUT.LEAD' | translate }}
       </p>
     </div>
   </section>
@@ -20,22 +18,18 @@
     <div class="container">
       <div class="mission-grid">
         <div>
-          <h2>Notre mission</h2>
+          <h2>{{ 'ABOUT.MISSION_TITLE' | translate }}</h2>
           <p>
-            Permettre aux magasins de vélo indépendants de proposer une expérience
-            numérique au niveau des grandes enseignes (catalogue en ligne, paiement,
-            réservation atelier) sans perdre leur identité ni leur indépendance.
+            {{ 'ABOUT.MISSION_P1' | translate }}
           </p>
           <p>
-            Nous mutualisons la plateforme technique, vous gardez la main sur votre
-            commerce, vos stocks, vos clients et vos prix.
+            {{ 'ABOUT.MISSION_P2' | translate }}
           </p>
         </div>
         <div class="big-quote">
           <span class="quote-mark">"</span>
           <p>
-            Faire passer la mobilité douce du discours marketing à la réalité du
-            quotidien, un magasin de quartier à la fois.
+            {{ 'ABOUT.QUOTE' | translate }}
           </p>
         </div>
       </div>
@@ -45,12 +39,12 @@
   <!-- Valeurs -->
   <section class="values">
     <div class="container">
-      <h2 class="section-title">Nos valeurs</h2>
+      <h2 class="section-title">{{ 'ABOUT.VALUES_TITLE' | translate }}</h2>
       <div class="values-grid">
         <article *ngFor="let v of values" class="value-card card">
           <div class="value-icon">{{ v.icon }}</div>
-          <h3>{{ v.title }}</h3>
-          <p>{{ v.text }}</p>
+          <h3>{{ v.titleKey | translate }}</h3>
+          <p>{{ v.textKey | translate }}</p>
         </article>
       </div>
     </div>
@@ -59,11 +53,11 @@
   <!-- Timeline -->
   <section class="timeline">
     <div class="container">
-      <h2 class="section-title">Notre parcours</h2>
+      <h2 class="section-title">{{ 'ABOUT.TIMELINE_TITLE' | translate }}</h2>
       <ol class="milestones">
         <li *ngFor="let m of milestones">
           <span class="year">{{ m.year }}</span>
-          <span class="event">{{ m.event }}</span>
+          <span class="event">{{ m.eventKey | translate }}</span>
         </li>
       </ol>
     </div>
@@ -72,12 +66,12 @@
   <!-- Équipe -->
   <section class="team">
     <div class="container">
-      <h2 class="section-title">L'équipe</h2>
+      <h2 class="section-title">{{ 'ABOUT.TEAM_TITLE' | translate }}</h2>
       <div class="team-grid">
         <article *ngFor="let t of team" class="team-card card">
           <div class="avatar">{{ t.initials }}</div>
           <h3>{{ t.name }}</h3>
-          <p>{{ t.role }}</p>
+          <p>{{ t.roleKey | translate }}</p>
         </article>
       </div>
     </div>
@@ -86,9 +80,9 @@
   <!-- CTA final -->
   <section class="cta">
     <div class="container">
-      <h2>Vous êtes magasin de vélo ?</h2>
-      <p>Rejoignez le réseau Velotech et offrez à vos clients une expérience numérique premium.</p>
-      <a routerLink="/contact" class="btn btn-primary btn-lg">Nous contacter</a>
+      <h2>{{ 'ABOUT.CTA_TITLE' | translate }}</h2>
+      <p>{{ 'ABOUT.CTA_TEXT' | translate }}</p>
+      <a routerLink="/contact" class="btn btn-primary btn-lg">{{ 'ABOUT.CTA_BTN' | translate }}</a>
     </div>
   </section>
 

@@ -4,15 +4,15 @@
   <div class="container">
 
     <nav class="breadcrumb">
-      <a routerLink="/">Accueil</a>
+      <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <strong>Nos magasins</strong>
+      <strong>{{ 'STORES.BREADCRUMB' | translate }}</strong>
     </nav>
 
     <header class="page-head">
-      <h1>Nos magasins</h1>
+      <h1>{{ 'STORES.TITLE' | translate }}</h1>
       <p class="page-subtitle">
-        {{ filtered().length }} magasin(s) Velotech a votre service.
+        {{ 'STORES.SUBTITLE' | translate:{ count: filtered().length } }}
       </p>
     </header>
 
@@ -27,7 +27,7 @@
           </svg>
           <input
             type="search"
-            placeholder="Rechercher (ville, code postal, nom)…"
+            [placeholder]="'STORES.SEARCH_PLACEHOLDER' | translate"
             [ngModel]="searchTerm()"
             (ngModelChange)="onSearch($event)"
           />
@@ -50,20 +50,20 @@
                   class="cta"
                   (click)="$event.stopPropagation()"
                 >
-                  Voir le catalogue →
+                  {{ 'STORES.VIEW_CATALOG' | translate }}
                 </a>
               </li>
             </ul>
 
             <ng-template #emptyTpl>
-              <p class="state-msg">Aucun magasin ne correspond a votre recherche.</p>
+              <p class="state-msg">{{ 'STORES.NO_MATCH' | translate }}</p>
             </ng-template>
 
           </ng-container>
         </ng-container>
 
         <ng-template #loadingTpl>
-          <p class="state-msg">Chargement des magasins…</p>
+          <p class="state-msg">{{ 'STORES.LOADING' | translate }}</p>
         </ng-template>
 
         <ng-template #errorTpl>

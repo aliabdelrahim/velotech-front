@@ -1,23 +1,116 @@
-<h1>Modifier produit</h1>
+<div class="product-form-page">
+  <div class="form-card">
 
-<form (ngSubmit)="onSubmit()">
+    <header class="form-head">
+      <div>
+        <p class="eyebrow">Back-office · Produit #{{ productId() }}</p>
+        <h1>Modifier le produit</h1>
+      </div>
+      <a routerLink="/back-office/products" class="btn-link">← Retour</a>
+    </header>
 
-  <input [(ngModel)]="model.name" name="name" placeholder="Nom" required />
+    <p class="state-msg" *ngIf="loadingProduct()">Chargement du produit…</p>
 
-  <select [(ngModel)]="model.type" name="type">
-    <option value="Bike">Bike</option>
-    <option value="Accessory">Accessory</option>
-  </select>
+    <form (ngSubmit)="onSubmit()" class="product-form" *ngIf="!loadingProduct()">
 
-  <input [(ngModel)]="model.priceSale" name="priceSale" type="number" />
+      <div class="form-group">
+        <label for="name">Nom du produit *</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          [ngModel]="model().name"
+          (ngModelChange)="set('name', $event)"
+          placeholder="Ex : Vélo route RC120"
+          required
+        />
+      </div>
 
-  <label>
-    <input type="checkbox" [(ngModel)]="model.isRentable" name="isRentable" />
-    Louable
-  </label>
+      <div class="form-row two">
+        <div class="form-group">
+          <label for="type">Type *</label>
+          <select
+            id="type"
+            name="type"
+            [ngModel]="model().type"
+            (ngModelChange)="set('type', $event); onTypeChange()"
+          >
+            <option value="Bike">Vélo (Bike)</option>
+            <option value="Accessory">Accessoire</option>
+          </select>
+        </div>
 
-  <input [(ngModel)]="model.priceRental" name="priceRental" type="number" />
+        <div class="form-group">
+          <label for="priceSale">Prix de vente (€) *</label>
+          <input
+            id="priceSale"
+            name="priceSale"
+            type="number"
+            [ngModel]="model().priceSale"
+            (ngModelChange)="set('priceSale', +$event)"
+            min="0.01"
+            step="0.01"
+            required
+          />
+        </div>
+      </div>
 
-  <button type="submit">Sauvegarder</button>
+      <div class="form-group checkbox-group">
+        <label class="check-row">
+          <input
+            type="checkbox"
+            name="isRentable"
+            [checked]="model().isRentable"
+            (change)="set('isRentable', !model().isRentable); onRentableChange()"
+          />
+          <span>Produit disponible à la location</span>
+        </label>
+      </div>
 
-</form>
+      <div class="form-group" *ngIf="model().isRentable">
+        <label for="priceRental">Prix de location par jour (€)</label>
+        <input
+          id="priceRental"
+          name="priceRental"
+          type="number"
+          [ngModel]="model().priceRental"
+          (ngModelChange)="set('priceRental', +$event)"
+          min="0.01"
+          step="0.01"
+          placeholder="Ex : 25.00"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="imageUrls">Images du produit (une URL par ligne)</label>
+        <textarea
+          id="imageUrls"
+          name="imageUrls"
+          rows="4"
+          [ngModel]="model().imageUrls"
+          (ngModelChange)="set('imageUrls', $event)"
+          placeholder="https://images.unsplash.com/photo-xxx1&#10;https://images.unsplash.com/photo-xxx2&#10;https://images.unsplash.com/photo-xxx3"
+        ></textarea>
+        <p class="hint-section">
+          La <strong>première URL</strong> sera utilisée comme image principale (cartes catalogue, panier). Les suivantes forment la galerie sur la fiche produit. Séparez par des virgules, points-virgules ou sauts de ligne.
+        </p>
+        <div class="images-gallery" *ngIf="parsedImages().length > 0">
+          <div class="gallery-item" *ngFor="let url of parsedImages(); let i = index">
+            <img [src]="url" [alt]="'Image ' + (i+1)" (error)="$event.target.style.opacity='0.3'" />
+            <span class="gallery-badge" *ngIf="i === 0">Principale</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a routerLink="/back-office/products" class="btn btn-ghost">Annuler</a>
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
+          {{ isLoading() ? 'Enregistrement…' : 'Sauvegarder' }}
+        </button>
+      </div>
+
+      <p *ngIf="errorMessage()" class="error-message">{{ errorMessage() }}</p>
+    </form>
+
+  </div>
+</div>

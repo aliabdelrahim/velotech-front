@@ -10,6 +10,8 @@ export interface ProductDetailsDto {
   priceSale: number;
   priceRental: number | null;
   isRentable: boolean;
+  /** URLs des images concatenees et separees par des virgules. */
+  imageUrls?: string | null;
 }
 
 export interface CreateProductDto {
@@ -18,6 +20,27 @@ export interface CreateProductDto {
   priceSale: number;
   priceRental: number | null;
   isRentable: boolean;
+  imageUrls?: string | null;
+}
+
+/**
+ * Parse le champ CSV `imageUrls` en tableau d'URLs propres.
+ * - Trim de chaque URL
+ * - Supprime les entrees vides
+ * - Supporte separation par virgule, point-virgule ou saut de ligne
+ */
+export function parseImageUrls(csv?: string | null): string[] {
+  if (!csv) return [];
+  return csv
+    .split(/[,;\n]+/)
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0);
+}
+
+/** Premiere image = image principale (null si aucune). */
+export function firstImage(p: { imageUrls?: string | null }): string | null {
+  const list = parseImageUrls(p.imageUrls);
+  return list.length > 0 ? list[0] : null;
 }
 
 @Injectable({

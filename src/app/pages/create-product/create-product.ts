@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { CreateProductDto, ProductService } from '../../services/product';
+import { CreateProductDto, ProductService, parseImageUrls } from '../../services/product';
 
 @Component({
   selector: 'app-create-product',
@@ -15,57 +15,65 @@ export class CreateProductComponent {
   private productService = inject(ProductService);
   private router = inject(Router);
 
-  model: CreateProductDto = {
+  model = signal<CreateProductDto>({
     name: '',
     type: 'Accessory',
     priceSale: 0,
     priceRental: null,
     isRentable: false,
-  };
+    imageUrls: '',
+  });
 
-  isLoading = false;
-  errorMessage = '';
+  isLoading = signal(false);
+  errorMessage = signal<string>('');
+
+  parsedImages() {
+    return parseImageUrls(this.model().imageUrls);
+  }
+
+  set<K extends keyof CreateProductDto>(key: K, value: CreateProductDto[K]): void {
+    this.model.update((m) => ({ ...m, [key]: value }));
+  }
 
   onRentableChange(): void {
-    if (!this.model.isRentable) {
-      this.model.priceRental = null;
+    const m = this.model();
+    if (!m.isRentable) {
+      this.set('priceRental', null);
     }
-
-    if (this.model.isRentable && this.model.type !== 'Bike') {
-      this.model.type = 'Bike';
+    if (m.isRentable && m.type !== 'Bike') {
+      this.set('type', 'Bike');
     }
   }
 
   onTypeChange(): void {
-    if (this.model.type !== 'Bike') {
-      this.model.isRentable = false;
-      this.model.priceRental = null;
+    const m = this.model();
+    if (m.type !== 'Bike') {
+      this.set('isRentable', false);
+      this.set('priceRental', null);
     }
   }
 
   onSubmit(): void {
-    this.errorMessage = '';
-    this.isLoading = true;
+    this.errorMessage.set('');
+    this.isLoading.set(true);
 
+    const m = this.model();
     const dto: CreateProductDto = {
-      ...this.model,
-      priceRental: this.model.isRentable ? this.model.priceRental : null,
+      ...m,
+      priceRental: m.isRentable ? m.priceRental : null,
     };
 
     this.productService.createProduct(dto).subscribe({
-      next: (createdProduct) => {
-        console.log('Produit créé :', createdProduct);
-        this.isLoading = false;
-        this.router.navigateByUrl('/products');
+      next: () => {
+        this.isLoading.set(false);
+        this.router.navigateByUrl('/back-office/products');
       },
       error: (error) => {
-        console.error('Erreur création produit :', error);
-        this.isLoading = false;
-
+        this.isLoading.set(false);
         if (error.status === 400) {
-          this.errorMessage = error.error || 'Données invalides.';
+          this.errorMessage.set(error.error || 'Données invalides.');
         } else {
-          this.errorMessage = 'Impossible de créer le produit.';
+          this.errorMessage.set('Impossible de créer le produit.');
         }
       },
     });
