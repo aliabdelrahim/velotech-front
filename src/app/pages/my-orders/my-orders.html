@@ -21,7 +21,7 @@
           </span>
         </p>
       </div>
-      <a routerLink="/catalog/1" class="btn btn-outline btn-sm">{{ 'ORDER.NEW_PURCHASE' | translate }}</a>
+      <a routerLink="/catalog" class="btn btn-outline btn-sm">{{ 'ORDER.NEW_PURCHASE' | translate }}</a>
     </header>
 
     <ng-container *ngIf="!loading(); else loadingTpl">
@@ -29,7 +29,7 @@
 
         <div class="empty" *ngIf="orders().length === 0">
           <p>{{ 'ORDER.EMPTY' | translate }}</p>
-          <a routerLink="/catalog/1" class="btn btn-primary">{{ 'ORDER.SEE_CATALOG' | translate }}</a>
+          <a routerLink="/catalog" class="btn btn-primary">{{ 'ORDER.SEE_CATALOG' | translate }}</a>
         </div>
 
         <div class="orders-list" *ngIf="orders().length > 0">

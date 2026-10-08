@@ -15,7 +15,7 @@
           {{ 'HOME.HERO_SUBTITLE_L2' | translate }}
         </p>
         <div class="hero-cta">
-          <a routerLink="/catalog/1" class="btn btn-primary btn-lg">
+          <a routerLink="/catalog" class="btn btn-primary btn-lg">
             {{ 'HOME.HERO_CTA_CATALOG' | translate }}
           </a>
           <a routerLink="/rentals/new" class="btn btn-outline btn-lg hero-outline">
@@ -100,7 +100,7 @@
           <h2>{{ 'HOME.FEATURED_TITLE' | translate }}</h2>
           <p class="section-subtitle">{{ 'HOME.FEATURED_SUBTITLE' | translate }}</p>
         </div>
-        <a routerLink="/catalog/1" class="btn btn-ghost btn-sm">{{ 'HOME.FEATURED_ALL' | translate }}</a>
+        <a routerLink="/catalog" class="btn btn-ghost btn-sm">{{ 'HOME.FEATURED_ALL' | translate }}</a>
       </div>
 
       <div class="products-grid" *ngIf="!loading(); else loadingTpl">

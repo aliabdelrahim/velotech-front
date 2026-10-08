@@ -7,7 +7,7 @@
     <nav class="breadcrumb">
       <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/catalog/1">{{ 'PRODUCT.BREADCRUMB_CATALOG' | translate }}</a>
+      <a routerLink="/catalog">{{ 'PRODUCT.BREADCRUMB_CATALOG' | translate }}</a>
       <span>›</span>
       <strong>{{ p.name }}</strong>
     </nav>
@@ -85,7 +85,7 @@
           <button
             *ngIf="p.isRentable"
             class="btn btn-primary btn-lg"
-            (click)="goToCart()"
+            (click)="rentThisBike()"
           >
             {{ 'PRODUCT.RENT_BIKE' | translate }}
           </button>
@@ -101,6 +101,30 @@
           <li>{{ 'PRODUCT.PERK_RETURN' | translate }}</li>
           <li>{{ 'PRODUCT.PERK_WARRANTY' | translate }}</li>
         </ul>
+
+        <!-- Disponibilité par magasin -->
+        <div class="availability" *ngIf="availableStores().length > 0">
+          <h3>{{ 'PRODUCT.AVAILABLE_STORES' | translate }}</h3>
+          <ul class="store-list">
+            <li *ngFor="let s of availableStores()" class="store-item">
+              <a [routerLink]="['/catalog', s.storeId]" class="store-link">
+                <strong>{{ s.storeName }}</strong>
+                <span class="store-addr">{{ s.address }}</span>
+              </a>
+              <div class="store-stock">
+                <span *ngIf="s.stockSale > 0" class="stock stock-sale">
+                  {{ s.stockSale }} {{ 'PRODUCT.IN_STOCK_SALE' | translate }}
+                </span>
+                <span *ngIf="s.stockRental > 0" class="stock stock-rental">
+                  {{ s.stockRental }} {{ 'PRODUCT.IN_STOCK_RENTAL' | translate }}
+                </span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <p class="availability-empty" *ngIf="availableStores().length === 0 && !loading()">
+          {{ 'PRODUCT.NO_STORE_AVAILABLE' | translate }}
+        </p>
       </div>
     </div>
 
@@ -164,7 +188,7 @@
 <ng-template #notFoundTpl>
   <main class="container">
     <p class="state-msg state-msg--error">{{ errorMsg() || ('PRODUCT.NOT_FOUND' | translate) }}</p>
-    <p style="text-align:center"><a routerLink="/catalog/1" class="btn btn-outline">{{ 'PRODUCT.BACK_TO_CATALOG' | translate }}</a></p>
+    <p style="text-align:center"><a routerLink="/catalog" class="btn btn-outline">{{ 'PRODUCT.BACK_TO_CATALOG' | translate }}</a></p>
   </main>
 </ng-template>
 

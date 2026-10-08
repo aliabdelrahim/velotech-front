@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StoreProductService, StoreProductDetailsDto } from '../../../services/store-product';
+import { StoreService, StoreDetailsDto } from '../../../services/store';
 import { AuthService } from '../../../services/auth';
 
 @Component({
@@ -13,7 +14,21 @@ import { AuthService } from '../../../services/auth';
 })
 export class BoStocksComponent implements OnInit {
   private storeProductService = inject(StoreProductService);
+  private storeService = inject(StoreService);
   private auth = inject(AuthService);
+
+  /** Liste de tous les magasins (dropdown). */
+  stores = signal<StoreDetailsDto[]>([]);
+
+  /** ID du magasin selectionne. Null tant qu'on n'a pas charge la liste. */
+  selectedStoreId = signal<number | null>(null);
+
+  /** Nom du magasin courant pour le titre. */
+  selectedStoreName = computed(() => {
+    const id = this.selectedStoreId();
+    const s = this.stores().find((x) => x.id === id);
+    return s ? s.name : '';
+  });
 
   stocks = signal<StoreProductDetailsDto[]>([]);
   loading = signal(true);
@@ -36,13 +51,39 @@ export class BoStocksComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    const sid = Number(this.auth.getStoreId());
-    if (!sid) {
-      this.errorMsg.set('Aucun magasin associe a votre compte.');
-      this.loading.set(false);
-      return;
-    }
-    this.storeProductService.getByStore(sid).subscribe({
+    this.storeService.getAll().subscribe({
+      next: (list) => {
+        this.stores.set(list);
+        if (list.length === 0) {
+          this.errorMsg.set('Aucun magasin disponible.');
+          this.loading.set(false);
+          return;
+        }
+        // Pre-selection : magasin du user connecte si valide, sinon le 1er
+        const userStoreId = Number(this.auth.getStoreId());
+        const preselect =
+          userStoreId && list.some((s) => s.id === userStoreId)
+            ? userStoreId
+            : list[0].id;
+        this.onStoreChange(preselect);
+      },
+      error: () => {
+        this.errorMsg.set('Impossible de charger les magasins.');
+        this.loading.set(false);
+      },
+    });
+  }
+
+  /** Appelee quand l'utilisateur change de magasin dans le dropdown. */
+  onStoreChange(storeId: number): void {
+    this.selectedStoreId.set(storeId);
+    this.loadStocks(storeId);
+  }
+
+  private loadStocks(storeId: number): void {
+    this.loading.set(true);
+    this.errorMsg.set(null);
+    this.storeProductService.getByStore(storeId).subscribe({
       next: (list) => {
         this.stocks.set(list);
         this.loading.set(false);

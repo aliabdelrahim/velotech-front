@@ -1,3 +1,40 @@
+/* Toolbar : selecteur magasin + recherche cote a cote */
+.toolbar-stocks {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.store-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.store-picker label {
+  font-weight: 600;
+  color: var(--color-dark);
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.store-picker select {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--color-grey-light, #d1d5db);
+  border-radius: 6px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 180px;
+}
+
+.store-picker select:focus {
+  outline: none;
+  border-color: var(--color-green, #2E7D32);
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
 /* Surcharge specifique stocks */
 .data-table tr.alert {
   background-color: #fff8e1;

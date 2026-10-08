@@ -84,6 +84,7 @@
   "CATALOG": {
     "TITLE": "Catalogus",
     "SUBTITLE": "{{count}} product(en) beschikbaar in de winkel",
+    "PRODUCTS_FOUND": "product(en) in alle winkels samen",
     "FILTERS": "Filters",
     "RESET": "Opnieuw instellen",
     "SEARCH": "Zoeken",
@@ -217,7 +218,11 @@
     "SHIPPING_RETURN": "Gratis retour binnen 30 dagen, 2 jaar garantie.",
     "LOADING": "Laden…",
     "NOT_FOUND": "Product niet gevonden.",
-    "BACK_TO_CATALOG": "Terug naar catalogus"
+    "BACK_TO_CATALOG": "Terug naar catalogus",
+    "AVAILABLE_STORES": "Beschikbaar in deze winkels",
+    "IN_STOCK_SALE": "te koop",
+    "IN_STOCK_RENTAL": "te huur",
+    "NO_STORE_AVAILABLE": "Dit product is momenteel in geen enkele winkel beschikbaar."
   },
   "CHECKOUT": {
     "BREADCRUMB_CART": "Mijn winkelmand",

@@ -3,6 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
+/**
+ * Stock d'un produit dans un magasin donne.
+ * En entree (Create/Update) : StoreId + StockSale + StockRental.
+ * En sortie (GET by id) : + StoreName pre-rempli pour affichage.
+ */
+export interface ProductStoreStockDto {
+  storeId: number;
+  storeName?: string | null;
+  stockSale: number;
+  stockRental: number;
+}
+
 export interface ProductDetailsDto {
   id: number;
   name: string;
@@ -12,6 +24,8 @@ export interface ProductDetailsDto {
   isRentable: boolean;
   /** URLs des images concatenees et separees par des virgules. */
   imageUrls?: string | null;
+  /** Attribution aux magasins avec stocks (back-office). */
+  storeStocks?: ProductStoreStockDto[];
 }
 
 export interface CreateProductDto {
@@ -21,6 +35,8 @@ export interface CreateProductDto {
   priceRental: number | null;
   isRentable: boolean;
   imageUrls?: string | null;
+  /** Attribution aux magasins. Si vide, le produit n'est dans aucun magasin. */
+  storeStocks?: ProductStoreStockDto[];
 }
 
 /**
@@ -67,12 +83,10 @@ export class ProductService {
   }
 
   deleteProduct(id: number): Observable<void> {
-  return this.http.delete<void>(`${this.apiUrl}/${id}`);
-}
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 
-updateProduct(id: number, dto: CreateProductDto): Observable<ProductDetailsDto> {
-  return this.http.put<ProductDetailsDto>(`${this.apiUrl}/${id}`, dto);
+  updateProduct(id: number, dto: CreateProductDto): Observable<ProductDetailsDto> {
+    return this.http.put<ProductDetailsDto>(`${this.apiUrl}/${id}`, dto);
+  }
 }
-}
-
-

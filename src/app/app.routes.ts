@@ -9,6 +9,11 @@ export const routes: Routes = [
   // -------- Zone publique --------
   { path: '', component: HomeComponent },
   {
+    path: 'catalog',
+    loadComponent: () =>
+      import('./pages/catalog/catalog').then((m) => m.CatalogComponent),
+  },
+  {
     path: 'catalog/:storeId',
     loadComponent: () =>
       import('./pages/catalog/catalog').then((m) => m.CatalogComponent),
