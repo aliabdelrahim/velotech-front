@@ -1,7 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService, ProductDetailsDto } from '../../services/product';
 import { StoreService, StoreDetailsDto } from '../../services/store';
@@ -37,6 +37,7 @@ export class RentalNewComponent implements OnInit {
   private rentalService = inject(RentalService);
   private auth = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private i18n = inject(TranslateService);
 
   stores = signal<StoreDetailsDto[]>([]);
@@ -84,6 +85,13 @@ export class RentalNewComponent implements OnInit {
       next: (list) => {
         this.rentableProducts.set(list.filter((p) => p.isRentable));
         this.loading.set(false);
+
+        // Pre-selection du produit si on arrive depuis la fiche produit
+        // (lien "Louer ce velo" -> /rentals/new?productId=XX)
+        const presetProductId = Number(this.route.snapshot.queryParamMap.get('productId'));
+        if (presetProductId && list.some((p) => p.id === presetProductId && p.isRentable)) {
+          this.set('productId', presetProductId);
+        }
       },
       error: () => this.loading.set(false),
     });

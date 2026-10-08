@@ -102,6 +102,55 @@
         </div>
       </div>
 
+      <!-- Attribution aux magasins -->
+      <div class="form-group store-stocks-section">
+        <label class="section-label">Magasins & stocks</label>
+        <p class="hint-section">
+          Cochez les magasins dans lesquels ce produit est disponible et ajustez les stocks. Décocher un magasin le retire de ce produit.
+        </p>
+        <div class="store-rows">
+          <div
+            *ngFor="let row of storeRows()"
+            class="store-row"
+            [class.active]="row.selected"
+          >
+            <label class="store-row-head">
+              <input
+                type="checkbox"
+                [checked]="row.selected"
+                (change)="setStoreRow(row.storeId, { selected: !row.selected })"
+              />
+              <strong>{{ row.storeName }}</strong>
+            </label>
+            <div class="store-row-fields" *ngIf="row.selected">
+              <div class="field-sm">
+                <label>Stock vente</label>
+                <input
+                  type="number"
+                  min="0"
+                  [ngModel]="row.stockSale"
+                  (ngModelChange)="setStoreRow(row.storeId, { stockSale: +$event })"
+                  [name]="'stockSale-' + row.storeId"
+                />
+              </div>
+              <div class="field-sm" *ngIf="model().isRentable">
+                <label>Stock location</label>
+                <input
+                  type="number"
+                  min="0"
+                  [ngModel]="row.stockRental"
+                  (ngModelChange)="setStoreRow(row.storeId, { stockRental: +$event })"
+                  [name]="'stockRental-' + row.storeId"
+                />
+              </div>
+            </div>
+          </div>
+          <p *ngIf="storeRows().length === 0" class="empty-stores">
+            Aucun magasin trouvé.
+          </p>
+        </div>
+      </div>
+
       <div class="form-actions">
         <a routerLink="/back-office/products" class="btn btn-ghost">Annuler</a>
         <button type="submit" class="btn btn-primary" [disabled]="isLoading()">

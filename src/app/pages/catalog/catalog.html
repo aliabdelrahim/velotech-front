@@ -7,17 +7,27 @@
     <nav class="breadcrumb" aria-label="breadcrumb">
       <a routerLink="/">{{ 'RENTAL.BREADCRUMB_HOME' | translate }}</a>
       <span>›</span>
-      <a routerLink="/catalog/1">{{ 'CATALOG.TITLE' | translate }}</a>
-      <span>›</span>
-      <strong>{{ storeName() }}</strong>
+      <ng-container *ngIf="mode() === 'store'; else globalBreadcrumb">
+        <a routerLink="/catalog">{{ 'CATALOG.TITLE' | translate }}</a>
+        <span>›</span>
+        <strong>{{ storeName() }}</strong>
+      </ng-container>
+      <ng-template #globalBreadcrumb>
+        <strong>{{ 'CATALOG.TITLE' | translate }}</strong>
+      </ng-template>
     </nav>
 
     <header class="page-head">
       <h1>{{ 'CATALOG.TITLE' | translate }}</h1>
-      <p class="page-subtitle">
+      <p class="page-subtitle" *ngIf="mode() === 'store'; else globalSubtitle">
         {{ 'CATALOG.SUBTITLE' | translate:{ count: filtered().length } }}
         <strong>{{ storeName() }}</strong>
       </p>
+      <ng-template #globalSubtitle>
+        <p class="page-subtitle">
+          {{ filtered().length }} {{ 'CATALOG.PRODUCTS_FOUND' | translate }}
+        </p>
+      </ng-template>
     </header>
 
     <div class="layout">

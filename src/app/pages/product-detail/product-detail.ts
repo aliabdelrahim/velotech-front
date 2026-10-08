@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService, ProductDetailsDto, parseImageUrls } from '../../services/product';
+import { CatalogService, StoreAvailabilityDto } from '../../services/catalog';
 import { CartService } from '../../services/cart';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -59,12 +60,16 @@ export class ProductDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private productService = inject(ProductService);
+  private catalogService = inject(CatalogService);
   private cart = inject(CartService);
   private i18n = inject(TranslateService);
 
   product = signal<ProductDetailsDto | null>(null);
   loading = signal(true);
   errorMsg = signal<string | null>(null);
+
+  /** Magasins ou le produit est disponible (stock > 0). */
+  availableStores = signal<StoreAvailabilityDto[]>([]);
 
   selectedSize = signal<Size | null>(null);
   selectedTab = signal<'description' | 'specs' | 'reviews' | 'shipping'>('description');
@@ -119,7 +124,7 @@ export class ProductDetailComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
       if (!id) {
-        this.router.navigate(['/catalog/1']);
+        this.router.navigate(['/catalog']);
         return;
       }
       this.loadProduct(id);
@@ -142,11 +147,24 @@ export class ProductDetailComponent implements OnInit {
           this.selectedSize.set(null);
         }
         this.loading.set(false);
+        // Charge en parallele les magasins ou le produit est disponible
+        this.loadAvailableStores(id);
       },
       error: () => {
         this.errorMsg.set(this.i18n.instant('PRODUCT.NOT_FOUND'));
         this.loading.set(false);
       },
+    });
+  }
+
+  /**
+   * Charge la liste des magasins ou le produit est en stock
+   * pour afficher le bloc "Disponible dans ces magasins".
+   */
+  private loadAvailableStores(productId: number): void {
+    this.catalogService.getStoresForProduct(productId).subscribe({
+      next: (list) => this.availableStores.set(list),
+      error: () => this.availableStores.set([]),
     });
   }
 
@@ -176,5 +194,12 @@ export class ProductDetailComponent implements OnInit {
 
   goToCart(): void {
     this.router.navigate(['/cart']);
+  }
+
+  /** Redirige vers le formulaire de location avec le produit pré-sélectionné. */
+  rentThisBike(): void {
+    const p = this.product();
+    if (!p) return;
+    this.router.navigate(['/rentals/new'], { queryParams: { productId: p.id } });
   }
 }

@@ -1,13 +1,23 @@
 <header class="page-head">
   <div>
-    <h1>Stocks du magasin</h1>
+    <h1>Stocks — {{ selectedStoreName() || 'Magasin' }}</h1>
     <p class="page-subtitle">
       {{ filtered().length }} reference(s) · {{ alerts() }} alerte(s) seuil bas
     </p>
   </div>
 </header>
 
-<div class="toolbar">
+<div class="toolbar toolbar-stocks">
+  <div class="store-picker">
+    <label for="storeSelect">Magasin :</label>
+    <select
+      id="storeSelect"
+      [ngModel]="selectedStoreId()"
+      (ngModelChange)="onStoreChange(+$event)"
+    >
+      <option *ngFor="let s of stores()" [ngValue]="s.id">{{ s.name }}</option>
+    </select>
+  </div>
   <input
     type="search"
     placeholder="Rechercher (nom, type)…"
@@ -18,7 +28,11 @@
 
 <ng-container *ngIf="!loading(); else loadingTpl">
   <ng-container *ngIf="!errorMsg(); else errorTpl">
-    <div class="empty" *ngIf="filtered().length === 0">Aucun produit en stock.</div>
+    <div class="empty" *ngIf="filtered().length === 0">
+      Aucun produit attribue a ce magasin.
+      <br />
+      <small>Attribuez des produits a ce magasin via Produits → Modifier.</small>
+    </div>
 
     <table class="data-table" *ngIf="filtered().length > 0">
       <thead>

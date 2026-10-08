@@ -84,6 +84,7 @@
   "CATALOG": {
     "TITLE": "Catalogue",
     "SUBTITLE": "{{count}} produit(s) disponible(s) dans le magasin",
+    "PRODUCTS_FOUND": "produit(s) dans l'ensemble des magasins",
     "FILTERS": "Filtres",
     "RESET": "Réinitialiser",
     "SEARCH": "Rechercher",
@@ -217,7 +218,11 @@
     "SHIPPING_RETURN": "Retour gratuit sous 30 jours, garantie 2 ans.",
     "LOADING": "Chargement…",
     "NOT_FOUND": "Produit introuvable.",
-    "BACK_TO_CATALOG": "Retour au catalogue"
+    "BACK_TO_CATALOG": "Retour au catalogue",
+    "AVAILABLE_STORES": "Disponible dans ces magasins",
+    "IN_STOCK_SALE": "en vente",
+    "IN_STOCK_RENTAL": "en location",
+    "NO_STORE_AVAILABLE": "Ce produit n'est actuellement disponible dans aucun magasin."
   },
   "CHECKOUT": {
     "BREADCRUMB_CART": "Mon panier",
