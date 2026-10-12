@@ -7,6 +7,7 @@ import { CartService } from '../../services/cart';
 import { AuthService } from '../../services/auth';
 import { OrderService, CreateOrderDto } from '../../services/order';
 import { PaymentService } from '../../services/payment';
+import { LanguageService } from '../../services/language.service';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
@@ -17,9 +18,6 @@ interface CheckoutModel {
   zip: string;
   city: string;
   shippingMode: 'standard' | 'pickup';
-  cardNumber: string;
-  cardExpiry: string;
-  cardCvv: string;
   acceptedTerms: boolean;
 }
 
@@ -29,9 +27,6 @@ interface FieldErrors {
   address?: string;
   zip?: string;
   city?: string;
-  cardNumber?: string;
-  cardExpiry?: string;
-  cardCvv?: string;
   terms?: string;
 }
 
@@ -49,6 +44,7 @@ export class CheckoutComponent {
   private paymentService = inject(PaymentService);
   private router = inject(Router);
   private i18n = inject(TranslateService);
+  private lang = inject(LanguageService);
 
   model = signal<CheckoutModel>({
     firstName: '',
@@ -57,9 +53,6 @@ export class CheckoutComponent {
     zip: '',
     city: '',
     shippingMode: 'standard',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvv: '',
     acceptedTerms: false,
   });
 
@@ -91,13 +84,6 @@ export class CheckoutComponent {
     if (!/^\d{4}$/.test(m.zip.trim()))
       e.zip = this.i18n.instant('CHECKOUT.ERR_ZIP');
     if (!m.city.trim()) e.city = this.i18n.instant('CHECKOUT.ERR_CITY');
-    const digits = m.cardNumber.replace(/\s+/g, '');
-    if (!/^\d{16}$/.test(digits))
-      e.cardNumber = this.i18n.instant('CHECKOUT.ERR_CARD_NUMBER');
-    if (!/^\d{2}\/\d{2}$/.test(m.cardExpiry.trim()))
-      e.cardExpiry = this.i18n.instant('CHECKOUT.ERR_CARD_EXPIRY');
-    if (!/^\d{3,4}$/.test(m.cardCvv.trim()))
-      e.cardCvv = this.i18n.instant('CHECKOUT.ERR_CARD_CVV');
     if (!m.acceptedTerms)
       e.terms = this.i18n.instant('CHECKOUT.ERR_TERMS');
     return e;
@@ -124,43 +110,32 @@ export class CheckoutComponent {
     const dto: CreateOrderDto = {
       storeId,
       userId,
+      shippingMode: this.model().shippingMode,
       items: this.cart.items().map((i) => ({
         productId: i.productId,
         quantity: i.quantity,
       })),
     };
 
-    const amount = this.finalTotal();
-
+    // 1) Commande creee en "PendingPayment" (stock reserve)
+    // 2) Session Stripe -> redirection vers la page de paiement Stripe
+    // Le panier n'est vide qu'apres confirmation du paiement (/payment/success).
     this.orderService.createOrder(dto).subscribe({
       next: (order) => {
-        const orderId = (order as { orderId?: number })?.orderId ?? 0;
-
-        // Enregistre le paiement simule dans la table Payments.
-        // Le back marque immediatement le paiement comme "Paid".
-        // Si le paiement echoue, la commande reste creee mais non payee :
-        // l'operateur pourra la relancer depuis le back-office.
         this.paymentService
-          .create({ userId, orderId, amount })
+          .createCheckoutSession({ orderId: order.orderId }, this.lang.current())
           .subscribe({
-            next: () => {
-              this.cart.clear();
-              this.router.navigate(['/order-confirmation', orderId]);
-            },
-            error: () => {
-              // On redirige quand meme vers la confirmation :
-              // la commande est bien creee, seul le paiement est en erreur.
-              this.cart.clear();
-              this.router.navigate(['/order-confirmation', orderId]);
-            },
+            next: (session) => (window.location.href = session.url),
+            error: (err) => this.fail(err),
           });
       },
-      error: (err) => {
-        this.submitting.set(false);
-        this.serverError.set(
-          err?.error?.message || this.i18n.instant('CHECKOUT.ERR_GENERIC')
-        );
-      },
+      error: (err) => this.fail(err),
     });
+  }
+
+  private fail(err: { error?: unknown }): void {
+    this.submitting.set(false);
+    const msg = typeof err?.error === 'string' ? err.error : (err?.error as { message?: string })?.message;
+    this.serverError.set(msg || this.i18n.instant('CHECKOUT.ERR_GENERIC'));
   }
 }

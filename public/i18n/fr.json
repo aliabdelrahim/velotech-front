@@ -263,7 +263,7 @@
     "TOTAL": "Total",
     "PAY": "Payer {{amount}} €",
     "PAYING": "Paiement en cours…",
-    "SSL": "🔒 Paiement sécurisé SSL",
+    "SSL": "🔒 Paiement sécurisé par Stripe",
     "ERR_FIRST_NAME": "Prénom requis",
     "ERR_LAST_NAME": "Nom requis",
     "ERR_ADDRESS": "Veuillez renseigner votre adresse",
@@ -273,7 +273,8 @@
     "ERR_CARD_EXPIRY": "Format attendu : MM/AA",
     "ERR_CARD_CVV": "CVV invalide",
     "ERR_TERMS": "Vous devez accepter les conditions générales",
-    "ERR_GENERIC": "Une erreur est survenue. Réessayez."
+    "ERR_GENERIC": "Une erreur est survenue. Réessayez.",
+    "STRIPE_INFO": "Vous serez redirigé vers la page de paiement sécurisée Stripe. Vos données bancaires ne transitent jamais par Velotech."
   },
   "ORDER_CONFIRM": {
     "STEP_CART": "Panier",
@@ -462,15 +463,15 @@
     "ERROR_TITLE": "Veuillez corriger les erreurs ci-dessous",
     "ERROR_COUNT": "{{count}} champ(s) obligatoire(s) manquant(s) ou incorrect(s)",
     "SERVER_ERROR_TITLE": "Erreur de paiement",
-    "SECTION_CARD": "Coordonnées bancaires",
-    "SECTION_HINT": "🔒 Vos données bancaires sont chiffrées et transmises de manière sécurisée. Aucune information n'est stockée sur nos serveurs.",
+    "SECTION_CARD": "Paiement sécurisé",
+    "SECTION_HINT": "🔒 Le paiement est traité par Stripe. Vous serez redirigé vers leur page sécurisée (Bancontact, carte, Apple Pay, Google Pay). Aucune donnée bancaire n'est stockée chez Velotech.",
     "CARD_HOLDER": "Titulaire de la carte *",
     "CARD_HOLDER_PLACEHOLDER": "JEAN DUPONT",
     "CARD_NUMBER": "Numéro de carte *",
     "CARD_EXPIRY": "Expiration (MM/AA) *",
     "CARD_CVV": "CVV *",
     "TERMS": "J'accepte les conditions générales de location et la politique de confidentialité",
-    "TEST_HINT": "💡 <strong>Mode test :</strong> le paiement est simulé. Vous pouvez utiliser n'importe quel numéro à 16 chiffres, ex : <code>4111 1111 1111 1111</code>, exp. <code>12/27</code>, CVV <code>123</code>.",
+    "TEST_HINT": "💡 <strong>Mode test :</strong> utilisez la carte <code>4242 4242 4242 4242</code>, une date future et n'importe quel CVC.",
     "RECAP_TITLE": "Votre réservation",
     "BIKE": "Vélo",
     "STORE": "Magasin",
@@ -479,7 +480,7 @@
     "TOTAL_PAY": "Total à payer",
     "PAY": "Payer {{amount}} €",
     "PAYING": "Paiement en cours…",
-    "SSL": "🔒 Paiement sécurisé SSL",
+    "SSL": "🔒 Paiement sécurisé par Stripe",
     "LOADING": "Chargement de votre réservation…",
     "NOT_FOUND": "Location introuvable.",
     "LOAD_ERROR": "Impossible de charger cette location.",
@@ -823,5 +824,19 @@
     "SWITCH": "Langue",
     "FR": "Français",
     "NL": "Nederlands"
+  },
+  "PAYMENT_RESULT": {
+    "CHECKING_TITLE": "Vérification du paiement…",
+    "CHECKING_MSG": "Merci de patienter quelques secondes.",
+    "PAID_TITLE": "Paiement accepté",
+    "PAID_MSG": "Votre paiement de {{amount}} € a bien été reçu. Merci !",
+    "PENDING_TITLE": "Paiement en cours de traitement",
+    "PENDING_MSG": "Votre banque n'a pas encore confirmé le paiement. Vous recevrez une notification dès qu'il sera validé.",
+    "CANCELLED_TITLE": "Paiement annulé",
+    "CANCELLED_MSG": "Aucun montant n'a été débité. Vous pouvez réessayer quand vous le souhaitez.",
+    "ERROR_TITLE": "Paiement introuvable",
+    "ERROR_MSG": "Nous n'avons pas pu vérifier ce paiement. Consultez votre tableau de bord ou contactez-nous.",
+    "CONTINUE": "Continuer",
+    "RETRY": "Réessayer"
   }
 }

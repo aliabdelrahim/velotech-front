@@ -1,0 +1,45 @@
+<app-header></app-header>
+
+<main class="payment-result-page">
+  <div class="container">
+    <section class="result-card" [ngSwitch]="state()">
+
+      <ng-container *ngSwitchCase="'checking'">
+        <div class="spinner" aria-hidden="true"></div>
+        <h1>{{ 'PAYMENT_RESULT.CHECKING_TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_RESULT.CHECKING_MSG' | translate }}</p>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'paid'">
+        <div class="icon icon--ok">✓</div>
+        <h1>{{ 'PAYMENT_RESULT.PAID_TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_RESULT.PAID_MSG' | translate:{ amount: (payment()?.amount | number:'1.2-2') } }}</p>
+        <a [routerLink]="doneLink()" class="btn btn-primary">{{ 'PAYMENT_RESULT.CONTINUE' | translate }}</a>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'pending'">
+        <div class="icon icon--wait">…</div>
+        <h1>{{ 'PAYMENT_RESULT.PENDING_TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_RESULT.PENDING_MSG' | translate }}</p>
+        <a [routerLink]="doneLink()" class="btn btn-primary">{{ 'PAYMENT_RESULT.CONTINUE' | translate }}</a>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'cancelled'">
+        <div class="icon icon--ko">!</div>
+        <h1>{{ 'PAYMENT_RESULT.CANCELLED_TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_RESULT.CANCELLED_MSG' | translate }}</p>
+        <a [routerLink]="retryLink()" class="btn btn-primary">{{ 'PAYMENT_RESULT.RETRY' | translate }}</a>
+      </ng-container>
+
+      <ng-container *ngSwitchDefault>
+        <div class="icon icon--ko">!</div>
+        <h1>{{ 'PAYMENT_RESULT.ERROR_TITLE' | translate }}</h1>
+        <p>{{ 'PAYMENT_RESULT.ERROR_MSG' | translate }}</p>
+        <a routerLink="/dashboard" class="btn btn-primary">{{ 'PAYMENT_RESULT.CONTINUE' | translate }}</a>
+      </ng-container>
+
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>

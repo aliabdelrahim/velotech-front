@@ -276,3 +276,15 @@ h1 {
   .recap { position: static; }
   .form-row.zip-city { flex-direction: column; }
 }
+
+.stripe-info {
+  margin-bottom: 16px;
+  font-size: 14px;
+
+  .methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+}

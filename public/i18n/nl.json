@@ -263,7 +263,7 @@
     "TOTAL": "Totaal",
     "PAY": "Betalen {{amount}} €",
     "PAYING": "Betaling bezig…",
-    "SSL": "🔒 Beveiligde SSL-betaling",
+    "SSL": "🔒 Beveiligde betaling via Stripe",
     "ERR_FIRST_NAME": "Voornaam verplicht",
     "ERR_LAST_NAME": "Naam verplicht",
     "ERR_ADDRESS": "Gelieve uw adres in te vullen",
@@ -273,7 +273,8 @@
     "ERR_CARD_EXPIRY": "Verwacht formaat: MM/JJ",
     "ERR_CARD_CVV": "Ongeldige CVV",
     "ERR_TERMS": "U moet de algemene voorwaarden aanvaarden",
-    "ERR_GENERIC": "Er is een fout opgetreden. Probeer opnieuw."
+    "ERR_GENERIC": "Er is een fout opgetreden. Probeer opnieuw.",
+    "STRIPE_INFO": "U wordt doorgestuurd naar de beveiligde betaalpagina van Stripe. Uw bankgegevens komen nooit bij Velotech terecht."
   },
   "ORDER_CONFIRM": {
     "STEP_CART": "Winkelmand",
@@ -462,15 +463,15 @@
     "ERROR_TITLE": "Gelieve de onderstaande fouten te corrigeren",
     "ERROR_COUNT": "{{count}} verplicht(e) veld(en) ontbrekend of onjuist",
     "SERVER_ERROR_TITLE": "Betalingsfout",
-    "SECTION_CARD": "Bankgegevens",
-    "SECTION_HINT": "🔒 Uw bankgegevens zijn versleuteld en worden op een beveiligde manier verzonden. Geen enkele informatie wordt op onze servers opgeslagen.",
+    "SECTION_CARD": "Beveiligde betaling",
+    "SECTION_HINT": "🔒 De betaling wordt verwerkt door Stripe. U wordt doorgestuurd naar hun beveiligde pagina (Bancontact, kaart, Apple Pay, Google Pay). Er worden geen bankgegevens bij Velotech opgeslagen.",
     "CARD_HOLDER": "Kaarthouder *",
     "CARD_HOLDER_PLACEHOLDER": "JAN JANSSENS",
     "CARD_NUMBER": "Kaartnummer *",
     "CARD_EXPIRY": "Vervaldatum (MM/JJ) *",
     "CARD_CVV": "CVV *",
     "TERMS": "Ik ga akkoord met de algemene verhuurvoorwaarden en het privacybeleid",
-    "TEST_HINT": "💡 <strong>Testmodus:</strong> de betaling wordt gesimuleerd. U kunt eender welk 16-cijferig nummer gebruiken, bv.: <code>4111 1111 1111 1111</code>, verv. <code>12/27</code>, CVV <code>123</code>.",
+    "TEST_HINT": "💡 <strong>Testmodus:</strong> gebruik de kaart <code>4242 4242 4242 4242</code>, een toekomstige datum en eender welke CVC.",
     "RECAP_TITLE": "Uw reservering",
     "BIKE": "Fiets",
     "STORE": "Winkel",
@@ -479,7 +480,7 @@
     "TOTAL_PAY": "Totaal te betalen",
     "PAY": "Betalen {{amount}} €",
     "PAYING": "Betaling bezig…",
-    "SSL": "🔒 Beveiligde SSL-betaling",
+    "SSL": "🔒 Beveiligde betaling via Stripe",
     "LOADING": "Uw reservering laden…",
     "NOT_FOUND": "Verhuring niet gevonden.",
     "LOAD_ERROR": "Kan deze verhuring niet laden.",
@@ -823,5 +824,19 @@
     "ERR_NAME": "Uw naam is vereist",
     "ERR_EMAIL_REQ": "E-mail is vereist",
     "ERR_EMAIL_FMT": "Ongeldig e-mailformaat"
+  },
+  "PAYMENT_RESULT": {
+    "CHECKING_TITLE": "Betaling wordt gecontroleerd…",
+    "CHECKING_MSG": "Even geduld alstublieft.",
+    "PAID_TITLE": "Betaling aanvaard",
+    "PAID_MSG": "Uw betaling van {{amount}} € is goed ontvangen. Bedankt!",
+    "PENDING_TITLE": "Betaling wordt verwerkt",
+    "PENDING_MSG": "Uw bank heeft de betaling nog niet bevestigd. U krijgt een melding zodra ze gevalideerd is.",
+    "CANCELLED_TITLE": "Betaling geannuleerd",
+    "CANCELLED_MSG": "Er werd niets gedebiteerd. U kunt het opnieuw proberen wanneer u wilt.",
+    "ERROR_TITLE": "Betaling niet gevonden",
+    "ERROR_MSG": "We konden deze betaling niet controleren. Bekijk uw dashboard of neem contact met ons op.",
+    "CONTINUE": "Doorgaan",
+    "RETRY": "Opnieuw proberen"
   }
 }

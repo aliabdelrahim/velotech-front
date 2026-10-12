@@ -11,6 +11,7 @@ export interface CreateOrderItemDto {
 export interface CreateOrderDto {
   storeId: number;
   userId: number;
+  shippingMode?: 'standard' | 'pickup';
   items: CreateOrderItemDto[];
 }
 
@@ -24,6 +25,8 @@ export interface OrderDetailsDto {
   orderId: number;
   orderDate: string;
   totalAmount: number;
+  shippingFee?: number;
+  status?: 'PendingPayment' | 'Paid' | 'Cancelled';
   storeName: string;
   customerName: string;
   items: OrderItemDto[];

@@ -6,22 +6,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RentalService, RentalDetailsDto } from '../../services/rental';
 import { PaymentService } from '../../services/payment';
 import { AuthService } from '../../services/auth';
+import { LanguageService } from '../../services/language.service';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
 
 interface PaymentModel {
-  cardHolder: string;
-  cardNumber: string;
-  cardExpiry: string;
-  cardCvv: string;
   acceptedTerms: boolean;
 }
 
 interface FieldErrors {
-  cardHolder?: string;
-  cardNumber?: string;
-  cardExpiry?: string;
-  cardCvv?: string;
   terms?: string;
 }
 
@@ -39,16 +32,13 @@ export class RentalPaymentComponent implements OnInit {
   private paymentService = inject(PaymentService);
   private auth = inject(AuthService);
   private i18n = inject(TranslateService);
+  private lang = inject(LanguageService);
 
   rental = signal<RentalDetailsDto | null>(null);
   loading = signal(true);
   loadError = signal<string | null>(null);
 
   model = signal<PaymentModel>({
-    cardHolder: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCvv: '',
     acceptedTerms: false,
   });
 
@@ -56,7 +46,6 @@ export class RentalPaymentComponent implements OnInit {
   showErrorBanner = signal(false);
   submitting = signal(false);
   serverError = signal<string | null>(null);
-  paymentSuccess = signal(false);
 
   errorCount = computed(() => Object.keys(this.errors()).length);
 
@@ -94,14 +83,6 @@ export class RentalPaymentComponent implements OnInit {
   private validate(): FieldErrors {
     const m = this.model();
     const e: FieldErrors = {};
-    if (!m.cardHolder.trim()) e.cardHolder = this.i18n.instant('RENTAL_PAY.ERR_CARD_HOLDER');
-    const digits = m.cardNumber.replace(/\s+/g, '');
-    if (!/^\d{16}$/.test(digits))
-      e.cardNumber = this.i18n.instant('RENTAL_PAY.ERR_CARD_NUMBER');
-    if (!/^\d{2}\/\d{2}$/.test(m.cardExpiry.trim()))
-      e.cardExpiry = this.i18n.instant('RENTAL_PAY.ERR_CARD_EXPIRY');
-    if (!/^\d{3,4}$/.test(m.cardCvv.trim()))
-      e.cardCvv = this.i18n.instant('RENTAL_PAY.ERR_CARD_CVV');
     if (!m.acceptedTerms)
       e.terms = this.i18n.instant('RENTAL_PAY.ERR_TERMS');
     return e;
@@ -127,20 +108,13 @@ export class RentalPaymentComponent implements OnInit {
       return;
     }
 
+    // Redirection vers la page de paiement Stripe (cartes, Bancontact...).
+    // Retour sur /payment/success ou /payment/cancel.
     this.submitting.set(true);
     this.paymentService
-      .create({
-        userId: Number(userIdStr),
-        rentalId: r.rentalId,
-        amount: Number(r.totalPrice),
-      })
+      .createCheckoutSession({ rentalId: r.rentalId }, this.lang.current())
       .subscribe({
-        next: () => {
-          this.submitting.set(false);
-          this.paymentSuccess.set(true);
-          // Petite pause visuelle avant de rediriger
-          setTimeout(() => this.router.navigate(['/my-rentals']), 1800);
-        },
+        next: (session) => (window.location.href = session.url),
         error: (err) => {
           this.submitting.set(false);
           const msg = typeof err?.error === 'string' ? err.error : err?.error?.message;

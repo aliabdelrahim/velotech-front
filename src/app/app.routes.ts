@@ -87,6 +87,21 @@ export const routes: Routes = [
       import('./pages/checkout/checkout').then((m) => m.CheckoutComponent),
     canActivate: [authGuard],
   },
+  // Retour de Stripe Checkout
+  {
+    path: 'payment/success',
+    loadComponent: () =>
+      import('./pages/payment-result/payment-result').then((m) => m.PaymentResultComponent),
+    data: { mode: 'success' },
+    canActivate: [authGuard],
+  },
+  {
+    path: 'payment/cancel',
+    loadComponent: () =>
+      import('./pages/payment-result/payment-result').then((m) => m.PaymentResultComponent),
+    data: { mode: 'cancel' },
+    canActivate: [authGuard],
+  },
   {
     path: 'order-confirmation/:id',
     loadComponent: () =>
