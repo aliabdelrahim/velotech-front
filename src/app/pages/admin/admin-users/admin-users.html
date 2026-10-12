@@ -1,8 +1,16 @@
 <header class="page-head">
   <div>
-    <h1>Utilisateurs du reseau</h1>
-    <p class="page-subtitle">{{ filtered().length }} utilisateur(s)</p>
+    <h1>Gestion des utilisateurs</h1>
+    <p class="page-subtitle">
+      {{ filtered().length }} affiché(s)
+      <span *ngIf="deletedCount() > 0" class="muted-count">
+        · {{ deletedCount() }} supprimé(s) masqué(s)
+      </span>
+    </p>
   </div>
+  <button class="btn btn-primary" type="button" (click)="openCreate()">
+    + Nouvel utilisateur
+  </button>
 </header>
 
 <div class="toolbar">
@@ -12,35 +20,76 @@
     [ngModel]="searchTerm()"
     (ngModelChange)="searchTerm.set($event)"
   />
-  <select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
-    <option *ngFor="let r of roles()" [ngValue]="r">
-      {{ r === 'all' ? 'Tous les roles' : r }}
-    </option>
-  </select>
+  <label class="filter">
+    Role :
+    <select [ngModel]="roleFilter()" (ngModelChange)="roleFilter.set($event)">
+      <option *ngFor="let r of availableRoles()" [value]="r">
+        {{ r === 'all' ? 'Tous' : roleLabel(r) }}
+      </option>
+    </select>
+  </label>
+
+  <label class="toggle" [class.active]="showDeleted()" *ngIf="deletedCount() > 0">
+    <input
+      type="checkbox"
+      [checked]="showDeleted()"
+      (change)="showDeleted.set(!showDeleted())"
+    />
+    <span>Afficher les comptes supprimés ({{ deletedCount() }})</span>
+  </label>
 </div>
 
 <ng-container *ngIf="!loading(); else loadingTpl">
   <ng-container *ngIf="!errorMsg(); else errorTpl">
 
-    <div class="empty" *ngIf="filtered().length === 0">Aucun utilisateur.</div>
+    <div class="empty" *ngIf="filtered().length === 0">
+      Aucun utilisateur ne correspond.
+    </div>
 
     <table class="data-table" *ngIf="filtered().length > 0">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>#</th>
           <th>Nom</th>
           <th>Email</th>
           <th>Role</th>
           <th>Magasin</th>
+          <th>Statut</th>
+          <th class="actions-col">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let u of filtered()">
+        <tr *ngFor="let u of filtered()" [class.deleted-row]="u.isDeleted">
           <td>#{{ u.id }}</td>
           <td><strong>{{ u.name }}</strong></td>
           <td>{{ u.email }}</td>
-          <td><span class="badge" [ngClass]="roleBadgeClass(u.roleName)">{{ u.roleName }}</span></td>
+          <td><span class="badge" [ngClass]="roleBadgeClass(u.roleName)">{{ roleLabel(u.roleName) }}</span></td>
           <td>{{ u.storeName || '—' }}</td>
+          <td>
+            <span *ngIf="!u.isDeleted" class="badge badge-success">Actif</span>
+            <span *ngIf="u.isDeleted" class="status-deleted">
+              <span class="badge badge-warning">Supprimé</span>
+              <span class="deleted-date" *ngIf="u.deletedAt">
+                le {{ u.deletedAt | date:'dd/MM/yyyy à HH:mm' }}
+              </span>
+            </span>
+          </td>
+          <td class="actions-col">
+            <button
+              class="btn-icon"
+              type="button"
+              (click)="openEdit(u)"
+              [disabled]="u.isDeleted"
+              title="Modifier"
+            >Modifier</button>
+            <button
+              class="btn-icon btn-icon-danger"
+              type="button"
+              (click)="openDeleteConfirm(u)"
+              [disabled]="u.isDeleted || u.id === currentUserId"
+              [title]="u.id === currentUserId ? 'Vous ne pouvez pas supprimer votre propre compte' : 'Supprimer'"
+            >Supprimer</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -50,3 +99,103 @@
 
 <ng-template #loadingTpl><p class="state-msg">Chargement…</p></ng-template>
 <ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>
+
+<!-- Modal Create / Edit -->
+<div class="modal-overlay" *ngIf="showModal()" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>{{ modalMode() === 'create' ? 'Nouvel utilisateur' : 'Modifier utilisateur #' + editingUserId() }}</h3>
+
+    <div class="field">
+      <label>Nom complet *</label>
+      <input
+        type="text"
+        [ngModel]="modalModel().name"
+        (ngModelChange)="setField('name', $event)"
+        [disabled]="modalSubmitting()"
+      />
+    </div>
+
+    <div class="field">
+      <label>Email *</label>
+      <input
+        type="email"
+        [ngModel]="modalModel().email"
+        (ngModelChange)="setField('email', $event)"
+        [disabled]="modalSubmitting()"
+      />
+    </div>
+
+    <div class="field">
+      <label>
+        {{ modalMode() === 'create' ? 'Mot de passe *' : 'Nouveau mot de passe (optionnel)' }}
+      </label>
+      <input
+        type="password"
+        [ngModel]="modalModel().password"
+        (ngModelChange)="setField('password', $event)"
+        [disabled]="modalSubmitting()"
+        [placeholder]="modalMode() === 'edit' ? 'Laisser vide pour ne pas changer' : ''"
+      />
+    </div>
+
+    <div class="field">
+      <label>Role *</label>
+      <select
+        [ngModel]="modalModel().roleId"
+        (ngModelChange)="setField('roleId', +$event)"
+        [disabled]="modalSubmitting()"
+      >
+        <option [ngValue]="null">— Choisir un role —</option>
+        <option *ngFor="let r of roles()" [ngValue]="r.id">{{ roleLabel(r.name) }}</option>
+      </select>
+    </div>
+
+    <div class="field" *ngIf="needsStore()">
+      <label>Magasin *</label>
+      <select
+        [ngModel]="modalModel().storeId"
+        (ngModelChange)="setField('storeId', +$event)"
+        [disabled]="modalSubmitting()"
+      >
+        <option [ngValue]="null">— Choisir un magasin —</option>
+        <option *ngFor="let s of stores()" [ngValue]="s.id">{{ s.name }}</option>
+      </select>
+    </div>
+
+    <p class="error-text" *ngIf="modalError()">! {{ modalError() }}</p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" (click)="closeModal()" [disabled]="modalSubmitting()">
+        Annuler
+      </button>
+      <button type="button" class="btn btn-primary" (click)="submitModal()" [disabled]="modalSubmitting()">
+        {{ modalSubmitting() ? 'Enregistrement…' : (modalMode() === 'create' ? 'Creer' : 'Sauvegarder') }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirmation de suppression -->
+<div class="modal-overlay" *ngIf="showDeleteConfirm()" (click)="closeDeleteConfirm()">
+  <div class="modal modal-confirm" (click)="$event.stopPropagation()">
+    <h3>Supprimer l'utilisateur ?</h3>
+    <p *ngIf="userToDelete() as u">
+      Vous allez supprimer <strong>{{ u.name }}</strong> ({{ u.email }}).
+    </p>
+    <ul class="consequences">
+      <li>Les donnees personnelles seront anonymisees (RGPD)</li>
+      <li>Le compte ne pourra plus se connecter</li>
+      <li>L'historique (commandes, locations…) est conserve pour les obligations comptables</li>
+      <li>Cette action est irreversible</li>
+    </ul>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" (click)="closeDeleteConfirm()" [disabled]="deleting()">
+        Annuler
+      </button>
+      <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="deleting()">
+        {{ deleting() ? 'Suppression…' : 'Supprimer definitivement' }}
+      </button>
+    </div>
+  </div>
+</div>

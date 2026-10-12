@@ -80,7 +80,7 @@
           <span class="month">{{ a.scheduledAt | date:'MMM' }}</span>
         </div>
         <div class="grow">
-          <p class="primary">{{ a.serviceType }}</p>
+          <p class="primary">{{ a.serviceType | translate }}</p>
           <p class="secondary">{{ a.userName }} — {{ a.scheduledAt | date:'HH:mm' }}</p>
         </div>
         <span class="badge badge-info">{{ a.status }}</span>

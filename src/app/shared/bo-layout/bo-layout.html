@@ -24,6 +24,13 @@
         </a>
       </div>
 
+      <div class="nav-section" *ngIf="isTech">
+        <p class="section-title">Atelier</p>
+        <a routerLink="/back-office/my-work" routerLinkActive="active">
+          <span class="icon">🛠️</span> Mon atelier
+        </a>
+      </div>
+
       <div class="nav-section">
         <p class="section-title">Operations</p>
         <a routerLink="/back-office/orders" routerLinkActive="active">

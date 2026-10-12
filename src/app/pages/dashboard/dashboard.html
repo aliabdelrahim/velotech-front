@@ -123,22 +123,22 @@
       </div>
     </section>
 
-    <!-- Acces back-office -->
+    <!-- Acces back-office (raccourcis pour le staff) -->
     <section class="shortcuts" *ngIf="hasBackOfficeAccess">
       <h2>{{ 'DASHBOARD.BACK_OFFICE' | translate }}</h2>
       <div class="cards-grid">
 
-        <a routerLink="/products" class="shortcut card">
+        <a routerLink="/back-office/products" class="shortcut card">
           <h3>{{ 'DASHBOARD.BO_PRODUCTS_TITLE' | translate }}</h3>
           <p>{{ 'DASHBOARD.BO_PRODUCTS_TEXT' | translate }}</p>
         </a>
 
-        <a routerLink="/store-products" class="shortcut card">
+        <a routerLink="/back-office/stocks" class="shortcut card">
           <h3>{{ 'DASHBOARD.BO_STOCKS_TITLE' | translate }}</h3>
           <p>{{ 'DASHBOARD.BO_STOCKS_TEXT' | translate }}</p>
         </a>
 
-        <a routerLink="/orders" class="shortcut card">
+        <a routerLink="/back-office/orders" class="shortcut card">
           <h3>{{ 'DASHBOARD.BO_ORDERS_TITLE' | translate }}</h3>
           <p>{{ 'DASHBOARD.BO_ORDERS_TEXT' | translate }}</p>
         </a>

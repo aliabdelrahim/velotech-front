@@ -9,6 +9,11 @@ export const routes: Routes = [
   // -------- Zone publique --------
   { path: '', component: HomeComponent },
   {
+    path: 'partenaires',
+    loadComponent: () =>
+      import('./pages/partners/partners').then((m) => m.PartnersComponent),
+  },
+  {
     path: 'catalog',
     loadComponent: () =>
       import('./pages/catalog/catalog').then((m) => m.CatalogComponent),
@@ -228,6 +233,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/back-office/bo-stocks/bo-stocks').then(
             (m) => m.BoStocksComponent
+          ),
+      },
+      {
+        path: 'my-work',
+        loadComponent: () =>
+          import('./pages/back-office/bo-my-work/bo-my-work').then(
+            (m) => m.BoMyWorkComponent
           ),
       },
     ],

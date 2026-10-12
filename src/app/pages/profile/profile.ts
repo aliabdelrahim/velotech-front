@@ -43,10 +43,29 @@ export class ProfileComponent implements OnInit {
   deleting = signal(false);
   deleteError = signal<string | null>(null);
 
+  /** True quand la suppression a reussi : la modal affiche l'etat de succes. */
+  deleteSuccess = signal(false);
+
+  /** Secondes restantes avant redirection automatique vers l'accueil. */
+  redirectCountdown = signal(5);
+
   loading = signal(true);
   loadError = signal<string | null>(null);
 
   user = signal<UserDetailsDto | null>(null);
+
+  /**
+   * Les comptes "staff" (Admin/Manager/Tech) ne peuvent pas s'auto-supprimer :
+   *  - un admin qui se supprime rendrait le back-office inaccessible
+   *  - la RGPD "droit a l'oubli" concerne les CLIENTS, pas les employes
+   *    (les comptes staff sont des outils de travail, pas des donnees perso)
+   * Pour les retirer, un autre admin doit intervenir.
+   */
+  canDeleteAccount = () => {
+    const role = this.user()?.roleName;
+    return role === 'Client';
+  };
+
   model = signal<ProfileModel>({
     name: '',
     email: '',
@@ -150,11 +169,14 @@ export class ProfileComponent implements OnInit {
   openDeleteModal(): void {
     this.deletePassword.set('');
     this.deleteError.set(null);
+    this.deleteSuccess.set(false);
+    this.redirectCountdown.set(5);
     this.showDeleteModal.set(true);
   }
 
   closeDeleteModal(): void {
-    if (this.deleting()) return;
+    // Impossible de fermer pendant la suppression ou apres succes (redirection auto)
+    if (this.deleting() || this.deleteSuccess()) return;
     this.showDeleteModal.set(false);
   }
 
@@ -170,9 +192,12 @@ export class ProfileComponent implements OnInit {
 
     this.userService.deleteMyAccount(pwd).subscribe({
       next: () => {
-        // Compte supprime : purge du token local + redirection vers l'accueil
+        // Compte supprime : purge du token local
         this.auth.logout();
-        this.router.navigate(['/'], { queryParams: { accountDeleted: 1 } });
+        this.deleting.set(false);
+        this.deleteSuccess.set(true);
+        // Lance le countdown avant redirection
+        this.startRedirectCountdown();
       },
       error: (err) => {
         this.deleting.set(false);
@@ -180,5 +205,28 @@ export class ProfileComponent implements OnInit {
         this.deleteError.set(msg || this.i18n.instant('PROFILE.DELETE_ERROR'));
       },
     });
+  }
+
+  /**
+   * Compte a rebours visuel avant redirection vers l'accueil.
+   * Donne le temps a l'utilisateur de lire le message de confirmation
+   * et de voir qu'on respecte bien son droit a l'oubli.
+   */
+  private startRedirectCountdown(): void {
+    const tick = () => {
+      const remaining = this.redirectCountdown() - 1;
+      if (remaining <= 0) {
+        this.router.navigate(['/'], { queryParams: { accountDeleted: 1 } });
+      } else {
+        this.redirectCountdown.set(remaining);
+        setTimeout(tick, 1000);
+      }
+    };
+    setTimeout(tick, 1000);
+  }
+
+  /** Redirection immediate si l'utilisateur clique sur le bouton. */
+  goHomeNow(): void {
+    this.router.navigate(['/'], { queryParams: { accountDeleted: 1 } });
   }
 }

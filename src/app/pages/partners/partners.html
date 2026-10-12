@@ -1,0 +1,347 @@
+<app-header></app-header>
+
+<main class="partners-page">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="badge-pro">{{ 'PARTNERS.BADGE' | translate }}</span>
+        <h1>{{ 'PARTNERS.HERO_TITLE' | translate }}</h1>
+        <p class="lead">{{ 'PARTNERS.HERO_LEAD' | translate }}</p>
+        <div class="hero-cta">
+          <button type="button" class="btn btn-primary btn-lg" (click)="scrollToForm()">
+            {{ 'PARTNERS.CTA_DEMO' | translate }}
+          </button>
+          <button type="button" class="btn btn-outline btn-lg" (click)="scrollToPricing()">
+            {{ 'PARTNERS.CTA_PRICING' | translate }}
+          </button>
+        </div>
+        <ul class="hero-perks">
+          <li>✓ {{ 'PARTNERS.PERK_1' | translate }}</li>
+          <li>✓ {{ 'PARTNERS.PERK_2' | translate }}</li>
+          <li>✓ {{ 'PARTNERS.PERK_3' | translate }}</li>
+        </ul>
+      </div>
+      <div class="hero-visual">
+        <div class="mock-dashboard">
+          <div class="mock-header">
+            <div class="mock-dot red"></div>
+            <div class="mock-dot yellow"></div>
+            <div class="mock-dot green"></div>
+            <span class="mock-url">velotech.be / dashboard</span>
+          </div>
+          <div class="mock-body">
+            <div class="mock-stat"><span class="num">14</span><span class="lbl">ventes · jour</span></div>
+            <div class="mock-stat"><span class="num">7</span><span class="lbl">locations · jour</span></div>
+            <div class="mock-stat"><span class="num">3</span><span class="lbl">réparations · jour</span></div>
+            <div class="mock-chart">
+              <div class="bar" style="height:30%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:40%"></div>
+              <div class="bar" style="height:70%"></div>
+              <div class="bar" style="height:50%"></div>
+              <div class="bar" style="height:85%"></div>
+              <div class="bar" style="height:65%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PROBLEMES ================= -->
+  <section class="problems">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.PROBLEMS_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PARTNERS.PROBLEMS_SUBTITLE' | translate }}</p>
+      <div class="cards-grid cols-4">
+        <div class="problem-card">
+          <span class="emoji">📒</span>
+          <h3>{{ 'PARTNERS.PROBLEM_1_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PROBLEM_1_TEXT' | translate }}</p>
+        </div>
+        <div class="problem-card">
+          <span class="emoji">📞</span>
+          <h3>{{ 'PARTNERS.PROBLEM_2_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PROBLEM_2_TEXT' | translate }}</p>
+        </div>
+        <div class="problem-card">
+          <span class="emoji">🏪</span>
+          <h3>{{ 'PARTNERS.PROBLEM_3_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PROBLEM_3_TEXT' | translate }}</p>
+        </div>
+        <div class="problem-card">
+          <span class="emoji">💶</span>
+          <h3>{{ 'PARTNERS.PROBLEM_4_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PROBLEM_4_TEXT' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOLUTION ================= -->
+  <section class="solution">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.SOLUTION_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PARTNERS.SOLUTION_SUBTITLE' | translate }}</p>
+      <div class="three-cols">
+        <div class="pillar">
+          <span class="icon-circle green">🛍️</span>
+          <h3>{{ 'PARTNERS.PILLAR_1_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PILLAR_1_TEXT' | translate }}</p>
+        </div>
+        <div class="pillar">
+          <span class="icon-circle orange">🚴</span>
+          <h3>{{ 'PARTNERS.PILLAR_2_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PILLAR_2_TEXT' | translate }}</p>
+        </div>
+        <div class="pillar">
+          <span class="icon-circle blue">🔧</span>
+          <h3>{{ 'PARTNERS.PILLAR_3_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.PILLAR_3_TEXT' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.FEATURES_TITLE' | translate }}</h2>
+      <div class="cards-grid cols-3">
+        <div class="feature-card">
+          <h3>📦 {{ 'PARTNERS.F1_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F1_TEXT' | translate }}</p>
+        </div>
+        <div class="feature-card">
+          <h3>🏬 {{ 'PARTNERS.F2_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F2_TEXT' | translate }}</p>
+        </div>
+        <div class="feature-card">
+          <h3>🧰 {{ 'PARTNERS.F3_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F3_TEXT' | translate }}</p>
+        </div>
+        <div class="feature-card">
+          <h3>💳 {{ 'PARTNERS.F4_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F4_TEXT' | translate }}</p>
+        </div>
+        <div class="feature-card">
+          <h3>🇫🇷🇳🇱 {{ 'PARTNERS.F5_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F5_TEXT' | translate }}</p>
+        </div>
+        <div class="feature-card">
+          <h3>🔒 {{ 'PARTNERS.F6_TITLE' | translate }}</h3>
+          <p>{{ 'PARTNERS.F6_TEXT' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHIFFRES CLES ================= -->
+  <section class="numbers">
+    <div class="container">
+      <div class="numbers-grid">
+        <div><strong>24/7</strong><span>{{ 'PARTNERS.N1' | translate }}</span></div>
+        <div><strong>FR + NL</strong><span>{{ 'PARTNERS.N2' | translate }}</span></div>
+        <div><strong>RGPD</strong><span>{{ 'PARTNERS.N3' | translate }}</span></div>
+        <div><strong>49€</strong><span>{{ 'PARTNERS.N4' | translate }}</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TARIFS ================= -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.PRICING_TITLE' | translate }}</h2>
+      <p class="section-subtitle">{{ 'PARTNERS.PRICING_SUBTITLE' | translate }}</p>
+      <div class="pricing-grid">
+
+        <div class="pricing-card">
+          <h3>{{ 'PARTNERS.PLAN_1_NAME' | translate }}</h3>
+          <p class="price"><span class="amount">49€</span><span class="period">{{ 'PARTNERS.PER_MONTH' | translate }}</span></p>
+          <p class="target">{{ 'PARTNERS.PLAN_1_TARGET' | translate }}</p>
+          <ul class="plan-features">
+            <li>✓ {{ 'PARTNERS.PLAN_1_F1' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_1_F2' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_1_F3' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_1_F4' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_1_F5' | translate }}</li>
+          </ul>
+          <button type="button" class="btn btn-outline btn-lg" (click)="scrollToForm()">
+            {{ 'PARTNERS.CHOOSE_PLAN' | translate }}
+          </button>
+        </div>
+
+        <div class="pricing-card featured">
+          <span class="recommended">{{ 'PARTNERS.RECOMMENDED' | translate }}</span>
+          <h3>{{ 'PARTNERS.PLAN_2_NAME' | translate }}</h3>
+          <p class="price"><span class="amount">149€</span><span class="period">{{ 'PARTNERS.PER_MONTH' | translate }}</span></p>
+          <p class="target">{{ 'PARTNERS.PLAN_2_TARGET' | translate }}</p>
+          <ul class="plan-features">
+            <li>✓ {{ 'PARTNERS.PLAN_2_F1' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_2_F2' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_2_F3' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_2_F4' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_2_F5' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_2_F6' | translate }}</li>
+          </ul>
+          <button type="button" class="btn btn-primary btn-lg" (click)="scrollToForm()">
+            {{ 'PARTNERS.CHOOSE_PLAN' | translate }}
+          </button>
+        </div>
+
+        <div class="pricing-card">
+          <h3>{{ 'PARTNERS.PLAN_3_NAME' | translate }}</h3>
+          <p class="price"><span class="amount">{{ 'PARTNERS.CUSTOM' | translate }}</span></p>
+          <p class="target">{{ 'PARTNERS.PLAN_3_TARGET' | translate }}</p>
+          <ul class="plan-features">
+            <li>✓ {{ 'PARTNERS.PLAN_3_F1' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_3_F2' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_3_F3' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_3_F4' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.PLAN_3_F5' | translate }}</li>
+          </ul>
+          <button type="button" class="btn btn-outline btn-lg" (click)="scrollToForm()">
+            {{ 'PARTNERS.CONTACT_US' | translate }}
+          </button>
+        </div>
+
+      </div>
+      <p class="pricing-footer">{{ 'PARTNERS.PRICING_FOOTER' | translate }}</p>
+    </div>
+  </section>
+
+  <!-- ================= TEMOIGNAGES ================= -->
+  <section class="testimonials">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.TESTIMONIALS_TITLE' | translate }}</h2>
+      <div class="cards-grid cols-3">
+        <div class="testimonial-card">
+          <p class="quote">« {{ 'PARTNERS.TESTIMONIAL_1_QUOTE' | translate }} »</p>
+          <div class="author">
+            <span class="avatar">M</span>
+            <div>
+              <strong>Marc Lefebvre</strong>
+              <span>Vélo Shop Ixelles</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="quote">« {{ 'PARTNERS.TESTIMONIAL_2_QUOTE' | translate }} »</p>
+          <div class="author">
+            <span class="avatar">S</span>
+            <div>
+              <strong>Sofie De Vries</strong>
+              <span>Bike Store Antwerpen</span>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <p class="quote">« {{ 'PARTNERS.TESTIMONIAL_3_QUOTE' | translate }} »</p>
+          <div class="author">
+            <span class="avatar">J</span>
+            <div>
+              <strong>Julien Mercier</strong>
+              <span>Cyclo Center Liège</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="faq">
+    <div class="container">
+      <h2 class="section-title">{{ 'PARTNERS.FAQ_TITLE' | translate }}</h2>
+      <div class="faq-list">
+        <div class="faq-item" *ngFor="let i of [0, 1, 2, 3, 4, 5]">
+          <button type="button" class="faq-q" (click)="toggleFaq(i)" [class.open]="openedFaq() === i">
+            <span>{{ 'PARTNERS.FAQ_Q_' + (i + 1) | translate }}</span>
+            <span class="chevron">{{ openedFaq() === i ? '−' : '+' }}</span>
+          </button>
+          <div class="faq-a" *ngIf="openedFaq() === i">
+            {{ 'PARTNERS.FAQ_A_' + (i + 1) | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT FORM ================= -->
+  <section class="contact" id="contact-form">
+    <div class="container">
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <h2>{{ 'PARTNERS.CONTACT_TITLE' | translate }}</h2>
+          <p>{{ 'PARTNERS.CONTACT_LEAD' | translate }}</p>
+          <ul class="contact-points">
+            <li>✓ {{ 'PARTNERS.CONTACT_P1' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.CONTACT_P2' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.CONTACT_P3' | translate }}</li>
+            <li>✓ {{ 'PARTNERS.CONTACT_P4' | translate }}</li>
+          </ul>
+          <div class="direct-contacts">
+            <p>📞 <strong>+32 2 123 45 67</strong></p>
+            <p>✉️ <strong>pro&#64;velotech.be</strong></p>
+          </div>
+        </div>
+
+        <form class="contact-form" (ngSubmit)="onSubmit()" *ngIf="!success(); else successBlock">
+          <div class="form-row">
+            <div class="field">
+              <label>{{ 'PARTNERS.F_SHOP' | translate }} *</label>
+              <input type="text" [ngModel]="form().shopName" (ngModelChange)="set('shopName', $event)" name="shopName" />
+              <p class="hint" *ngIf="errors()['shopName']">! {{ errors()['shopName'] }}</p>
+            </div>
+            <div class="field">
+              <label>{{ 'PARTNERS.F_NAME' | translate }} *</label>
+              <input type="text" [ngModel]="form().contactName" (ngModelChange)="set('contactName', $event)" name="contactName" />
+              <p class="hint" *ngIf="errors()['contactName']">! {{ errors()['contactName'] }}</p>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label>{{ 'PARTNERS.F_EMAIL' | translate }} *</label>
+              <input type="email" [ngModel]="form().email" (ngModelChange)="set('email', $event)" name="email" />
+              <p class="hint" *ngIf="errors()['email']">! {{ errors()['email'] }}</p>
+            </div>
+            <div class="field">
+              <label>{{ 'PARTNERS.F_PHONE' | translate }}</label>
+              <input type="tel" [ngModel]="form().phone" (ngModelChange)="set('phone', $event)" name="phone" placeholder="+32 ..." />
+            </div>
+          </div>
+          <div class="field">
+            <label>{{ 'PARTNERS.F_SIZE' | translate }}</label>
+            <select [ngModel]="form().shopSize" (ngModelChange)="set('shopSize', $event)" name="shopSize">
+              <option value="small">{{ 'PARTNERS.SIZE_SMALL' | translate }}</option>
+              <option value="medium">{{ 'PARTNERS.SIZE_MEDIUM' | translate }}</option>
+              <option value="large">{{ 'PARTNERS.SIZE_LARGE' | translate }}</option>
+              <option value="chain">{{ 'PARTNERS.SIZE_CHAIN' | translate }}</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>{{ 'PARTNERS.F_MESSAGE' | translate }}</label>
+            <textarea rows="4" [ngModel]="form().message" (ngModelChange)="set('message', $event)" name="message" [placeholder]="'PARTNERS.F_MESSAGE_PH' | translate"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="submitting()">
+            {{ submitting() ? ('PARTNERS.SENDING' | translate) : ('PARTNERS.SEND_REQUEST' | translate) }}
+          </button>
+          <p class="rgpd">{{ 'PARTNERS.RGPD_NOTICE' | translate }}</p>
+        </form>
+
+        <ng-template #successBlock>
+          <div class="success-box">
+            <span class="success-check">✓</span>
+            <h3>{{ 'PARTNERS.SUCCESS_TITLE' | translate }}</h3>
+            <p>{{ 'PARTNERS.SUCCESS_TEXT' | translate }}</p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<app-footer></app-footer>

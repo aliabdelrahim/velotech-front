@@ -39,7 +39,13 @@ export class BoLayoutComponent {
   }
 
   get isTech(): boolean {
-    return this.role === 'Tech' || this.role === 'Manager' || this.role === 'Admin';
+    // Accepte "Tech" (nom seede d'origine) et "Technicien" (variante FR)
+    return (
+      this.role === 'Tech' ||
+      this.role === 'Technicien' ||
+      this.role === 'Manager' ||
+      this.role === 'Admin'
+    );
   }
 
   logout(): void {

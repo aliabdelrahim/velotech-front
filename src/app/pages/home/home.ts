@@ -1,6 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ProductService, ProductDetailsDto, firstImage } from '../../services/product';
 import { HeaderComponent } from '../../shared/header/header';
@@ -15,6 +15,7 @@ import { FooterComponent } from '../../shared/footer/footer';
 })
 export class HomeComponent implements OnInit {
   private productService = inject(ProductService);
+  private route = inject(ActivatedRoute);
   private i18n = inject(TranslateService);
   firstImage = firstImage;
 
@@ -22,7 +23,17 @@ export class HomeComponent implements OnInit {
   loading = signal(true);
   errorMsg = signal<string | null>(null);
 
+  /** Affiche la banniere de confirmation apres suppression de compte RGPD. */
+  showAccountDeletedBanner = signal(false);
+
   ngOnInit(): void {
+    // Detection du retour apres suppression de compte (?accountDeleted=1)
+    if (this.route.snapshot.queryParamMap.get('accountDeleted') === '1') {
+      this.showAccountDeletedBanner.set(true);
+      // Auto-dismiss au bout de 10 secondes
+      setTimeout(() => this.showAccountDeletedBanner.set(false), 10000);
+    }
+
     this.productService.getProducts().subscribe({
       next: (products) => {
         // On garde les 4 premiers a titre indicatif

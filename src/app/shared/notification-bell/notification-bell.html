@@ -1,0 +1,57 @@
+<div class="notif-bell-wrapper">
+  <button
+    type="button"
+    class="bell-button"
+    (click)="toggleDropdown()"
+    [class.active]="showDropdown()"
+    aria-label="Notifications"
+  >
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+    </svg>
+    <span class="badge" *ngIf="unreadCount() > 0">
+      {{ unreadCount() > 9 ? '9+' : unreadCount() }}
+    </span>
+  </button>
+
+  <!-- Dropdown panel -->
+  <div class="notif-panel" *ngIf="showDropdown()">
+    <div class="notif-header">
+      <h4>Notifications</h4>
+      <button
+        type="button"
+        class="link-btn"
+        *ngIf="unreadCount() > 0"
+        (click)="markAllRead($event)"
+      >Tout marquer comme lu</button>
+    </div>
+
+    <div class="notif-body">
+      <p class="loading" *ngIf="loading()">Chargement…</p>
+
+      <p class="empty" *ngIf="!loading() && notifications().length === 0">
+        Aucune notification pour l'instant.
+      </p>
+
+      <button
+        type="button"
+        class="notif-item"
+        *ngFor="let n of notifications()"
+        [class.unread]="!n.isRead"
+        (click)="onNotificationClick(n)"
+      >
+        <span class="notif-icon">{{ iconForType(n.type) }}</span>
+        <div class="notif-content">
+          <strong class="notif-title">{{ n.title }}</strong>
+          <p class="notif-msg">{{ n.message }}</p>
+          <span class="notif-time">{{ timeAgo(n.createdAt) }}</span>
+        </div>
+        <span class="unread-dot" *ngIf="!n.isRead"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Backdrop pour fermer en cliquant à côté -->
+  <div class="backdrop" *ngIf="showDropdown()" (click)="closeDropdown()"></div>
+</div>

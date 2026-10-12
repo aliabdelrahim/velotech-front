@@ -1,5 +1,17 @@
 <app-header></app-header>
 
+<!-- Banniere RGPD : confirmation de suppression de compte -->
+<div class="account-deleted-banner" *ngIf="showAccountDeletedBanner()">
+  <div class="container banner-inner">
+    <span class="check-icon">✓</span>
+    <div class="banner-text">
+      <strong>{{ 'HOME.ACCOUNT_DELETED_TITLE' | translate }}</strong>
+      <p>{{ 'HOME.ACCOUNT_DELETED_TEXT' | translate }}</p>
+    </div>
+    <button class="banner-close" type="button" (click)="showAccountDeletedBanner.set(false)" aria-label="Close">×</button>
+  </div>
+</div>
+
 <main>
   <!-- HERO -->
   <section class="hero">

@@ -1,0 +1,279 @@
+/* Header avec bouton d'action */
+.page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.page-head h1 {
+  margin: 0;
+}
+
+.page-head .btn {
+  flex-shrink: 0;
+}
+
+/* Filtres */
+.toolbar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.toolbar input[type="search"] {
+  flex: 1;
+  min-width: 220px;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.toolbar .filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.toolbar .filter select {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+}
+
+/* Toggle "Afficher les comptes supprimes" */
+.toolbar .toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  font-size: 13px;
+  color: #555;
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.toolbar .toggle:hover {
+  border-color: #999;
+}
+
+.toolbar .toggle.active {
+  background: #fdf7e8;
+  border-color: #f0a824;
+  color: #5a4a1f;
+}
+
+.toolbar .toggle input {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Petit badge discret "X supprimes masques" sous le titre */
+.muted-count {
+  color: #999;
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+/* Actions dans le tableau */
+.actions-col {
+  text-align: right;
+  white-space: nowrap;
+  width: 180px;
+}
+
+.btn-icon {
+  padding: 0.3rem 0.7rem;
+  font-size: 0.82rem;
+  border: 1px solid #d1d5db;
+  background: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 0.3rem;
+  transition: all 0.15s;
+}
+
+.btn-icon:hover:not(:disabled) {
+  background: #f0f7f1;
+  border-color: #2E7D32;
+  color: #2E7D32;
+}
+
+.btn-icon:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-icon-danger:hover:not(:disabled) {
+  background: #fdecea;
+  border-color: #d32f2f;
+  color: #d32f2f;
+}
+
+/* Lignes supprimees : juste grisees (opacite + fond legerement different) */
+.deleted-row {
+  opacity: 0.65;
+  background-color: #faf9f7;
+}
+
+/* Statut "Supprime" avec date au-dessous */
+.status-deleted {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  align-items: flex-start;
+}
+
+.deleted-date {
+  font-size: 0.75rem;
+  color: #777;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: white;
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  max-width: 480px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.modal h3 {
+  margin: 0 0 1.25rem;
+  font-size: 1.25rem;
+  color: #1a1a1a;
+}
+
+.modal .field {
+  margin-bottom: 1rem;
+}
+
+.modal .field label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.modal .field input,
+.modal .field select {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  background: white;
+}
+
+.modal .field input:focus,
+.modal .field select:focus {
+  outline: none;
+  border-color: #2E7D32;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+.modal .error-text {
+  color: #d32f2f;
+  background: #fdecea;
+  padding: 0.65rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  margin: 0.75rem 0;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.modal-confirm {
+  max-width: 440px;
+}
+
+.modal-confirm .consequences {
+  background: #fdf7e8;
+  border-left: 3px solid #f0a824;
+  padding: 0.85rem 1rem 0.85rem 1.5rem;
+  margin: 1rem 0;
+  font-size: 0.85rem;
+  color: #5a4a1f;
+}
+
+.modal-confirm .consequences li {
+  margin: 0.3rem 0;
+}
+
+/* Boutons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #2E7D32;
+  color: white;
+}
+.btn-primary:hover:not(:disabled) { background: #1b5e20; }
+
+.btn-ghost {
+  background: transparent;
+  color: #555;
+  border-color: #d1d5db;
+}
+.btn-ghost:hover:not(:disabled) { background: #f5f5f5; }
+
+.btn-danger {
+  background: #d32f2f;
+  color: white;
+}
+.btn-danger:hover:not(:disabled) { background: #b71c1c; }

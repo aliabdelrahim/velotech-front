@@ -68,7 +68,7 @@
 
             <div class="info">
               <p class="ref">RDV-{{ a.appointmentId }}</p>
-              <h3>{{ a.serviceType }}</h3>
+              <h3>{{ a.serviceType | translate }}</h3>
               <p class="hour">🕒 {{ a.scheduledAt | date:'HH:mm' }}</p>
               <p class="store">📍 {{ a.storeName }}</p>
               <p class="product" *ngIf="a.productName">
@@ -86,6 +86,53 @@
                 (click)="cancel(a)">
                 {{ cancellingId() === a.appointmentId ? ('APPT.CANCELLING' | translate) : ('APPT.CANCEL' | translate) }}
               </button>
+              <button
+                *ngIf="a.status === 'Completed'"
+                class="btn btn-outline btn-sm"
+                (click)="toggleRepairDetails(a)"
+              >
+                {{ isExpanded(a) ? ('APPT.HIDE_DETAILS' | translate) : ('APPT.SEE_DETAILS' | translate) }}
+              </button>
+            </div>
+
+            <!-- Détails de la réparation (expand) -->
+            <div class="repair-details" *ngIf="isExpanded(a) && a.status === 'Completed'">
+              <h4>🔧 {{ 'APPT.REPAIR_DETAILS_TITLE' | translate }}</h4>
+
+              <p *ngIf="getRepairState(a) === 'loading'" class="state-msg">
+                {{ 'APPT.LOADING' | translate }}
+              </p>
+
+              <p *ngIf="getRepairState(a) === 'error'" class="state-msg state-msg--error">
+                {{ 'APPT.REPAIR_LOAD_ERROR' | translate }}
+              </p>
+
+              <p *ngIf="getRepairState(a) === 'none'" class="state-msg">
+                {{ 'APPT.REPAIR_NOT_FOUND' | translate }}
+              </p>
+
+              <dl class="repair-grid" *ngIf="getRepair(a) as r">
+                <dt>{{ 'APPT.REPAIR_BIKE' | translate }}</dt>
+                <dd>{{ r.productName }}</dd>
+
+                <dt *ngIf="r.diagnosis">{{ 'APPT.REPAIR_DIAGNOSIS' | translate }}</dt>
+                <dd *ngIf="r.diagnosis">{{ r.diagnosis }}</dd>
+
+                <dt>{{ 'APPT.REPAIR_WORK_DONE' | translate }}</dt>
+                <dd>{{ r.workDone || '—' }}</dd>
+
+                <dt>{{ 'APPT.REPAIR_COST' | translate }}</dt>
+                <dd><strong>{{ r.cost ? (r.cost + ' €') : '—' }}</strong></dd>
+
+                <dt>{{ 'APPT.REPAIR_TECHNICIAN' | translate }}</dt>
+                <dd>{{ r.technicianName }}</dd>
+
+                <dt>{{ 'APPT.REPAIR_STORE' | translate }}</dt>
+                <dd>{{ r.storeName }}</dd>
+
+                <dt>{{ 'APPT.REPAIR_COMPLETED_AT' | translate }}</dt>
+                <dd>{{ r.completedAt | date:'dd/MM/yyyy à HH:mm' }}</dd>
+              </dl>
             </div>
           </li>
         </ul>

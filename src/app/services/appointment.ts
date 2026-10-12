@@ -49,4 +49,13 @@ export class AppointmentService {
   cancel(id: number, reason?: string): Observable<unknown> {
     return this.http.post(`${this.apiUrl}/${id}/cancel`, { reason });
   }
+
+  /**
+   * RDV du magasin du staff connecte qui attendent une prise en charge
+   * (statut Confirmed, pas encore associes a une reparation).
+   * Utilise par le dashboard du technicien.
+   */
+  getToProcess(): Observable<AppointmentDetailsDto[]> {
+    return this.http.get<AppointmentDetailsDto[]>(`${this.apiUrl}/to-process`);
+  }
 }

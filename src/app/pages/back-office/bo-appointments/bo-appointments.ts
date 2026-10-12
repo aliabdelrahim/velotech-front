@@ -2,6 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 import { AppointmentDetailsDto } from '../../../services/appointment';
 import { AuthService } from '../../../services/auth';
 import { environment } from '../../../../environments/environment';
@@ -9,7 +10,7 @@ import { environment } from '../../../../environments/environment';
 @Component({
   selector: 'app-bo-appointments',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslateModule],
   templateUrl: './bo-appointments.html',
   styleUrl: '../bo-orders/bo-orders.scss',
 })

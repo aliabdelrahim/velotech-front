@@ -136,14 +136,24 @@
               </div>
             </form>
 
-            <!-- Zone dangereuse : desinscription -->
-            <div class="danger-zone">
+            <!-- Zone dangereuse : desinscription (clients uniquement) -->
+            <div class="danger-zone" *ngIf="canDeleteAccount(); else staffNoDelete">
               <h3>{{ 'PROFILE.DANGER_ZONE' | translate }}</h3>
               <p class="danger-text">{{ 'PROFILE.DANGER_TEXT' | translate }}</p>
               <button type="button" class="btn btn-danger" (click)="openDeleteModal()">
                 {{ 'PROFILE.DELETE_ACCOUNT' | translate }}
               </button>
             </div>
+
+            <!-- Info pour les comptes staff : auto-suppression bloquee -->
+            <ng-template #staffNoDelete>
+              <div class="info-zone">
+                <h3>{{ 'PROFILE.STAFF_NO_DELETE_TITLE' | translate }}</h3>
+                <p class="info-text">
+                  {{ 'PROFILE.STAFF_NO_DELETE_TEXT' | translate }}
+                </p>
+              </div>
+            </ng-template>
 
           </section>
         </div>
@@ -154,38 +164,69 @@
     <!-- Modale de confirmation de desinscription -->
     <div class="modal-overlay" *ngIf="showDeleteModal()" (click)="closeDeleteModal()">
       <div class="modal" (click)="$event.stopPropagation()">
-        <h3>{{ 'PROFILE.DELETE_CONFIRM_TITLE' | translate }}</h3>
-        <p class="warning">{{ 'PROFILE.DELETE_CONFIRM_WARNING' | translate }}</p>
 
-        <ul class="consequences">
-          <li>{{ 'PROFILE.DELETE_CONSEQ_LOGOUT' | translate }}</li>
-          <li>{{ 'PROFILE.DELETE_CONSEQ_ANONYMIZE' | translate }}</li>
-          <li>{{ 'PROFILE.DELETE_CONSEQ_HISTORY' | translate }}</li>
-          <li>{{ 'PROFILE.DELETE_CONSEQ_IRREVERSIBLE' | translate }}</li>
-        </ul>
+        <!-- Etat 1 : formulaire de confirmation -->
+        <ng-container *ngIf="!deleteSuccess(); else successBlock">
+          <h3>{{ 'PROFILE.DELETE_CONFIRM_TITLE' | translate }}</h3>
+          <p class="warning">{{ 'PROFILE.DELETE_CONFIRM_WARNING' | translate }}</p>
 
-        <div class="field">
-          <label for="deletePwd">{{ 'PROFILE.DELETE_PWD_LABEL' | translate }}</label>
-          <input
-            id="deletePwd"
-            type="password"
-            autocomplete="current-password"
-            [ngModel]="deletePassword()"
-            (ngModelChange)="deletePassword.set($event)"
-            [disabled]="deleting()"
-          />
-        </div>
+          <ul class="consequences">
+            <li>{{ 'PROFILE.DELETE_CONSEQ_LOGOUT' | translate }}</li>
+            <li>{{ 'PROFILE.DELETE_CONSEQ_ANONYMIZE' | translate }}</li>
+            <li>{{ 'PROFILE.DELETE_CONSEQ_HISTORY' | translate }}</li>
+            <li>{{ 'PROFILE.DELETE_CONSEQ_IRREVERSIBLE' | translate }}</li>
+          </ul>
 
-        <p class="error-text" *ngIf="deleteError()">! {{ deleteError() }}</p>
+          <div class="field">
+            <label for="deletePwd">{{ 'PROFILE.DELETE_PWD_LABEL' | translate }}</label>
+            <input
+              id="deletePwd"
+              type="password"
+              autocomplete="current-password"
+              [ngModel]="deletePassword()"
+              (ngModelChange)="deletePassword.set($event)"
+              [disabled]="deleting()"
+            />
+          </div>
 
-        <div class="modal-actions">
-          <button type="button" class="btn btn-ghost" (click)="closeDeleteModal()" [disabled]="deleting()">
-            {{ 'COMMON.CANCEL' | translate }}
-          </button>
-          <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="deleting()">
-            {{ deleting() ? ('PROFILE.DELETING' | translate) : ('PROFILE.DELETE_CONFIRM_BTN' | translate) }}
-          </button>
-        </div>
+          <p class="error-text" *ngIf="deleteError()">! {{ deleteError() }}</p>
+
+          <div class="modal-actions">
+            <button type="button" class="btn btn-ghost" (click)="closeDeleteModal()" [disabled]="deleting()">
+              {{ 'COMMON.CANCEL' | translate }}
+            </button>
+            <button type="button" class="btn btn-danger" (click)="confirmDelete()" [disabled]="deleting()">
+              {{ deleting() ? ('PROFILE.DELETING' | translate) : ('PROFILE.DELETE_CONFIRM_BTN' | translate) }}
+            </button>
+          </div>
+        </ng-container>
+
+        <!-- Etat 2 : succes avec countdown -->
+        <ng-template #successBlock>
+          <div class="delete-success">
+            <div class="success-check">
+              <svg viewBox="0 0 52 52" aria-hidden="true">
+                <circle cx="26" cy="26" r="25" fill="none" stroke="#2E7D32" stroke-width="2"/>
+                <path fill="none" stroke="#2E7D32" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M14 27l7 7 16-16"/>
+              </svg>
+            </div>
+            <h3>{{ 'PROFILE.DELETE_SUCCESS_TITLE' | translate }}</h3>
+            <p class="success-text">{{ 'PROFILE.DELETE_SUCCESS_TEXT' | translate }}</p>
+            <ul class="success-points">
+              <li>✓ {{ 'PROFILE.DELETE_SUCCESS_P1' | translate }}</li>
+              <li>✓ {{ 'PROFILE.DELETE_SUCCESS_P2' | translate }}</li>
+              <li>✓ {{ 'PROFILE.DELETE_SUCCESS_P3' | translate }}</li>
+            </ul>
+            <p class="countdown">
+              {{ 'PROFILE.DELETE_REDIRECT' | translate:{ seconds: redirectCountdown() } }}
+            </p>
+            <div class="modal-actions">
+              <button type="button" class="btn btn-primary" (click)="goHomeNow()">
+                {{ 'PROFILE.DELETE_GO_HOME_NOW' | translate }}
+              </button>
+            </div>
+          </div>
+        </ng-template>
       </div>
     </div>
 

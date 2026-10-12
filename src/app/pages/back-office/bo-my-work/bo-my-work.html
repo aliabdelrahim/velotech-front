@@ -1,0 +1,233 @@
+<header class="page-head">
+  <div>
+    <h1>Mon atelier</h1>
+    <p class="page-subtitle">
+      {{ appointmentsToProcess().length }} RDV à traiter · {{ activeRepairs().length }} réparation(s) en cours · {{ completedRepairs().length }} terminée(s)
+    </p>
+  </div>
+</header>
+
+<ng-container *ngIf="!loading(); else loadingTpl">
+  <ng-container *ngIf="!errorMsg(); else errorTpl">
+
+    <!-- ===== Section 1 : RDV à traiter ===== -->
+    <section class="work-section">
+      <h2>RDV en attente de prise en charge</h2>
+      <p class="section-hint">
+        Rendez-vous confirmés dans votre magasin qui n'ont pas encore de réparation associée.
+      </p>
+
+      <div class="empty" *ngIf="appointmentsToProcess().length === 0">
+        Aucun RDV à traiter pour le moment.
+      </div>
+
+      <table class="data-table" *ngIf="appointmentsToProcess().length > 0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>Service</th>
+            <th>Vélo</th>
+            <th>Notes</th>
+            <th class="actions-col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of appointmentsToProcess()">
+            <td>#{{ a.appointmentId }}</td>
+            <td>{{ a.scheduledAt | date:'dd/MM/yyyy à HH:mm' }}</td>
+            <td><strong>{{ a.userName }}</strong></td>
+            <td>{{ a.serviceType | translate }}</td>
+            <td>{{ a.productName || '—' }}</td>
+            <td class="notes-cell">{{ a.notes || '—' }}</td>
+            <td class="actions-col">
+              <button
+                type="button"
+                class="btn-icon btn-icon-primary"
+                (click)="openTakeModal(a)"
+                title="Prendre en charge"
+              >Prendre en charge</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== Section 2 : Mes réparations en cours ===== -->
+    <section class="work-section">
+      <h2>Mes réparations en cours</h2>
+
+      <div class="empty" *ngIf="activeRepairs().length === 0">
+        Vous n'avez aucune réparation en cours.
+      </div>
+
+      <table class="data-table" *ngIf="activeRepairs().length > 0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vélo</th>
+            <th>Diagnostic</th>
+            <th>Statut</th>
+            <th>Créée le</th>
+            <th class="actions-col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of activeRepairs()">
+            <td>#{{ r.repairId }}</td>
+            <td><strong>{{ r.productName }}</strong></td>
+            <td class="diagnosis-cell">{{ r.diagnosis || '—' }}</td>
+            <td>
+              <span class="badge" [ngClass]="statusClass(r.status)">
+                {{ statusLabel(r.status) }}
+              </span>
+            </td>
+            <td>{{ r.createdAt | date:'dd/MM/yyyy' }}</td>
+            <td class="actions-col">
+              <button
+                type="button"
+                class="btn-icon btn-icon-success"
+                (click)="openCompleteModal(r)"
+              >Clôturer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ===== Section 3 : Historique ===== -->
+    <section class="work-section" *ngIf="completedRepairs().length > 0">
+      <h2>Historique</h2>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Vélo</th>
+            <th>Travail effectué</th>
+            <th>Coût</th>
+            <th>Statut</th>
+            <th>Terminée le</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of completedRepairs()" class="history-row">
+            <td>#{{ r.repairId }}</td>
+            <td>{{ r.productName }}</td>
+            <td class="diagnosis-cell">{{ r.workDone || '—' }}</td>
+            <td><strong>{{ r.cost ? (r.cost + ' €') : '—' }}</strong></td>
+            <td>
+              <span class="badge" [ngClass]="statusClass(r.status)">
+                {{ statusLabel(r.status) }}
+              </span>
+            </td>
+            <td>{{ r.completedAt ? (r.completedAt | date:'dd/MM/yyyy') : '—' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </ng-container>
+</ng-container>
+
+<ng-template #loadingTpl><p class="state-msg">Chargement de votre atelier…</p></ng-template>
+<ng-template #errorTpl><p class="state-msg state-msg--error">{{ errorMsg() }}</p></ng-template>
+
+<!-- Modal "Prendre en charge un RDV" -->
+<div class="modal-overlay" *ngIf="showTakeModal()" (click)="closeTakeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Prendre en charge le RDV #{{ takeAppointment()?.appointmentId }}</h3>
+    <p *ngIf="takeAppointment() as a">
+      <strong>{{ a.userName }}</strong> · {{ a.scheduledAt | date:'dd/MM/yyyy à HH:mm' }}
+      <br />
+      <span class="muted">Service demandé : {{ a.serviceType | translate }}</span>
+    </p>
+
+    <div class="field">
+      <label>Vélo à réparer *</label>
+      <select
+        [ngModel]="takeProductId()"
+        (ngModelChange)="takeProductId.set(+$event)"
+        [disabled]="takeSubmitting()"
+      >
+        <option [ngValue]="null">— Choisir le vélo apporté par le client —</option>
+        <option *ngFor="let b of availableBikes()" [ngValue]="b.id">
+          {{ b.name }}
+        </option>
+      </select>
+      <small class="hint" *ngIf="!takeAppointment()?.productId">
+        Le client n'a pas précisé de vélo lors de la prise de RDV. Sélectionnez celui qu'il a apporté.
+      </small>
+    </div>
+
+    <div class="field">
+      <label>Diagnostic initial (optionnel)</label>
+      <textarea
+        rows="3"
+        placeholder="Ex : Freins avant à régler, pneu arrière crevé…"
+        [ngModel]="takeDiagnosis()"
+        (ngModelChange)="takeDiagnosis.set($event)"
+        [disabled]="takeSubmitting()"
+      ></textarea>
+    </div>
+
+    <p class="error-text" *ngIf="takeError()">! {{ takeError() }}</p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" (click)="closeTakeModal()" [disabled]="takeSubmitting()">
+        Annuler
+      </button>
+      <button type="button" class="btn btn-primary" (click)="confirmTake()" [disabled]="takeSubmitting()">
+        {{ takeSubmitting() ? 'Création…' : 'Démarrer la réparation' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal "Clôturer une réparation" -->
+<div class="modal-overlay" *ngIf="showCompleteModal()" (click)="closeCompleteModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>Clôturer la réparation #{{ completeRepair()?.repairId }}</h3>
+    <p *ngIf="completeRepair() as r">
+      <strong>{{ r.productName }}</strong>
+      <br />
+      <span class="muted">Diagnostic initial : {{ r.diagnosis || '—' }}</span>
+    </p>
+
+    <div class="field">
+      <label>Travail effectué *</label>
+      <textarea
+        rows="4"
+        placeholder="Ex : Changement des plaquettes avant, serrage des freins, gonflage pneus…"
+        [ngModel]="completeWorkDone()"
+        (ngModelChange)="completeWorkDone.set($event)"
+        [disabled]="completeSubmitting()"
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label>Coût final (€) *</label>
+      <input
+        type="number"
+        min="0"
+        step="0.01"
+        placeholder="Ex : 45.00"
+        [ngModel]="completeCost()"
+        (ngModelChange)="completeCost.set(+$event)"
+        [disabled]="completeSubmitting()"
+      />
+    </div>
+
+    <p class="error-text" *ngIf="completeError()">! {{ completeError() }}</p>
+
+    <div class="modal-actions">
+      <button type="button" class="btn btn-ghost" (click)="closeCompleteModal()" [disabled]="completeSubmitting()">
+        Annuler
+      </button>
+      <button type="button" class="btn btn-success" (click)="confirmComplete()" [disabled]="completeSubmitting()">
+        {{ completeSubmitting() ? 'Enregistrement…' : 'Clôturer la réparation' }}
+      </button>
+    </div>
+  </div>
+</div>

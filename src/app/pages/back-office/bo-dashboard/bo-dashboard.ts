@@ -1,6 +1,7 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { OrderService, OrderDetailsDto } from '../../../services/order';
 import { RentalService, RentalDetailsDto } from '../../../services/rental';
 import { AppointmentService, AppointmentDetailsDto } from '../../../services/appointment';
@@ -9,7 +10,7 @@ import { AuthService } from '../../../services/auth';
 @Component({
   selector: 'app-bo-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './bo-dashboard.html',
   styleUrl: './bo-dashboard.scss',
 })

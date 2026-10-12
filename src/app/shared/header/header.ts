@@ -5,11 +5,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../services/auth';
 import { CartService } from '../../services/cart';
 import { LanguageSwitcherComponent } from '../language-switcher/language-switcher';
+import { NotificationBellComponent } from '../notification-bell/notification-bell';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule, LanguageSwitcherComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslateModule, LanguageSwitcherComponent, NotificationBellComponent],
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
@@ -37,7 +38,8 @@ export class HeaderComponent {
 
   get hasBackOfficeAccess(): boolean {
     const r = this.role;
-    return r === 'Admin' || r === 'Manager' || r === 'Tech';
+    // Accepte les 2 variantes du nom technicien ("Tech" et "Technicien")
+    return r === 'Admin' || r === 'Manager' || r === 'Tech' || r === 'Technicien';
   }
 
   logout(): void {
