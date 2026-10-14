@@ -1,7 +1,25 @@
 <div class="bo-shell">
 
+  <!-- Barre du haut : visible uniquement sur ecran etroit (menu replie) -->
+  <header class="bo-topbar">
+    <button
+      type="button"
+      class="menu-btn"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="bo-sidebar"
+      aria-label="Ouvrir le menu">
+      <span class="burger" aria-hidden="true"><span></span><span></span><span></span></span>
+      Menu
+    </button>
+    <a routerLink="/back-office" class="topbar-brand">velotech <span class="bo-tag">Back-office</span></a>
+  </header>
+
+  <!-- Fond sombre derriere le menu ouvert (ecran etroit) -->
+  <div class="bo-backdrop" *ngIf="menuOpen()" (click)="closeMenu()" aria-hidden="true"></div>
+
   <!-- Sidebar -->
-  <aside class="bo-sidebar">
+  <aside class="bo-sidebar" id="bo-sidebar" [class.open]="menuOpen()">
     <div class="brand">
       <a routerLink="/back-office" class="logo">
         <svg viewBox="0 0 32 32" class="logo-mark" aria-hidden="true">

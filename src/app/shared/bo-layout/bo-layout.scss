@@ -166,12 +166,111 @@
   overflow-x: auto;
 }
 
+/* Barre du haut et fond : masques sur grand ecran */
+.bo-topbar,
+.bo-backdrop {
+  display: none;
+}
+
+/* Ecran etroit (moitie d'ecran, tablette, telephone) :
+   le menu devient un tiroir qui s'ouvre par-dessus le contenu. */
 @media (max-width: 1000px) {
   .bo-shell {
     grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
   }
+
+  .bo-topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .menu-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: #243044;
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .menu-btn:hover,
+  .menu-btn:focus-visible {
+    background: var(--color-green);
+  }
+
+  .burger {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .burger span {
+    display: block;
+    width: 16px;
+    height: 2px;
+    background-color: currentColor;
+    border-radius: 1px;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-2);
+    color: var(--color-white);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .topbar-brand .bo-tag { margin-top: 0; }
+
+  .bo-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(15, 20, 30, 0.5);
+    z-index: 150;
+  }
+
   .bo-sidebar {
-    position: static;
-    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100%;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
+    visibility: hidden;
   }
+
+  .bo-sidebar.open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .bo-main {
+    padding: var(--space-4);
+    min-width: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bo-sidebar { transition: none; }
 }

@@ -1,6 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, DestroyRef, HostListener, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { NavigationEnd, RouterLink, RouterLinkActive, RouterOutlet, Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter } from 'rxjs/operators';
 import { AuthService } from '../../services/auth';
 
 @Component({
@@ -13,6 +15,29 @@ import { AuthService } from '../../services/auth';
 export class BoLayoutComponent {
   private auth = inject(AuthService);
   private router = inject(Router);
+
+  /** Menu lateral ouvert (ecrans etroits uniquement : en large il est toujours visible). */
+  menuOpen = signal(false);
+
+  constructor() {
+    // Referme le menu des qu'on change de page
+    this.router.events
+      .pipe(filter((e) => e instanceof NavigationEnd), takeUntilDestroyed(inject(DestroyRef)))
+      .subscribe(() => this.menuOpen.set(false));
+  }
+
+  toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  closeMenu(): void {
+    this.menuOpen.set(false);
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    this.closeMenu();
+  }
 
   role = this.auth.getRole();
   userId = this.auth.getUserId();
