@@ -173,7 +173,10 @@
     "STATUS_CONFIRMED": "Bevestigd",
     "STATUS_ACTIVE": "Lopend",
     "STATUS_RETURNED": "Teruggebracht",
-    "STATUS_CANCELLED": "Geannuleerd"
+    "STATUS_CANCELLED": "Geannuleerd",
+    "STATUS_PENDING_PAYMENT": "Wacht op betaling",
+    "PAY": "Betalen",
+    "PENDING_HINT": "Fiets 30 minuten gereserveerd: zonder betaling wordt de reservering automatisch geannuleerd."
   },
   "APPOINTMENT": {
     "TITLE": "Afspraak",

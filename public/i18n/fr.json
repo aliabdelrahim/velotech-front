@@ -173,7 +173,10 @@
     "STATUS_CONFIRMED": "Confirmée",
     "STATUS_ACTIVE": "En cours",
     "STATUS_RETURNED": "Rendue",
-    "STATUS_CANCELLED": "Annulée"
+    "STATUS_CANCELLED": "Annulée",
+    "STATUS_PENDING_PAYMENT": "En attente de paiement",
+    "PAY": "Payer",
+    "PENDING_HINT": "Vélo réservé pendant 30 minutes : sans paiement, la réservation est annulée automatiquement."
   },
   "APPOINTMENT": {
     "TITLE": "Rendez-vous",

@@ -89,8 +89,13 @@ export class MyRentalsComponent implements OnInit {
   }
 
   canCancel(r: RentalDetailsDto): boolean {
-    if (r.status === 'Cancelled' || r.status === 'Returned') return false;
+    if (r.status === 'Cancelled' || r.status === 'Returned' || r.status === 'Completed') return false;
     return new Date(r.startDate) > this.now;
+  }
+
+  /** Location reservee mais pas encore payee (liberee automatiquement apres 30 min). */
+  canPay(r: RentalDetailsDto): boolean {
+    return r.status === 'PendingPayment';
   }
 
   cancel(r: RentalDetailsDto): void {
@@ -116,9 +121,11 @@ export class MyRentalsComponent implements OnInit {
 
   statusLabel(status: string): string {
     switch (status) {
+      case 'PendingPayment': return this.i18n.instant('RENTAL.STATUS_PENDING_PAYMENT');
       case 'Confirmed': return this.i18n.instant('RENTAL.STATUS_CONFIRMED');
       case 'Active': return this.i18n.instant('RENTAL.STATUS_ACTIVE');
-      case 'Returned': return this.i18n.instant('RENTAL.STATUS_RETURNED');
+      case 'Returned':
+      case 'Completed': return this.i18n.instant('RENTAL.STATUS_RETURNED');
       case 'Cancelled': return this.i18n.instant('RENTAL.STATUS_CANCELLED');
       default: return status;
     }
@@ -126,9 +133,11 @@ export class MyRentalsComponent implements OnInit {
 
   statusClass(status: string): string {
     switch (status) {
+      case 'PendingPayment': return 'badge-warning';
       case 'Confirmed': return 'badge-success';
       case 'Active': return 'badge-success';
-      case 'Returned': return 'badge-info';
+      case 'Returned':
+      case 'Completed': return 'badge-info';
       case 'Cancelled': return 'badge-warning';
       default: return 'badge-info';
     }

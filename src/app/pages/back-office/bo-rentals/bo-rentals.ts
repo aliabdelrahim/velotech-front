@@ -23,7 +23,7 @@ export class BoRentalsComponent implements OnInit {
   searchTerm = signal('');
   statusFilter = signal<string>('all');
 
-  statuses = ['all', 'Confirmed', 'Active', 'Returned', 'Cancelled'];
+  statuses = ['all', 'PendingPayment', 'Confirmed', 'Active', 'Completed', 'Cancelled'];
 
   filtered = computed(() => {
     const q = this.searchTerm().trim().toLowerCase();
@@ -69,7 +69,9 @@ export class BoRentalsComponent implements OnInit {
     switch (status) {
       case 'Confirmed':
       case 'Active': return 'badge-success';
-      case 'Returned': return 'badge-info';
+      case 'Returned':
+      case 'Completed': return 'badge-info';
+      case 'PendingPayment': return 'badge-warning';
       case 'Cancelled': return 'badge-warning';
       default: return 'badge-info';
     }

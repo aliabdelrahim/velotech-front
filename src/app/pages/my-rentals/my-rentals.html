@@ -92,6 +92,12 @@
                 <span class="amount">{{ r.totalPrice | number:'1.2-2' }} €</span>
               </div>
               <div class="actions">
+                <a
+                  *ngIf="canPay(r)"
+                  [routerLink]="['/rentals', r.rentalId, 'payment']"
+                  class="btn btn-primary btn-sm">
+                  {{ 'RENTAL.PAY' | translate }}
+                </a>
                 <button
                   *ngIf="canCancel(r)"
                   class="btn btn-ghost btn-sm"
@@ -101,6 +107,7 @@
                 </button>
               </div>
             </footer>
+            <p class="pending-hint" *ngIf="canPay(r)">{{ 'RENTAL.PENDING_HINT' | translate }}</p>
           </article>
         </div>
 
