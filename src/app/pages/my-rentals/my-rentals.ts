@@ -106,8 +106,9 @@ export class MyRentalsComponent implements OnInit {
         );
         this.cancellingId.set(null);
       },
-      error: () => {
-        alert(this.i18n.instant('RENTAL.CANCEL_ERROR'));
+      error: (err) => {
+        // 409 : location deja payee -> annulation + remboursement par le magasin
+        alert(this.i18n.instant(err?.status === 409 ? 'RENTAL.CANCEL_PAID' : 'RENTAL.CANCEL_ERROR'));
         this.cancellingId.set(null);
       },
     });

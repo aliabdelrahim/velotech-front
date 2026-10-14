@@ -167,6 +167,7 @@
     "CANCELLING": "Annuleren…",
     "CANCEL_CONFIRM": "Verhuring van {{name}} annuleren?",
     "CANCEL_ERROR": "Fout bij het annuleren.",
+    "CANCEL_PAID": "Deze verhuring is al betaald. Neem contact op met de winkel om ze te annuleren en terugbetaald te worden.",
     "TOTAL_PRICE": "Totale prijs",
     "CONFIRM_RENTAL": "Verhuur bevestigen",
     "STATUS_CONFIRMED": "Bevestigd",

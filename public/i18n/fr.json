@@ -167,6 +167,7 @@
     "CANCELLING": "Annulation…",
     "CANCEL_CONFIRM": "Annuler la location de {{name}} ?",
     "CANCEL_ERROR": "Erreur lors de l'annulation.",
+    "CANCEL_PAID": "Cette location est déjà payée. Contactez le magasin pour l'annuler et être remboursé.",
     "TOTAL_PRICE": "Prix total",
     "CONFIRM_RENTAL": "Confirmer la location",
     "STATUS_CONFIRMED": "Confirmée",

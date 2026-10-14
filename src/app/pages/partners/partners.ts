@@ -1,7 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HeaderComponent } from '../../shared/header/header';
 import { FooterComponent } from '../../shared/footer/footer';
@@ -16,7 +15,7 @@ import { FooterComponent } from '../../shared/footer/footer';
 @Component({
   selector: 'app-partners',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, TranslateModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, HeaderComponent, FooterComponent],
   templateUrl: './partners.html',
   styleUrl: './partners.scss',
 })
