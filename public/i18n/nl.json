@@ -650,7 +650,8 @@
     "SIGN_UP": "Registreren",
     "ERR_INVALID": "E-mail of wachtwoord onjuist.",
     "ERR_BAD_REQUEST": "Gelieve de velden correct in te vullen.",
-    "ERR_GENERIC": "Er is een fout opgetreden."
+    "ERR_GENERIC": "Er is een fout opgetreden.",
+    "ERR_LOCKED": "Te veel aanmeldpogingen. Om veiligheidsredenen is dit account {{minutes}} minuut/minuten geblokkeerd. U kunt ook uw wachtwoord opnieuw instellen."
   },
   "REGISTER": {
     "EYEBROW": "Bij Velotech komen",

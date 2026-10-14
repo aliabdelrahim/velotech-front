@@ -43,7 +43,11 @@ export class LoginComponent {
       error: (error) => {
         this.isLoading.set(false);
 
-        if (error.status === 401) {
+        if (error.status === 429) {
+          // Compte bloque temporairement apres trop de mots de passe errones
+          const minutes = error.error?.retryAfterMinutes ?? 15;
+          this.errorMessage.set(this.i18n.instant('LOGIN.ERR_LOCKED', { minutes }));
+        } else if (error.status === 401) {
           this.errorMessage.set(this.i18n.instant('LOGIN.ERR_INVALID'));
         } else if (error.status === 400) {
           this.errorMessage.set(this.i18n.instant('LOGIN.ERR_BAD_REQUEST'));

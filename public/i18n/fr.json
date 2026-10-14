@@ -650,7 +650,8 @@
     "SIGN_UP": "Inscription",
     "ERR_INVALID": "Email ou mot de passe incorrect.",
     "ERR_BAD_REQUEST": "Veuillez remplir correctement les champs.",
-    "ERR_GENERIC": "Une erreur est survenue."
+    "ERR_GENERIC": "Une erreur est survenue.",
+    "ERR_LOCKED": "Trop de tentatives de connexion. Par sécurité, ce compte est bloqué pendant {{minutes}} minute(s). Vous pouvez aussi réinitialiser votre mot de passe."
   },
   "REGISTER": {
     "EYEBROW": "Rejoindre Velotech",
