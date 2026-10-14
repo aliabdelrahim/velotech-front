@@ -19,7 +19,8 @@
     "MY_RENTALS": "Mes locations",
     "MY_APPOINTMENTS": "Mes rendez-vous",
     "CART": "Panier",
-    "LOGOUT": "Déconnexion"
+    "LOGOUT": "Déconnexion",
+    "FOR_STORES": "Pour les magasins"
   },
   "COMMON": {
     "SAVE": "Enregistrer",
@@ -81,7 +82,15 @@
     "CTA_WORKSHOP_TITLE": "Atelier entretien",
     "CTA_WORKSHOP_TEXT_L1": "Diagnostic gratuit, réparation rapide.",
     "CTA_WORKSHOP_TEXT_L2": "Prenez rendez-vous en quelques clics.",
-    "CTA_WORKSHOP_BTN": "Prendre RDV →"
+    "CTA_WORKSHOP_BTN": "Prendre RDV →",
+    "PRO_EYEBROW": "Pour les professionnels",
+    "PRO_TITLE": "Vous êtes un magasin de vélos ?",
+    "PRO_TEXT": "Rejoignez Velotech : vente en ligne, location, atelier et stocks réunis dans un seul outil, pour gagner des clients sans changer vos habitudes.",
+    "PRO_P1": "Mise en place en 48 h",
+    "PRO_P2": "Dès 49 € / mois",
+    "PRO_P3": "Support en français et en néerlandais",
+    "PRO_CTA": "Découvrir l'offre magasins",
+    "PRO_CTA_DEMO": "Demander une démo gratuite"
   },
   "CATALOG": {
     "TITLE": "Catalogue",
@@ -691,7 +700,7 @@
     "ABOUT_US": "À propos",
     "STORES": "Magasins",
     "CONTACT_US": "Contact",
-    "PARTNERS": "Vous êtes magasin ?",
+    "PARTNERS": "Devenir magasin partenaire",
     "LEGAL": "Légal",
     "CGV": "CGV",
     "CGU": "CGU",
@@ -842,5 +851,10 @@
     "ERROR_MSG": "Nous n'avons pas pu vérifier ce paiement. Consultez votre tableau de bord ou contactez-nous.",
     "CONTINUE": "Continuer",
     "RETRY": "Réessayer"
+  },
+  "PRO_BAR": {
+    "QUESTION": "Vous êtes un magasin de vélos ?",
+    "TEXT": "Vendez, louez et gérez votre atelier en ligne avec Velotech.",
+    "CTA": "Devenir partenaire →"
   }
 }

@@ -53,6 +53,26 @@
     </div>
   </section>
 
+  <!-- POUR LES MAGASINS -->
+  <section class="pro-band" aria-labelledby="pro-band-title">
+    <div class="container pro-band-inner">
+      <div class="pro-band-copy">
+        <p class="pro-band-eyebrow">{{ 'HOME.PRO_EYEBROW' | translate }}</p>
+        <h2 id="pro-band-title">{{ 'HOME.PRO_TITLE' | translate }}</h2>
+        <p class="pro-band-lead">{{ 'HOME.PRO_TEXT' | translate }}</p>
+        <ul class="pro-band-perks">
+          <li>{{ 'HOME.PRO_P1' | translate }}</li>
+          <li>{{ 'HOME.PRO_P2' | translate }}</li>
+          <li>{{ 'HOME.PRO_P3' | translate }}</li>
+        </ul>
+      </div>
+      <div class="pro-band-actions">
+        <a routerLink="/partenaires" class="btn btn-primary btn-lg">{{ 'HOME.PRO_CTA' | translate }}</a>
+        <a routerLink="/partenaires" fragment="contact-form" class="pro-band-link">{{ 'HOME.PRO_CTA_DEMO' | translate }}</a>
+      </div>
+    </div>
+  </section>
+
   <!-- POURQUOI VELOTECH -->
   <section class="features">
     <div class="container">

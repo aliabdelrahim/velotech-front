@@ -19,7 +19,8 @@
     "MY_RENTALS": "Mijn verhuringen",
     "MY_APPOINTMENTS": "Mijn afspraken",
     "CART": "Winkelmand",
-    "LOGOUT": "Afmelden"
+    "LOGOUT": "Afmelden",
+    "FOR_STORES": "Voor winkels"
   },
   "COMMON": {
     "SAVE": "Opslaan",
@@ -81,7 +82,15 @@
     "CTA_WORKSHOP_TITLE": "Onderhoudswerkplaats",
     "CTA_WORKSHOP_TEXT_L1": "Gratis diagnose, snelle reparatie.",
     "CTA_WORKSHOP_TEXT_L2": "Maak in enkele klikken een afspraak.",
-    "CTA_WORKSHOP_BTN": "Afspraak maken →"
+    "CTA_WORKSHOP_BTN": "Afspraak maken →",
+    "PRO_EYEBROW": "Voor professionals",
+    "PRO_TITLE": "Hebt u een fietsenwinkel?",
+    "PRO_TEXT": "Sluit aan bij Velotech: online verkoop, verhuur, werkplaats en voorraad in één tool, om klanten te winnen zonder uw gewoonten te veranderen.",
+    "PRO_P1": "Operationeel in 48 u",
+    "PRO_P2": "Vanaf € 49 / maand",
+    "PRO_P3": "Ondersteuning in het Frans en het Nederlands",
+    "PRO_CTA": "Ontdek het winkelaanbod",
+    "PRO_CTA_DEMO": "Vraag een gratis demo aan"
   },
   "CATALOG": {
     "TITLE": "Catalogus",
@@ -691,7 +700,7 @@
     "ABOUT_US": "Over ons",
     "STORES": "Winkels",
     "CONTACT_US": "Contact",
-    "PARTNERS": "Bent u een winkel?",
+    "PARTNERS": "Word partnerwinkel",
     "LEGAL": "Juridisch",
     "CGV": "Algemene verkoopvoorwaarden",
     "CGU": "Gebruiksvoorwaarden",
@@ -842,5 +851,10 @@
     "ERROR_MSG": "We konden deze betaling niet controleren. Bekijk uw dashboard of neem contact met ons op.",
     "CONTINUE": "Doorgaan",
     "RETRY": "Opnieuw proberen"
+  },
+  "PRO_BAR": {
+    "QUESTION": "Hebt u een fietsenwinkel?",
+    "TEXT": "Verkoop, verhuur en beheer uw werkplaats online met Velotech.",
+    "CTA": "Word partner →"
   }
 }

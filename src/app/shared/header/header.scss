@@ -120,7 +120,80 @@
   justify-content: center;
 }
 
+/* Lien "Pour les magasins" dans le menu */
+.nav a.nav-pro {
+  color: var(--color-green-dark);
+  background-color: var(--color-green-light);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+.nav a.nav-pro:hover,
+.nav a.nav-pro.active {
+  background-color: var(--color-green);
+  color: var(--color-white);
+}
+
+.nav a.nav-pro.active::after { display: none; }
+
+/* Bandeau professionnels */
+.pro-bar {
+  background-color: var(--color-green-dark);
+  color: var(--color-white);
+}
+
+.pro-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  padding-block: var(--space-2);
+  min-height: 44px;
+}
+
+.pro-bar-icon { display: inline-flex; flex-shrink: 0; }
+
+.pro-bar-msg {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.35;
+  min-width: 0;
+}
+
+.pro-bar-msg strong { font-weight: 700; margin-right: 6px; }
+
+.pro-bar-cta {
+  flex-shrink: 0;
+  background-color: var(--color-orange);
+  color: var(--color-white);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
+}
+
+.pro-bar-cta:hover,
+.pro-bar-cta:focus-visible {
+  background-color: var(--color-orange-dark);
+  color: var(--color-white);
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   .nav { display: none; }
+}
+
+@media (max-width: 640px) {
+  .pro-bar-text { display: none; }
+  .pro-bar-inner { justify-content: space-between; }
+  .header-inner { gap: var(--space-2); }
+  .actions { gap: var(--space-1); }
+}
+
+/* Petits telephones : le logo seul suffit, pour que les actions tiennent */
+@media (max-width: 420px) {
+  .logo-text { display: none; }
 }

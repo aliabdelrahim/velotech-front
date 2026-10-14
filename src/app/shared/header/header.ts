@@ -42,6 +42,11 @@ export class HeaderComponent {
     return r === 'Admin' || r === 'Manager' || r === 'Tech' || r === 'Technicien';
   }
 
+  /** Bandeau "Vous etes un magasin ?" : masque pour le staff et sur la page partenaires. */
+  get showProBar(): boolean {
+    return !this.hasBackOfficeAccess && !this.router.url.startsWith('/partenaires');
+  }
+
   logout(): void {
     this.auth.logout();
     this.router.navigate(['/']);

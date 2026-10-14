@@ -1,3 +1,15 @@
+<!-- Bandeau professionnels : visible sur toutes les pages publiques (mobile compris) -->
+<div class="pro-bar" *ngIf="showProBar">
+  <div class="container pro-bar-inner">
+    <span class="pro-bar-icon"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z"/><path d="M5 13v7h14v-7"/><path d="M10 20v-4h4v4"/></svg></span>
+    <p class="pro-bar-msg">
+      <strong>{{ 'PRO_BAR.QUESTION' | translate }}</strong>
+      <span class="pro-bar-text">{{ 'PRO_BAR.TEXT' | translate }}</span>
+    </p>
+    <a routerLink="/partenaires" class="pro-bar-cta">{{ 'PRO_BAR.CTA' | translate }}</a>
+  </div>
+</div>
+
 <header class="site-header">
   <div class="container header-inner">
 
@@ -25,6 +37,7 @@
       <a routerLink="/stores" routerLinkActive="active">{{ 'MENU.STORES' | translate }}</a>
       <a routerLink="/about" routerLinkActive="active">{{ 'MENU.ABOUT' | translate }}</a>
       <a routerLink="/contact" routerLinkActive="active">{{ 'MENU.CONTACT' | translate }}</a>
+      <a routerLink="/partenaires" routerLinkActive="active" class="nav-pro">{{ 'MENU.FOR_STORES' | translate }}</a>
     </nav>
 
     <!-- Actions -->

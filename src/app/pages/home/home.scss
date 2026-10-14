@@ -373,3 +373,81 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ===== Pour les magasins ===== */
+.pro-band {
+  background-color: var(--color-dark);
+  border-top: 4px solid var(--color-orange);
+  color: var(--color-white);
+  padding-block: var(--space-7);
+}
+
+.pro-band-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.pro-band-eyebrow {
+  margin: 0 0 var(--space-2);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-orange);
+}
+
+.pro-band h2 {
+  color: var(--color-white);
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  margin: 0 0 var(--space-3);
+  text-wrap: balance;
+}
+
+.pro-band-lead {
+  margin: 0 0 var(--space-4);
+  max-width: 60ch;
+  opacity: 0.95;
+}
+
+.pro-band-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pro-band-perks li {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.pro-band-perks li::before { content: '\2713  '; }
+
+.pro-band-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-3);
+  text-align: center;
+}
+
+.pro-band-link {
+  color: var(--color-white);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.pro-band-link:hover { color: var(--color-green-light); }
+
+@media (max-width: 768px) {
+  .pro-band-inner { grid-template-columns: 1fr; }
+  .pro-band-actions { align-items: flex-start; text-align: left; }
+}
