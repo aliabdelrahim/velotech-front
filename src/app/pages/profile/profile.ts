@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
+import { isStrongPassword } from '../../shared/password-policy';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -116,7 +117,7 @@ export class ProfileComponent implements OnInit {
       if (!m.currentPassword) {
         e.currentPassword = this.i18n.instant('PROFILE.ERR_CURRENT_PWD');
       }
-      if (!m.newPassword || m.newPassword.length < 6) {
+      if (!isStrongPassword(m.newPassword)) {
         e.newPassword = this.i18n.instant('PROFILE.ERR_NEW_PWD');
       }
       if (m.newPassword !== m.confirmNewPassword) {

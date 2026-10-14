@@ -41,7 +41,7 @@ const DOCS: Record<LegalKey, LegalDoc> = {
       {
         title: '2. Hebergement',
         paragraphs: [
-          "Le site est heberge par Microsoft Azure (Azure App Service - region West Europe).",
+          "Le site est heberge par Microsoft Azure (Azure App Service et Azure SQL Database - region France Central, Paris).",
           "Microsoft Ireland Operations Limited, One Microsoft Place, South County Business Park, Leopardstown, Dublin 18, D18 P521, Ireland.",
         ],
       },
@@ -223,7 +223,7 @@ const DOCS: Record<LegalKey, LegalDoc> = {
       {
         title: '6. Securite',
         paragraphs: [
-          "Vos donnees sont stockees sur des serveurs situes en Union Europeenne (Microsoft Azure - region West Europe).",
+          "Vos donnees sont stockees sur des serveurs situes dans l'Union europeenne (Microsoft Azure - region France Central, Paris).",
           "Mots de passe haches avec PBKDF2 (100 000 iterations, sel unique).",
           "Toutes les communications sont chiffrees via TLS 1.3.",
           "Sauvegardes quotidiennes chiffrees.",

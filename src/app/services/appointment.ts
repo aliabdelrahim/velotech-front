@@ -38,6 +38,11 @@ export class AppointmentService {
     return this.http.get<AppointmentDetailsDto[]>(`${this.apiUrl}/me`);
   }
 
+  /** Rendez-vous d'un magasin (back-office, personnel uniquement). */
+  getByStore(storeId: number): Observable<AppointmentDetailsDto[]> {
+    return this.http.get<AppointmentDetailsDto[]>(this.apiUrl, { params: { storeId } });
+  }
+
   getById(id: number): Observable<AppointmentDetailsDto> {
     return this.http.get<AppointmentDetailsDto>(`${this.apiUrl}/${id}`);
   }

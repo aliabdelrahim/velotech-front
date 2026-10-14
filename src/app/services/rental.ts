@@ -37,6 +37,11 @@ export class RentalService {
     return this.http.get<RentalDetailsDto[]>(`${this.apiUrl}/me`);
   }
 
+  /** Locations d'un magasin (back-office, personnel uniquement). */
+  getByStore(storeId: number): Observable<RentalDetailsDto[]> {
+    return this.http.get<RentalDetailsDto[]>(this.apiUrl, { params: { storeId } });
+  }
+
   getById(id: number): Observable<RentalDetailsDto> {
     return this.http.get<RentalDetailsDto>(`${this.apiUrl}/${id}`);
   }

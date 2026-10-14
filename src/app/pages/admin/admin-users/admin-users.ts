@@ -11,6 +11,7 @@ import { RoleService, RoleDto } from '../../../services/role';
 import { StoreService, StoreDetailsDto } from '../../../services/store';
 import { AuthService } from '../../../services/auth';
 import { forkJoin } from 'rxjs';
+import { isStrongPassword } from '../../../shared/password-policy';
 
 /** Modele du formulaire user (create + edit). */
 interface UserFormModel {
@@ -193,11 +194,11 @@ export class AdminUsersComponent implements OnInit {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m.email.trim())) return 'Email invalide.';
     if (!m.roleId) return 'Le role est requis.';
     if (this.modalMode() === 'create') {
-      if (!m.password || m.password.length < 6)
-        return 'Le mot de passe doit faire au moins 6 caracteres.';
+      if (!isStrongPassword(m.password))
+        return 'Le mot de passe doit faire au moins 8 caracteres, avec au moins une lettre et un chiffre.';
     } else {
-      if (m.password && m.password.length < 6)
-        return 'Le nouveau mot de passe doit faire au moins 6 caracteres.';
+      if (m.password && !isStrongPassword(m.password))
+        return 'Le nouveau mot de passe doit faire au moins 8 caracteres, avec au moins une lettre et un chiffre.';
     }
     if (this.needsStore() && !m.storeId)
       return 'Le magasin est requis pour un compte staff.';

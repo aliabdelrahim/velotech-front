@@ -67,12 +67,18 @@ export class BoDashboardComponent implements OnInit {
       });
     }
 
-    this.appointmentService.getMyAppointments().subscribe({
+    // Le tableau de bord du back-office montre l'activite DU MAGASIN de
+    // l'employe (et non ses propres rendez-vous / locations personnels).
+    const appointments$ = sid
+      ? this.appointmentService.getByStore(sid)
+      : this.appointmentService.getMyAppointments();
+    appointments$.subscribe({
       next: (list) => this.appointments.set(list),
       error: () => {},
     });
 
-    this.rentalService.getMyRentals().subscribe({
+    const rentals$ = sid ? this.rentalService.getByStore(sid) : this.rentalService.getMyRentals();
+    rentals$.subscribe({
       next: (list) => {
         this.rentals.set(list);
         this.loading.set(false);

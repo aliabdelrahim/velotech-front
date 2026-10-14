@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { isStrongPassword } from '../../shared/password-policy';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -55,7 +56,7 @@ export class ResetPasswordComponent implements OnInit {
     const e: FieldErrors = {};
     const p = this.newPassword();
     if (!p) e.newPassword = 'Nouveau mot de passe requis';
-    else if (p.length < 6) e.newPassword = '6 caracteres minimum';
+    else if (!isStrongPassword(p)) e.newPassword = '8 caracteres minimum, avec au moins une lettre et un chiffre';
     if (p !== this.confirmPassword()) e.confirmPassword = 'Les mots de passe ne correspondent pas';
     return e;
   }

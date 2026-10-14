@@ -1,4 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { isStrongPassword } from '../../shared/password-policy';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -80,7 +81,7 @@ export class RegisterComponent {
     }
     if (!m.password) {
       e.password = this.i18n.instant('REGISTER.ERR_PASSWORD');
-    } else if (m.password.length < 6) {
+    } else if (!isStrongPassword(m.password)) {
       e.password = this.i18n.instant('REGISTER.ERR_PASSWORD_SHORT');
     }
     if (m.password !== m.confirmPassword) {
